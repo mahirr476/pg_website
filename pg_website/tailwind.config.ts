@@ -26,28 +26,26 @@ const config: Config = {
         foreground: "hsl(var(--foreground))",
         // Custom color palette
         company: {
-          orange: '#FAA91C',
-          blue: '#009FFD',
-          royal: '#2A2A72',
-          black: '#232528',
-          light: '#EAF6FF',
+          orange: '#FAA91C',    // Web Orange
+          royal: '#2A2A72',     // Royal Blue
+          black: '#232528',     // Raisin Black
         },
         primary: {
-          DEFAULT: '#FAA91C', // Orange as primary
+          DEFAULT: '#FAA91C',   // Using Web Orange as primary
           foreground: '#FFFFFF',
         },
         secondary: {
-          DEFAULT: '#2A2A72', // Royal blue as secondary
+          DEFAULT: '#2A2A72',   // Using Royal Blue as secondary
           foreground: '#FFFFFF',
         },
         accent: {
-          DEFAULT: '#009FFD', // Celestial blue as accent
+          DEFAULT: '#232528',   // Using Raisin Black as accent
           foreground: '#FFFFFF',
         },
         muted: {
-          DEFAULT: '#EAF6FF', // Light blue as muted
+          DEFAULT: '#F5F5F5',   // Light gray for muted backgrounds
           foreground: '#232528',
-        },
+        }
       },
       borderRadius: {
         lg: "var(--radius)",

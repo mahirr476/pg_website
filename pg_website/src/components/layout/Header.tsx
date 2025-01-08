@@ -1,21 +1,8 @@
 'use client';
 // src/components/layout/Header.tsx
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { 
-  Menu, 
-  X, 
-  Home,
-  Info,
-  Award,
-  Building2,
-  Briefcase,
-  Image as ImageIcon,
-  UserPlus,
-  Phone
-} from 'lucide-react';
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -24,7 +11,37 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { businessActivities, companies } from '@/lib/data/navigation';
+import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-primary hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,52 +55,6 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const mainNavItems = [
-    {
-      name: 'Home',
-      href: '/',
-      icon: <Home className="w-5 h-5" />
-    },
-    {
-      name: 'About',
-      icon: <Info className="w-5 h-5" />,
-      subItems: [
-        { name: 'About Us', href: '/about/about-us' },
-        { name: 'CSR', href: '/about/csr' }
-      ]
-    },
-    {
-      name: 'Milestones',
-      href: '/milestones',
-      icon: <Award className="w-5 h-5" />
-    },
-    {
-      name: 'Business Activities',
-      href: '/business-activities',
-      icon: <Building2 className="w-5 h-5" />
-    },
-    {
-      name: 'Companies',
-      href: '/companies',
-      icon: <Briefcase className="w-5 h-5" />
-    },
-    {
-      name: 'Media',
-      href: '/media',
-      icon: <ImageIcon className="w-5 h-5" />
-    },
-    {
-      name: 'Career',
-      href: '/career',
-      icon: <UserPlus className="w-5 h-5" />
-    },
-    {
-      name: 'Contact',
-      href: '/contact',
-      icon: <Phone className="w-5 h-5" />
-    }
-  ];
 
   return (
     <header className={cn(
@@ -105,53 +76,99 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex">
             <NavigationMenu>
               <NavigationMenuList>
-                {mainNavItems.map((item) => (
-                  <NavigationMenuItem key={item.name}>
-                    {item.subItems ? (
-                      <>
-                        <NavigationMenuTrigger className="h-10">
-                          <span className="flex items-center space-x-1">
-                            {item.icon}
-                            <span>{item.name}</span>
-                          </span>
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <ul className="grid w-[200px] gap-3 p-4">
-                            {item.subItems.map((subItem) => (
-                              <li key={subItem.name}>
-                                <NavigationMenuLink asChild>
-                                  <Link
-                                    href={subItem.href}
-                                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                                  >
-                                    {subItem.name}
-                                  </Link>
-                                </NavigationMenuLink>
-                              </li>
-                            ))}
-                          </ul>
-                        </NavigationMenuContent>
-                      </>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className="group flex items-center space-x-1 text-gray-600 hover:text-primary transition-colors relative py-2"
-                      >
-                        <span className="flex items-center space-x-1">
-                          {item.icon}
-                          <span>{item.name}</span>
-                        </span>
-                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-                      </Link>
-                    )}
-                  </NavigationMenuItem>
-                ))}
+                <NavigationMenuItem>
+                  <Link href="/" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      Home
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>About</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[400px] gap-3 p-4">
+                      <ListItem href="/about/about-us" title="About Us">
+                        Learn about our history, vision, and mission.
+                      </ListItem>
+                      <ListItem href="/about/csr" title="CSR">
+                        Our commitment to social responsibility and community development.
+                      </ListItem>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link href="/milestones" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      Milestones
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Business Activities</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[600px] gap-3 p-4 md:grid-cols-2">
+                      {businessActivities.map((activity) => (
+                        <ListItem
+                          key={activity.href}
+                          title={activity.title}
+                          href={activity.href}
+                        >
+                          {activity.description}
+                        </ListItem>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Companies</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[600px] gap-3 p-4 md:grid-cols-2">
+                      {companies.map((company) => (
+                        <ListItem
+                          key={company.href}
+                          title={company.title}
+                          href={company.href}
+                        >
+                          {company.description}
+                        </ListItem>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link href="/media" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      Media
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link href="/career" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      Career
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link href="/contact" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      Contact
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-          </nav>
+          </div>
 
           {/* Mobile Menu Button */}
           <Button
@@ -165,41 +182,96 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         <div className={cn(
-          "fixed inset-x-0 bg-white shadow-lg lg:hidden transition-all duration-300 ease-in-out",
+          "fixed inset-x-0 bg-white shadow-lg lg:hidden transition-all duration-300 ease-in-out max-h-[80vh] overflow-y-auto",
           isOpen ? "top-16 opacity-100" : "-top-full opacity-0"
         )}>
           <nav className="container mx-auto px-4 py-4">
-            <div className="flex flex-col space-y-4">
-              {mainNavItems.map((item) => (
-                <div key={item.name}>
-                  {item.subItems ? (
-                    <>
-                      <div className="font-medium mb-2">{item.name}</div>
-                      <div className="pl-4 space-y-2">
-                        {item.subItems.map((subItem) => (
-                          <Link
-                            key={subItem.name}
-                            href={subItem.href}
-                            className="block text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg p-2 transition-colors"
-                            onClick={() => setIsOpen(false)}
-                          >
-                            {subItem.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      className="flex items-center space-x-2 text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg p-2 transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {item.icon}
-                      <span>{item.name}</span>
-                    </Link>
-                  )}
-                </div>
-              ))}
+            <div className="space-y-4">
+              <Link
+                href="/"
+                className="block p-2 hover:bg-gray-50 rounded-lg"
+                onClick={() => setIsOpen(false)}
+              >
+                Home
+              </Link>
+              
+              <div className="space-y-2">
+                <div className="font-medium px-2">About</div>
+                <Link
+                  href="/about/about-us"
+                  className="block p-2 pl-4 hover:bg-gray-50 rounded-lg"
+                  onClick={() => setIsOpen(false)}
+                >
+                  About Us
+                </Link>
+                <Link
+                  href="/about/csr"
+                  className="block p-2 pl-4 hover:bg-gray-50 rounded-lg"
+                  onClick={() => setIsOpen(false)}
+                >
+                  CSR
+                </Link>
+              </div>
+
+              <Link
+                href="/milestones"
+                className="block p-2 hover:bg-gray-50 rounded-lg"
+                onClick={() => setIsOpen(false)}
+              >
+                Milestones
+              </Link>
+
+              <div className="space-y-2">
+                <div className="font-medium px-2">Business Activities</div>
+                {businessActivities.map((activity) => (
+                  <Link
+                    key={activity.href}
+                    href={activity.href}
+                    className="block p-2 pl-4 hover:bg-gray-50 rounded-lg"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {activity.title}
+                  </Link>
+                ))}
+              </div>
+
+              <div className="space-y-2">
+                <div className="font-medium px-2">Companies</div>
+                {companies.map((company) => (
+                  <Link
+                    key={company.href}
+                    href={company.href}
+                    className="block p-2 pl-4 hover:bg-gray-50 rounded-lg"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {company.title}
+                  </Link>
+                ))}
+              </div>
+
+              <Link
+                href="/media"
+                className="block p-2 hover:bg-gray-50 rounded-lg"
+                onClick={() => setIsOpen(false)}
+              >
+                Media
+              </Link>
+
+              <Link
+                href="/career"
+                className="block p-2 hover:bg-gray-50 rounded-lg"
+                onClick={() => setIsOpen(false)}
+              >
+                Career
+              </Link>
+
+              <Link
+                href="/contact"
+                className="block p-2 hover:bg-gray-50 rounded-lg"
+                onClick={() => setIsOpen(false)}
+              >
+                Contact
+              </Link>
             </div>
           </nav>
         </div>
