@@ -1,14 +1,18 @@
-import MediaHero from '@/components/media/MediaHero'
-import VideoGallery from '@/components/media/VideoGallary'
-import React from 'react'
+// app/media/page.tsx
+import MediaHero from '@/components/media/MediaHero';
+import PressReleases from '@/components/media/PressReleases';
+import VideoGallery from '@/components/media/VideoGallery';
+import NewsArticles from '@/components/media/NewsArticles';
+import MediaContact from '@/components/media/MediaContact';
 
-const Media = () => {
+export default function MediaPage() {
   return (
-    <div>
-       <MediaHero/>
-       <VideoGallery/>
-    </div>
-  )
+    <main className="min-h-screen">
+      <MediaHero />
+      <PressReleases />
+      <VideoGallery />
+      <NewsArticles />
+      <MediaContact />
+    </main>
+  );
 }
-
-export default Media
