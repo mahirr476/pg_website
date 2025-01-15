@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { timelineData } from '@/lib/data/timeline';
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 const Timeline = () => {
   const [activeId, setActiveId] = useState<number | null>(null);
@@ -20,7 +20,9 @@ const Timeline = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4 text-company-royal">Journey of Excellence</h2>
+          <h2 className="text-4xl font-bold mb-4 text-company-royal">
+            Journey of Excellence
+          </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Explore our milestones from humble beginnings to industry leadership
           </p>
@@ -29,13 +31,13 @@ const Timeline = () => {
         <div className="space-y-16">
           {timelineData.map((milestone, index) => (
             <motion.div
-              key={milestone.year}
+              key={milestone.id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: '-100px' }}
             >
-              <Card 
+              <Card
                 className={`w-full transform transition-all duration-500 cursor-pointer overflow-hidden
                   ${activeId === index ? 'scale-[1.02]' : 'hover:scale-[1.01]'}`}
                 onClick={() => setActiveId(activeId === index ? null : index)}
@@ -52,11 +54,9 @@ const Timeline = () => {
                           ${activeId === index ? 'scale-110' : 'scale-100'}`}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                      
+
                       {/* Year Badge - Absolute positioned over image */}
-                      <Badge 
-                        className="absolute top-6 left-6 text-lg py-2 px-4 bg-company-orange hover:bg-company-orange"
-                      >
+                      <Badge className="absolute top-6 left-6 text-lg py-2 px-4 bg-company-orange hover:bg-company-orange">
                         {milestone.year}
                       </Badge>
                     </div>
@@ -66,8 +66,10 @@ const Timeline = () => {
                       <h3 className="text-2xl font-bold text-company-royal mb-4">
                         {milestone.title}
                       </h3>
-                      <p className={`text-gray-600 leading-relaxed transition-all duration-500
-                        ${activeId === index ? 'line-clamp-none' : 'line-clamp-4'}`}>
+                      <p
+                        className={`text-gray-600 leading-relaxed transition-all duration-500
+                        ${activeId === index ? 'line-clamp-none' : 'line-clamp-4'}`}
+                      >
                         {milestone.description}
                       </p>
                       {/* <div className={`mt-4 text-company-orange font-medium
