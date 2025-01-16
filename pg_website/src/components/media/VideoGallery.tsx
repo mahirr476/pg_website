@@ -84,7 +84,16 @@ const videos = [
 ];
 
 const VideoGallery = () => {
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  interface Video {
+    id: number;
+    title: string;
+    thumbnail: string;
+    videoUrl: string;
+    duration: string;
+    description: string;
+  }
+  
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
