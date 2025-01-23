@@ -8,6 +8,8 @@ import Certificates from '@/components/business/Certificates';
 export default function BusinessActivityPage({ params }: { params: { slug: string } }) {
   const businessData = getBusinessActivityBySlug(params.slug);
 
+  console.log("buisness data",businessData);
+
   if (!businessData) {
     return <div>Business not found</div>;
   }

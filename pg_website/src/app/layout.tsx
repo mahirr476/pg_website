@@ -8,8 +8,11 @@ import Footer from '@/components/layout/Footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Company Name',
+  title: 'Paragon Group',
   description: 'Description of your company',
+  icons: {
+    icon: "/images/plogo1.png",
+  },
 };
 
 export default function RootLayout({
