@@ -117,40 +117,58 @@
 // export default CompanyHistory;
 
 
-
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { Card, CardContent } from "@/components/ui/card";
 import { Leaf } from 'lucide-react';
+
+interface Milestone {
+  id: number;
+  year: string;
+  title: string;
+  description: string;
+  image: string;
+}
 
 interface CompanyHistoryProps {
   about: string;
   greenMission?: string;
+  milestones: Milestone[];
 }
 
 const CompanyHistory: React.FC<CompanyHistoryProps> = ({ 
   about,
-  greenMission
+  greenMission,
+  milestones = []
 }) => {
-  const milestones = [
+  // Default milestones to use if none are provided
+  const defaultMilestones = [
     {
+      id: 1,
       year: "1952",
       title: "The Beginning",
-      description: "Started as a printing press in Dhaka city by late Mizanur Rahman"
+      description: "Started as a printing press in Dhaka city by late Mizanur Rahman",
+      image: ""
     },
     {
+      id: 2,
       year: "1993",
       title: "Agricultural Expansion",
-      description: "Led by Mr. Moshiur Rahman and Mrs. Yasmin Rahman, diversified into agriculture"
+      description: "Led by Mr. Moshiur Rahman and Mrs. Yasmin Rahman, diversified into agriculture",
+      image: ""
     },
     {
+      id: 3,
       year: "Present",
       title: "Diversified Conglomerate",
-      description: "Expanded into ten different business sectors as Paragon Group"
+      description: "Expanded into ten different business sectors as Paragon Group",
+      image: ""
     }
   ];
+
+  // Use API milestones if available, otherwise use defaults
+  const displayMilestones = milestones.length > 0 ? milestones : defaultMilestones;
 
   return (
     <section className="py-20 bg-gray-50">
@@ -200,9 +218,9 @@ const CompanyHistory: React.FC<CompanyHistoryProps> = ({
           >
             <div className="absolute top-0 bottom-0 left-4 w-0.5 bg-company-orange/30" />
             
-            {milestones.map((milestone, index) => (
+            {displayMilestones.map((milestone, index) => (
               <motion.div
-                key={milestone.year}
+                key={milestone.id}
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}

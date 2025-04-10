@@ -117,7 +117,6 @@
 // }
 
 
-
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -147,6 +146,14 @@ interface Impact {
   description: string;
 }
 
+interface Milestone {
+  id: number;
+  year: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
 interface BoardContent {
   id: number;
   title: string;
@@ -166,6 +173,7 @@ interface Director {
 interface AboutData {
   aboutUs: AboutUs;
   impacts: Impact[];
+  milestone: Milestone[];
   boardContent: BoardContent;
   boardDirector: Director[];
 }
@@ -197,7 +205,7 @@ export default function AboutUsPage() {
   if (loading) return <div className="pt-16 text-center">Loading...</div>;
   if (error) return <div className="pt-16 text-center">Error: {error}</div>;
   
-  const { aboutUs, impacts, boardContent, boardDirector } = aboutData;
+  const { aboutUs, impacts, milestone, boardContent, boardDirector } = aboutData;
 
   // Find the Companies and Years impacts
   const companiesImpact = impacts.find(impact => impact.title.toLowerCase() === "companies");
@@ -223,6 +231,7 @@ export default function AboutUsPage() {
       <CompanyHistory 
         about={aboutUs.about}
         greenMission={aboutUs.greenMission}
+        milestones={milestone || []}
       />
       <BoardOfDirectors 
         title={boardContent.title}

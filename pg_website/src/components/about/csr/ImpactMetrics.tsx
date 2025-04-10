@@ -14,7 +14,14 @@ import {
   AreaChart
 } from 'recharts';
 
-const ImpactMetrics = () => {
+interface ImpactMetricsProps {
+  titleMain: string;
+  descriptionMain: string;
+  titleLasting: string;
+  descriptionLasting: string;
+}
+
+const ImpactMetrics = ({titleMain, descriptionMain, titleLasting, descriptionLasting}: ImpactMetricsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const yearlyData = [
@@ -36,9 +43,9 @@ const ImpactMetrics = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4 text-company-royal">Our Impact</h2>
+          <h2 className="text-4xl font-bold mb-4 text-company-royal">{titleMain}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Measuring our contribution to community development and social welfare
+            {descriptionMain}
           </p>
         </motion.div>
 
@@ -140,13 +147,10 @@ const ImpactMetrics = () => {
         >
           <div className="text-center max-w-3xl mx-auto">
             <h3 className="text-2xl font-semibold text-company-royal mb-6">
-              Making a Lasting Impact
+              {titleLasting}
             </h3>
             <p className="text-gray-600 leading-relaxed">
-              Our CSR initiatives have grown significantly over the years, touching more lives 
-              and creating broader impact across communities. Through sustained investment and 
-              dedicated programs, we continue to expand our reach and deepen our commitment to 
-              social responsibility.
+              {descriptionLasting}
             </p>
           </div>
         </motion.div>
