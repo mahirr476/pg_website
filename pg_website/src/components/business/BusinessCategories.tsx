@@ -130,152 +130,299 @@
 // export default BusinessCategories;
 
 
-'use client';
+// 'use client';
 
+// import { motion } from 'framer-motion';
+// import { Card, CardContent } from '@/components/ui/card';
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+// // Define the interface to match your API data structure
+// interface BusinessCategoriesProps {
+//   data: any; // Using any for flexibility, but you can define a more specific type
+// }
+
+// const BusinessCategories = ({ data }: BusinessCategoriesProps) => {
+//   // Check if the necessary data exists
+//   const hasOperations = data.businessOperations && 
+//                        data.businessOperations.description &&
+//                        data.businessOperations.points &&
+//                        data.businessOperations.points.length > 0;
+  
+//   const hasProducts = data.productCategory && 
+//                      data.productCategory.categories &&
+//                      data.productCategory.categories.length > 0;
+  
+//   const hasUnits = data.businessUnits && 
+//                   data.businessUnits.length > 0;
+
+//   // Determine default tab based on available data
+//   let defaultTab = 'operations';
+//   if (!hasOperations && hasProducts) defaultTab = 'products';
+//   else if (!hasOperations && !hasProducts && hasUnits) defaultTab = 'units';
+
+//   // If no data is available, return null or a fallback UI
+//   if (!hasOperations && !hasProducts && !hasUnits) {
+//     return (
+//       <section className="py-16 bg-white">
+//         <div className="container mx-auto px-4 text-center text-gray-500">
+//           No additional business category information available.
+//         </div>
+//       </section>
+//     );
+//   }
+
+//   return (
+//     <section className="py-16 bg-white">
+//       <div className="container mx-auto px-4">
+//         <Tabs defaultValue={defaultTab} className="w-full">
+//           <TabsList className="w-full justify-start mb-8">
+//             {hasOperations && <TabsTrigger value="operations">Operations</TabsTrigger>}
+//             {hasProducts && <TabsTrigger value="products">Products</TabsTrigger>}
+//             {hasUnits && <TabsTrigger value="units">Business Units</TabsTrigger>}
+//           </TabsList>
+
+//           {hasOperations && (
+//             <TabsContent value="operations">
+//               <motion.div
+//                 initial={{ opacity: 0, y: 20 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 transition={{ duration: 0.6 }}
+//               >
+//                 <Card>
+//                   <CardContent className="p-6">
+//                     <h3 className="text-2xl font-bold mb-4">Business Operations</h3>
+//                     <p className="text-gray-600 mb-6">{data.businessOperations.description}</p>
+//                     <ul className="space-y-4">
+//                       {data.businessOperations.points.map((point: string, index: number) => (
+//                         <motion.li
+//                           key={index}
+//                           initial={{ opacity: 0, x: -20 }}
+//                           animate={{ opacity: 1, x: 0 }}
+//                           transition={{ duration: 0.4, delay: index * 0.1 }}
+//                           className="flex items-start"
+//                         >
+//                           <span className="flex-shrink-0 w-6 h-6 bg-company-royal rounded-full flex items-center justify-center text-white text-sm mr-3 mt-1">
+//                             {index + 1}
+//                           </span>
+//                           <span className="text-gray-700">{point}</span>
+//                         </motion.li>
+//                       ))}
+//                     </ul>
+//                   </CardContent>
+//                 </Card>
+//               </motion.div>
+//             </TabsContent>
+//           )}
+
+//           {hasProducts && (
+//             <TabsContent value="products">
+//               <motion.div
+//                 initial={{ opacity: 0, y: 20 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 transition={{ duration: 0.6 }}
+//                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+//               >
+//                 {data.productCategory.categories.map((category: any, index: number) => (
+//                   <motion.div
+//                     key={index}
+//                     initial={{ opacity: 0, y: 20 }}
+//                     animate={{ opacity: 1, y: 0 }}
+//                     transition={{ duration: 0.4, delay: index * 0.1 }}
+//                   >
+//                     <Card>
+//                       <CardContent className="p-6">
+//                         <h4 className="text-xl font-semibold mb-4">{category.title}</h4>
+//                         <ul className="space-y-2">
+//                           {category.items.map((item: string, itemIndex: number) => (
+//                             <li key={itemIndex} className="text-gray-600 flex items-center">
+//                               <span className="w-2 h-2 bg-company-royal rounded-full mr-2"></span>
+//                               {item}
+//                             </li>
+//                           ))}
+//                         </ul>
+//                       </CardContent>
+//                     </Card>
+//                   </motion.div>
+//                 ))}
+//               </motion.div>
+//             </TabsContent>
+//           )}
+
+//           {hasUnits && (
+//             <TabsContent value="units">
+//               <motion.div
+//                 initial={{ opacity: 0, y: 20 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 transition={{ duration: 0.6 }}
+//               >
+//                 <Card>
+//                   <CardContent className="p-6">
+//                     <h3 className="text-2xl font-bold mb-6">Business Units</h3>
+//                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+//                       {data.businessUnits.map((unit: string, index: number) => (
+//                         <motion.div
+//                           key={index}
+//                           initial={{ opacity: 0, scale: 0.9 }}
+//                           animate={{ opacity: 1, scale: 1 }}
+//                           transition={{ duration: 0.4, delay: index * 0.1 }}
+//                           className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors"
+//                         >
+//                           <span className="text-gray-700">{unit}</span>
+//                         </motion.div>
+//                       ))}
+//                     </div>
+//                   </CardContent>
+//                 </Card>
+//               </motion.div>
+//             </TabsContent>
+//           )}
+//         </Tabs>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default BusinessCategories;
+
+
+
+// src/components/business/BusinessCategories.tsx
+'use client';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-// Define the interface to match your API data structure
-interface BusinessCategoriesProps {
-  data: any; // Using any for flexibility, but you can define a more specific type
+interface BusinessItem {
+  id: number;
+  title: string;
+  description: string;
 }
 
-const BusinessCategories = ({ data }: BusinessCategoriesProps) => {
-  // Check if the necessary data exists
-  const hasOperations = data.businessOperations && 
-                       data.businessOperations.description &&
-                       data.businessOperations.points &&
-                       data.businessOperations.points.length > 0;
-  
-  const hasProducts = data.productCategory && 
-                     data.productCategory.categories &&
-                     data.productCategory.categories.length > 0;
-  
-  const hasUnits = data.businessUnits && 
-                  data.businessUnits.length > 0;
+interface CategoryData {
+  operations: BusinessItem[];
+  products: BusinessItem[];
+  units: BusinessItem[];
+}
 
-  // Determine default tab based on available data
-  let defaultTab = 'operations';
-  if (!hasOperations && hasProducts) defaultTab = 'products';
-  else if (!hasOperations && !hasProducts && hasUnits) defaultTab = 'units';
+interface BusinessCategoriesProps {
+  categoryData: CategoryData;
+}
 
-  // If no data is available, return null or a fallback UI
-  if (!hasOperations && !hasProducts && !hasUnits) {
-    return (
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 text-center text-gray-500">
-          No additional business category information available.
-        </div>
-      </section>
-    );
-  }
-
+const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        <Tabs defaultValue={defaultTab} className="w-full">
+        <Tabs defaultValue="operations" className="w-full">
           <TabsList className="w-full justify-start mb-8">
-            {hasOperations && <TabsTrigger value="operations">Operations</TabsTrigger>}
-            {hasProducts && <TabsTrigger value="products">Products</TabsTrigger>}
-            {hasUnits && <TabsTrigger value="units">Business Units</TabsTrigger>}
+            <TabsTrigger value="operations">Operations</TabsTrigger>
+            <TabsTrigger value="products">Products</TabsTrigger>
+            <TabsTrigger value="units">Business Units</TabsTrigger>
           </TabsList>
 
-          {hasOperations && (
-            <TabsContent value="operations">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-2xl font-bold mb-4">Business Operations</h3>
-                    <p className="text-gray-600 mb-6">{data.businessOperations.description}</p>
-                    <ul className="space-y-4">
-                      {data.businessOperations.points.map((point: string, index: number) => (
-                        <motion.li
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.4, delay: index * 0.1 }}
-                          className="flex items-start"
-                        >
-                          <span className="flex-shrink-0 w-6 h-6 bg-company-royal rounded-full flex items-center justify-center text-white text-sm mr-3 mt-1">
-                            {index + 1}
-                          </span>
-                          <span className="text-gray-700">{point}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </TabsContent>
-          )}
-
-          {hasProducts && (
-            <TabsContent value="products">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-              >
-                {data.productCategory.categories.map((category: any, index: number) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                  >
-                    <Card>
-                      <CardContent className="p-6">
-                        <h4 className="text-xl font-semibold mb-4">{category.title}</h4>
-                        <ul className="space-y-2">
-                          {category.items.map((item: string, itemIndex: number) => (
-                            <li key={itemIndex} className="text-gray-600 flex items-center">
-                              <span className="w-2 h-2 bg-company-royal rounded-full mr-2"></span>
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </TabsContent>
-          )}
-
-          {hasUnits && (
-            <TabsContent value="units">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-2xl font-bold mb-6">Business Units</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {data.businessUnits.map((unit: string, index: number) => (
+          <TabsContent value="operations">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card>
+                <CardContent className="p-6">
+                  {/* <h3 className="text-2xl font-bold mb-6">Business Operations</h3> */}
+                  {categoryData.operations.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {categoryData.operations.map((operation, index) => (
                         <motion.div
-                          key={index}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
+                          key={operation.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.4, delay: index * 0.1 }}
-                          className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors"
+                          className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow"
                         >
-                          <span className="text-gray-700">{unit}</span>
+                          <h4 className="text-lg font-semibold text-gray-800 mb-2">{operation.title}</h4>
+                          <div 
+                            className="text-gray-600"
+                            dangerouslySetInnerHTML={{ __html: operation.description }}
+                          />
                         </motion.div>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </TabsContent>
-          )}
+                  ) : (
+                    <p className="text-gray-500 text-center py-8">No operations found for this business.</p>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+          </TabsContent>
+
+          <TabsContent value="products">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card>
+                <CardContent className="p-6">
+                  {/* <h3 className="text-2xl font-bold mb-6">Business Products</h3> */}
+                  {categoryData.products.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {categoryData.products.map((product, index) => (
+                        <motion.div
+                          key={product.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.4, delay: index * 0.1 }}
+                          className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow"
+                        >
+                          <h4 className="text-lg font-semibold text-gray-800 mb-2">{product.title}</h4>
+                          <div 
+                            className="text-gray-600"
+                            dangerouslySetInnerHTML={{ __html: product.description }}
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-center py-8">No products found for this business.</p>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+          </TabsContent>
+
+          <TabsContent value="units">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card>
+                <CardContent className="p-6">
+                  {/* <h3 className="text-2xl font-bold mb-6">Business Units</h3> */}
+                  {categoryData.units.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {categoryData.units.map((unit, index) => (
+                        <motion.div
+                          key={unit.id}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.4, delay: index * 0.1 }}
+                          className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow"
+                        >
+                          <h4 className="text-lg font-semibold text-gray-800 mb-2">{unit.title}</h4>
+                          <div 
+                            className="text-gray-600"
+                            dangerouslySetInnerHTML={{ __html: unit.description }}
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-center py-8">No business units found for this business.</p>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+          </TabsContent>
         </Tabs>
       </div>
     </section>

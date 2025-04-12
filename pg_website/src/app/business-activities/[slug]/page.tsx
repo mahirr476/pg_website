@@ -1,31 +1,32 @@
-// // src/app/business-activities/[slug]/page.tsx
-// import { getBusinessActivityBySlug } from '@/lib/data/business-activities';
-// import BusinessHero from '@/components/business/BusinessHero';
-// import BusinessInfo from '@/components/business/BusinessInfo';
-// import BusinessCategories from '@/components/business/BusinessCategories';
-// import Certificates from '@/components/business/Certificates';
+// // // src/app/business-activities/[slug]/page.tsx
+// // import { getBusinessActivityBySlug } from '@/lib/data/business-activities';
+// // import BusinessHero from '@/components/business/BusinessHero';
+// // import BusinessInfo from '@/components/business/BusinessInfo';
+// // import BusinessCategories from '@/components/business/BusinessCategories';
+// // import Certificates from '@/components/business/Certificates';
 
-// export default function BusinessActivityPage({ params }: { params: { slug: string } }) {
-//   const businessData = getBusinessActivityBySlug(params.slug);
+// // export default function BusinessActivityPage({ params }: { params: { slug: string } }) {
+// //   const businessData = getBusinessActivityBySlug(params.slug);
 
-//   console.log("buisness data",businessData);
-//   console.log("slug",params);
+// //   console.log("buisness data",businessData);
+// //   console.log("slug",params);
 
-//   if (!businessData) {
-//     return <div>Business not found</div>;
-//   }
+// //   if (!businessData) {
+// //     return <div>Business not found</div>;
+// //   }
 
-//   return (
-//     <main className="pt-16">
-//       <BusinessHero data={businessData} />
-//       <BusinessInfo data={businessData} />
-//       <BusinessCategories data={businessData} />
-//       {businessData.certificates && businessData.certificates.length > 0 && (
-//         <Certificates certificates={businessData.certificates} />
-//       )}
-//     </main>
-//   );
-// }
+// //   return (
+// //     <main className="pt-16">
+// //       <BusinessHero data={businessData} />
+// //       <BusinessInfo data={businessData} />
+// //       <BusinessCategories data={businessData} />
+//       // {businessData.certificates && businessData.certificates.length > 0 && (
+//       //   <Certificates certificates={businessData.certificates} />
+//       // )}
+// //     </main>
+// //   );
+// // }
+
 
 
 
@@ -33,10 +34,13 @@
 // 'use client';
 
 // import { useEffect, useState } from 'react';
+// import { use } from 'react';
 // import BusinessHero from '@/components/business/BusinessHero';
 // import BusinessInfo from '@/components/business/BusinessInfo';
 // import BusinessCategories from '@/components/business/BusinessCategories';
 // import Certificates from '@/components/business/Certificates';
+
+// import Loading from '@/components/layout/loading';
 
 // // Define the interface for business data
 // interface BusinessData {
@@ -50,6 +54,10 @@
 // }
 
 // export default function Page({ params }: { params: { slug: string } }) {
+//   // Unwrap params using React.use()
+//   const unwrappedParams = use(params);
+//   const slug = unwrappedParams.slug;
+  
 //   const [businessData, setBusinessData] = useState<BusinessData | null>(null);
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState<string | null>(null);
@@ -58,7 +66,7 @@
 //     const fetchBusinessData = async () => {
 //       try {
 //         // Fetch business data by slug
-//         const response = await fetch(`http://localhost:7000/api/v1/pg/business/${params.slug}`);
+//         const response = await fetch(`http://localhost:7000/api/v1/pg/business/${slug}`);
         
 //         if (!response.ok) {
 //           throw new Error('Failed to fetch business data');
@@ -81,18 +89,9 @@
 //     };
 
 //     fetchBusinessData();
-//   }, [params.slug]);
+//   }, [slug]);
 
-//   if (loading) {
-//     return (
-//       <div className="pt-16 flex items-center justify-center min-h-screen">
-//         <div className="text-center">
-//           <div className="w-16 h-16 border-4 border-company-royal border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-//           <p className="text-gray-600">Loading business data...</p>
-//         </div>
-//       </div>
-//     );
-//   }
+//   if (loading){return <Loading/>}
 
 //   if (error || !businessData) {
 //     return (
@@ -116,12 +115,13 @@
 //       />
 //       <BusinessInfo
 //         data={{
-//           title: businessData.title,
-//           shortDes: businessData.longDes
+//           description: businessData.longDes || businessData.shortDes || ''
 //         }}
 //       />
-//       <BusinessCategories data={{}} />
-     
+//       <BusinessCategories data={businessData} />
+//       {businessData.certificates && businessData.certificates.length > 0 && (
+//         <Certificates certificates={businessData.certificates} />
+//       )}
 //     </main>
 //   );
 // }
@@ -135,17 +135,37 @@ import { use } from 'react';
 import BusinessHero from '@/components/business/BusinessHero';
 import BusinessInfo from '@/components/business/BusinessInfo';
 import BusinessCategories from '@/components/business/BusinessCategories';
+import Certificates from '@/components/business/Certificates';
 import Loading from '@/components/layout/loading';
 
-// Define the interface for business data
-interface BusinessData {
+// Define the interfaces for business data
+interface BusinessItem {
   id: number;
   title: string;
-  shortDes: string;
-  longDes?: string;
-  bannerImage?: string;
+  description: string;
+}
+
+interface Certificate {
+  id: number;
+  title: string;
+  description: string;
   image?: string;
-  videoLink?: string;
+}
+
+interface BusinessData {
+  business: {
+    id: number;
+    title: string;
+    shortDes: string;
+    longDes?: string;
+    bannerImage?: string;
+    image?: string;
+    videoLink?: string;
+  };
+  operation: BusinessItem[];
+  product: BusinessItem[];
+  units: BusinessItem[];
+  certifications: Certificate[];
 }
 
 export default function Page({ params }: { params: { slug: string } }) {
@@ -186,7 +206,9 @@ export default function Page({ params }: { params: { slug: string } }) {
     fetchBusinessData();
   }, [slug]);
 
-  if (loading){return <Loading/>}
+  if (loading) {
+    return <Loading />;
+  }
 
   if (error || !businessData) {
     return (
@@ -199,21 +221,34 @@ export default function Page({ params }: { params: { slug: string } }) {
     );
   }
 
+  // Prepare category data for BusinessCategories component
+  const categoryData = {
+    operations: businessData.operation || [],
+    products: businessData.product || [],
+    units: businessData.units || []
+  };
+
   return (
     <main className="pt-16">
       <BusinessHero
         data={{
-          title: businessData.title,
-          shortDes: businessData.shortDes,
-          longDes: businessData.longDes || ''
+          title: businessData.business.title,
+          shortDes: businessData.business.shortDes,
+          longDes: businessData.business.longDes || ''
         }}
       />
       <BusinessInfo
         data={{
-          description: businessData.longDes || businessData.shortDes || ''
+          description: businessData.business.longDes || businessData.business.shortDes || ''
         }}
       />
-      <BusinessCategories data={{}} />
+      {/* Pass the category data to the BusinessCategories component */}
+      <BusinessCategories categoryData={categoryData} />
+      
+      {/* Only render Certificates section if certifications exist */}
+      {businessData.certifications && businessData.certifications.length > 0 && (
+        <Certificates certificates={businessData.certifications} />
+      )}
     </main>
   );
 }
