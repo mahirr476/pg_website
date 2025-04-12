@@ -124,6 +124,7 @@ import AboutHero from '@/components/about/about-us/AboutHero';
 import BoardOfDirectors from '@/components/about/about-us/BoardOfDirectors';
 import CompanyHistory from '@/components/about/about-us/CompanyHistory';
 import OurMission from '@/components/about/about-us/OurMission';
+import Loading from '@/components/layout/loading';
 
 // Define TypeScript interfaces for our data structure
 interface AboutUs {
@@ -202,7 +203,7 @@ export default function AboutUsPage() {
     fetchAboutData();
   }, []);
 
-  if (loading) return <div className="pt-16 text-center">Loading...</div>;
+  if (loading) return <Loading/>
   if (error) return <div className="pt-16 text-center">Error: {error}</div>;
   
   const { aboutUs, impacts, milestone, boardContent, boardDirector } = aboutData;

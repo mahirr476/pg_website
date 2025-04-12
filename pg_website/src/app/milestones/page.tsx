@@ -18,6 +18,7 @@
 import { useState, useEffect } from 'react';
 import MilestonesHero from '@/components/milestones/MilestonesHero';
 import Timeline from '@/components/milestones/Timeline';
+import Loading from '@/components/layout/loading';
 
 // Define TypeScript interfaces
 interface MilestoneContent {
@@ -64,7 +65,7 @@ export default function MilestonesPage() {
     fetchMilestoneData();
   }, []);
 
-  if (loading) return <div className="pt-16 text-center">Loading...</div>;
+  if (loading) return <Loading/>
   if (error) return <div className="pt-16 text-center">Error: {error}</div>;
   
   // Get hero content (orderIndex 1) and timeline content (orderIndex 2)

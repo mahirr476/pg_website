@@ -135,6 +135,7 @@ import { use } from 'react';
 import BusinessHero from '@/components/business/BusinessHero';
 import BusinessInfo from '@/components/business/BusinessInfo';
 import BusinessCategories from '@/components/business/BusinessCategories';
+import Loading from '@/components/layout/loading';
 
 // Define the interface for business data
 interface BusinessData {
@@ -185,16 +186,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     fetchBusinessData();
   }, [slug]);
 
-  if (loading) {
-    return (
-      <div className="pt-16 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-company-royal border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading business data...</p>
-        </div>
-      </div>
-    );
-  }
+  if (loading){return <Loading/>}
 
   if (error || !businessData) {
     return (

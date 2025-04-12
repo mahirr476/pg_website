@@ -24,6 +24,7 @@ import CSRHero from '@/components/about/csr/CSRHero';
 import CSRFramework from '@/components/about/csr/CSRFramework';
 import CSRActivities from '@/components/about/csr/CSRActivities';
 import ImpactMetrics from '@/components/about/csr/ImpactMetrics';
+import Loading from '@/components/layout/loading';
 
 // Define TypeScript interfaces
 interface CSRDetail {
@@ -69,7 +70,7 @@ export default function CSRPage() {
     fetchCSRData();
   }, []);
 
-  if (loading) return <div className="pt-16 text-center">Loading...</div>;
+  if (loading) return <Loading/>
   if (error) return <div className="pt-16 text-center">Error: {error}</div>;
   
   // Get the sections based on orderIndex
