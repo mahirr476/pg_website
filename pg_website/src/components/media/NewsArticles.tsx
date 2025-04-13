@@ -173,7 +173,7 @@ const NewsArticles = ({ articles }: NewsArticlesProps) => {
                           className="object-cover"
                         />
                       </div>
-                      <Badge className="absolute top-4 left-4 bg-white/90">
+                      <Badge className="absolute top-4 left-4 bg-white/90 text-gray-500">
                         {article.source}
                       </Badge>
                     </div>
