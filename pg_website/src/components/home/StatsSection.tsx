@@ -207,8 +207,8 @@ const StatsSection: React.FC<StatsSectionProps> = ({ impacts, heroes }) => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl font-bold mb-4 text-white">{statsHero?.title || "Our Impact in Numbers"}</h2>
-          <p className="text-company-light/80 max-w-2xl mx-auto text-lg">
-            {statsHero?.description || "Leading change and driving growth across multiple industries with sustainable practices and innovative solutions."}
+          <p className="text-company-light/80 text-gray-100 max-w-2xl mx-auto text-lg ">
+            {statsHero?.description}
           </p>
         </motion.div>
         
