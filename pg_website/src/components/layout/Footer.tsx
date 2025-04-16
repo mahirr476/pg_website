@@ -145,7 +145,7 @@ const Footer = () => {
         <div className="border-t py-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-600 text-sm">
-              © {new Date().getFullYear()} Company Name. All rights reserved.
+              © {new Date().getFullYear()} Paragon Group. All rights reserved.
             </div>
 
             {/* Social Links */}
