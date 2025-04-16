@@ -92,7 +92,7 @@ const CompanyInfo = ({ data }: CompanyInfoProps) => {
           {/* Description */}
           <div>
             <h2 className="text-4xl font-bold mb-8">About {data.shortName}</h2>
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-lg text-gray-700 leading-relaxed text-justify">
               {data.description}
             </p>
           </div>
