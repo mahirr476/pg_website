@@ -1284,13 +1284,13 @@ const Header = () => {
                   </Link>
                 </NavigationMenuItem>
 
-                <NavigationMenuItem>
+                {/* <NavigationMenuItem>
                   <Link href="/career" legacyBehavior passHref>
                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       Career
                     </NavigationMenuLink>
                   </Link>
-                </NavigationMenuItem>
+                </NavigationMenuItem> */}
 
                 <NavigationMenuItem>
                   <Link href="/contact" legacyBehavior passHref>
@@ -1390,13 +1390,13 @@ const Header = () => {
                 Media
               </Link>
 
-              <Link
+              {/* <Link
                 href="/career"
                 className="block p-2 hover:bg-gray-50 rounded-lg"
                 onClick={() => setIsOpen(false)}
               >
                 Career
-              </Link>
+              </Link> */}
 
               <Link
                 href="/contact"

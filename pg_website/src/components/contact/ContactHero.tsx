@@ -36,7 +36,6 @@
 // export default ContactHero;
 
 
-
 // src/components/contact/ContactHero.tsx
 'use client';
 import { motion } from 'framer-motion';
@@ -48,7 +47,15 @@ interface ContactHeroProps {
 
 const ContactHero = ({ title, description }: ContactHeroProps) => {
   return (
-    <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black py-20 overflow-hidden">
+    <section className="relative min-h-[60vh] bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 flex items-center">
+      <div className="absolute inset-0 opacity-20">
+        {/* Media-themed background pattern */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)',
+          backgroundSize: '30px 30px'
+        }} />
+      </div>
+      
       <div className="container mx-auto px-4 relative z-10 pt-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

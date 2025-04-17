@@ -23,7 +23,7 @@
 
 import { useEffect, useState } from 'react';
 import MediaHero from '@/components/media/MediaHero';
-import PressReleases from '@/components/media/PressReleases';
+// import PressReleases from '@/components/media/PressReleases';
 import VideoGallery from '@/components/media/VideoGallery';
 import NewsArticles from '@/components/media/NewsArticles';
 import MediaContact from '@/components/media/MediaContact';
@@ -166,7 +166,7 @@ export default function MediaPage() {
   return (
     <main className="min-h-screen">
       <MediaHero data={heroData} />
-      <PressReleases />
+      {/* <PressReleases /> */}
       <VideoGallery videos={videoData} />
       <NewsArticles articles={newsData} />
       <MediaContact data={contactData} />
