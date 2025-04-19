@@ -80,9 +80,9 @@ const MediaHero = ({ data }: MediaHeroProps) => {
           </p>
           <div className="flex gap-4">
             <Button size="lg">Latest News</Button>
-            <Button size="lg" variant="outline" className="text-bg-gray-500">
+            {/* <Button size="lg" variant="outline" className="text-bg-gray-500">
               Press Kit
-            </Button>
+            </Button> */}
           </div>
         </motion.div>
       </div>
