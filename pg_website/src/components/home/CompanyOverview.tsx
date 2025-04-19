@@ -261,7 +261,7 @@ const CompanyOverview: React.FC<CompanyOverviewProps> = ({ heroes }) => {
           >
             <div className="relative h-[600px] rounded-lg overflow-hidden">
               <Image
-                src="/images/milestones/mini-grid.jpg"
+                src="/images/milestones/poultry-hatachary.jpg"
                 alt="Company Overview"
                 fill
                 className="object-cover"
