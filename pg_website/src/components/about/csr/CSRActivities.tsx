@@ -597,7 +597,7 @@ const CSRActivities: React.FC<CSRActivitiesProps> = ({ title, description, detai
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="text-4xl font-bold text-company-orange mb-2">19+</div>
-              <div className="text-sm opacity-90">Schools Supported</div>
+              <div className="text-sm opacity-90">Poultry Farming</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-company-orange mb-2">3x</div>
@@ -605,7 +605,7 @@ const CSRActivities: React.FC<CSRActivitiesProps> = ({ title, description, detai
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-company-orange mb-2">1000+</div>
-              <div className="text-sm opacity-90">Students Benefited</div>
+              <div className="text-sm opacity-90"> Benefited</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-company-orange mb-2">24/7</div>

@@ -98,8 +98,8 @@ export default function CSRPage() {
         details={activitiesSection?.details || []}
       />
       <ImpactMetrics 
-        titleMain={impactSection?.title || ""}
-        descriptionMain={impactSection?.description || ""}
+        // titleMain={impactSection?.title || ""}
+        // descriptionMain={impactSection?.description || ""}
         titleLasting={impactLasting?.title || ""}
         descriptionLasting={impactLasting?.description || ""}
       />
