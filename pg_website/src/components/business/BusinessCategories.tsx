@@ -433,11 +433,265 @@
 
 
 
+// 'use client';
+// import { useState, useRef, useEffect } from 'react';
+// import { motion, AnimatePresence } from 'framer-motion';
+// import { Card } from '@/components/ui/card';
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+// interface BusinessItem {
+//   id: number;
+//   title: string;
+//   description: string;
+// }
+
+// interface CategoryData {
+//   operations: BusinessItem[];
+//   products: BusinessItem[];
+//   units: BusinessItem[];
+// }
+
+// interface BusinessCategoriesProps {
+//   categoryData: CategoryData;
+// }
+
+// const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
+//   const [activeTab, setActiveTab] = useState('operations');
+//   const [isVisible, setIsVisible] = useState(false);
+//   const sectionRef = useRef<HTMLElement>(null);
+
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       ([entry]) => {
+//         if (entry.isIntersecting) {
+//           setIsVisible(true);
+//         }
+//       },
+//       { threshold: 0.1 }
+//     );
+
+//     if (sectionRef.current) {
+//       observer.observe(sectionRef.current);
+//     }
+
+//     return () => {
+//       if (sectionRef.current) {
+//         observer.unobserve(sectionRef.current);
+//       }
+//     };
+//   }, []);
+
+//   // Animation variants
+//   const containerVariants = {
+//     hidden: { opacity: 0 },
+//     visible: {
+//       opacity: 1,
+//       transition: {
+//         staggerChildren: 0.07,
+//         delayChildren: 0.2
+//       }
+//     }
+//   };
+
+//   const itemVariants = {
+//     hidden: { opacity: 0, y: 20 },
+//     visible: {
+//       opacity: 1,
+//       y: 0,
+//       transition: { 
+//         type: "spring",
+//         stiffness: 260,
+//         damping: 20
+//       }
+//     }
+//   };
+
+//   const handleTabChange = (value: string) => {
+//     setActiveTab(value);
+//   };
+
+//   // Animated background patterns
+//   const BackgroundPattern = () => (
+//     <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-5">
+//       <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-500 rounded-full blur-3xl" />
+//       <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-500 rounded-full blur-3xl" />
+//       <div 
+//         className="absolute inset-0" 
+//         style={{ 
+//           backgroundImage: 'radial-gradient(circle at 30px 30px, #e5e7eb 2px, transparent 0)', 
+//           backgroundSize: '40px 40px' 
+//         }} 
+//       />
+//     </div>
+//   );
+
+//   // Category content mapping
+//   const categoryContent = {
+//     operations: {
+//       title: "Business Operations",
+//       data: categoryData.operations,
+//       emptyMessage: "No operations found for this business.",
+//       icon: (
+//         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 mr-2">
+//           <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+//         </svg>
+//       ),
+//       color: "from-blue-500 to-cyan-500"
+//     },
+//     products: {
+//       title: "Products & Services",
+//       data: categoryData.products,
+//       emptyMessage: "No products found for this business.",
+//       icon: (
+//         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 mr-2">
+//           <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+//           <circle cx="8.5" cy="8.5" r="1.5" />
+//           <polyline points="21 15 16 10 5 21" />
+//         </svg>
+//       ),
+//       color: "from-purple-500 to-pink-500"
+//     },
+//     units: {
+//       title: "Business Units",
+//       data: categoryData.units,
+//       emptyMessage: "No business units found for this business.",
+//       icon: (
+//         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 mr-2">
+//           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+//           <polyline points="9 22 9 12 15 12 15 22" />
+//         </svg>
+//       ),
+//       color: "from-emerald-500 to-teal-500"
+//     }
+//   };
+
+//   return (
+//     <section ref={sectionRef} className="py-24 relative overflow-hidden">
+//       <BackgroundPattern />
+      
+//       <div className="container mx-auto px-4 relative z-10">
+//         <motion.div
+//           initial={{ opacity: 0, y: 30 }}
+//           animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+//           transition={{ duration: 0.8 }}
+//           className="text-center mb-12"
+//         >
+//           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
+//             Business Categories
+//           </h2>
+//           <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full" />
+//         </motion.div>
+
+//         <Tabs 
+//           defaultValue="operations" 
+//           value={activeTab}
+//           onValueChange={handleTabChange}
+//           className="w-full"
+//         >
+//           <motion.div
+//             initial={{ opacity: 0, y: 20 }}
+//             animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+//             transition={{ duration: 0.6, delay: 0.2 }}
+//           >
+//             <TabsList className="w-full flex justify-center mb-12 bg-gray-100/80 p-1 rounded-full backdrop-blur-sm border border-gray-200">
+//               {Object.entries(categoryContent).map(([key, { title, icon }]) => (
+//                 <TabsTrigger 
+//                   key={key}
+//                   value={key}
+//                   className="data-[state=active]:bg-white data-[state=active]:shadow-md rounded-full py-3 px-6 flex items-center gap-2 transition-all duration-300"
+//                 >
+//                   {icon}
+//                   {title}
+//                 </TabsTrigger>
+//               ))}
+//             </TabsList>
+//           </motion.div>
+
+//           {Object.entries(categoryContent).map(([key, { data, emptyMessage, color }]) => (
+//             <TabsContent key={key} value={key}>
+//               <AnimatePresence mode="wait">
+//                 <motion.div
+//                   key={key}
+//                   initial={{ opacity: 0, y: 20 }}
+//                   animate={{ opacity: 1, y: 0 }}
+//                   exit={{ opacity: 0, y: -20 }}
+//                   transition={{ duration: 0.5 }}
+//                 >
+//                   <Card className="border border-gray-200/50 shadow-lg rounded-xl overflow-hidden bg-white/80 backdrop-blur-sm">
+//                     <div className="p-8">
+//                       {data.length > 0 ? (
+//                         <motion.div
+//                           variants={containerVariants}
+//                           initial="hidden"
+//                           animate="visible"
+//                           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+//                         >
+//                           {data.map((item, index) => (
+//                             <motion.div
+//                               key={item.id}
+//                               variants={itemVariants}
+//                               whileHover={{ 
+//                                 y: -5, 
+//                                 transition: { duration: 0.2 } 
+//                               }}
+//                               className="group"
+//                             >
+//                               <div className="h-full bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 relative">
+//                                 {/* Gradient top border */}
+//                                 <div className={`h-1 w-full bg-gradient-to-r ${color}`} />
+                                
+//                                 <div className="p-6">
+//                                   <h4 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+//                                     {item.title}
+//                                   </h4>
+                                  
+//                                   <div 
+//                                     className="text-gray-600 prose max-w-none"
+//                                     dangerouslySetInnerHTML={{ __html: item.description }}
+//                                   />
+                                  
+//                                   <motion.div
+//                                     initial={{ width: 0 }}
+//                                     whileHover={{ width: "100%" }}
+//                                     className={`h-px bg-gradient-to-r ${color} mt-4 opacity-70`}
+//                                   />
+//                                 </div>
+//                               </div>
+//                             </motion.div>
+//                           ))}
+//                         </motion.div>
+//                       ) : (
+//                         <motion.div
+//                           initial={{ opacity: 0 }}
+//                           animate={{ opacity: 1 }}
+//                           transition={{ duration: 0.5 }}
+//                           className="py-16 text-center"
+//                         >
+//                           <p className="text-gray-500 text-lg">{emptyMessage}</p>
+//                         </motion.div>
+//                       )}
+//                     </div>
+//                   </Card>
+//                 </motion.div>
+//               </AnimatePresence>
+//             </TabsContent>
+//           ))}
+//         </Tabs>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default BusinessCategories;
+
+
+
+
+
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface BusinessItem {
   id: number;
@@ -456,227 +710,439 @@ interface BusinessCategoriesProps {
 }
 
 const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
-  const [activeTab, setActiveTab] = useState('operations');
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const [activeTab, setActiveTab] = useState<'operations' | 'products' | 'units'>('operations');
+  const [expandedCards, setExpandedCards] = useState<Record<number, boolean>>({});
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
+  const toggleCard = (id: number) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+  const tabVariants = {
+    inactive: { scale: 1, opacity: 0.8 },
+    active: { scale: 1.05, opacity: 1 }
+  };
 
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+  const contentVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.5,
+        when: "beforeChildren",
+        staggerChildren: 0.1
       }
-    };
-  }, []);
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.07,
-        delayChildren: 0.2
-      }
+    },
+    exit: { 
+      opacity: 0, 
+      y: -30,
+      transition: { duration: 0.3 }
     }
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
+    visible: { 
+      opacity: 1, 
       y: 0,
-      transition: { 
+      transition: {
         type: "spring",
-        stiffness: 260,
+        stiffness: 100,
+        damping: 15
+      }
+    },
+    hover: { 
+      y: -10, 
+      boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)",
+      transition: {
+        type: "spring",
+        stiffness: 300,
         damping: 20
       }
     }
   };
 
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
-  };
-
-  // Animated background patterns
-  const BackgroundPattern = () => (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-5">
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-500 rounded-full blur-3xl" />
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-500 rounded-full blur-3xl" />
-      <div 
-        className="absolute inset-0" 
-        style={{ 
-          backgroundImage: 'radial-gradient(circle at 30px 30px, #e5e7eb 2px, transparent 0)', 
-          backgroundSize: '40px 40px' 
-        }} 
-      />
-    </div>
-  );
-
-  // Category content mapping
-  const categoryContent = {
+  // Category theme configurations
+  const categoryThemes = {
     operations: {
-      title: "Business Operations",
-      data: categoryData.operations,
-      emptyMessage: "No operations found for this business.",
+      gradient: "from-blue-500 to-indigo-600",
+      cardGradient: "from-blue-50 to-indigo-50",
+      border: "border-blue-100",
+      accent: "bg-blue-200",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 mr-2">
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
-      ),
-      color: "from-blue-500 to-cyan-500"
+      )
     },
     products: {
-      title: "Products & Services",
-      data: categoryData.products,
-      emptyMessage: "No products found for this business.",
+      gradient: "from-emerald-500 to-teal-600",
+      cardGradient: "from-emerald-50 to-teal-50",
+      border: "border-emerald-100",
+      accent: "bg-emerald-200",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 mr-2">
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-          <circle cx="8.5" cy="8.5" r="1.5" />
-          <polyline points="21 15 16 10 5 21" />
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
         </svg>
-      ),
-      color: "from-purple-500 to-pink-500"
+      )
     },
     units: {
-      title: "Business Units",
-      data: categoryData.units,
-      emptyMessage: "No business units found for this business.",
+      gradient: "from-purple-500 to-pink-600",
+      cardGradient: "from-purple-50 to-pink-50",
+      border: "border-purple-100",
+      accent: "bg-purple-200",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 mr-2">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
         </svg>
-      ),
-      color: "from-emerald-500 to-teal-500"
+      )
     }
   };
 
+  // Function to truncate description
+  const truncateDescription = (html: string, expanded: boolean) => {
+    if (expanded) return html;
+    
+    // Create a div to parse the HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    
+    // Get the text content
+    const textContent = tempDiv.textContent || tempDiv.innerText;
+    
+    // Truncate to around 100 characters
+    if (textContent.length <= 100) return html;
+    
+    // If it's longer, we need to truncate
+    // Simple approach - take first paragraph or first 100 chars
+    const firstParagraph = html.split('</p>')[0] + '</p>';
+    if (firstParagraph.length < 150) return firstParagraph;
+    
+    // Fallback - just return first 100 characters plus ellipsis
+    return textContent.substring(0, 100) + '...';
+  };
+
   return (
-    <section ref={sectionRef} className="py-24 relative overflow-hidden">
-      <BackgroundPattern />
-      
+    <section className="py-20 relative overflow-hidden bg-gradient-to-b from-white to-gray-50">
+      {/* Background decorative elements */}
+      <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-blue-500/10 to-purple-500/5 rounded-full filter blur-3xl opacity-70" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-emerald-500/10 to-teal-500/5 rounded-full filter blur-3xl opacity-70" />
+
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
-            Business Categories
+          <h2 className="text-4xl md:text-5xl font-bold mb-3 inline-block relative">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+              Business Categories
+            </span>
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="h-1 bg-gradient-to-r from-blue-500 to-purple-600 absolute bottom-0 left-0"
+            />
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full" />
+          <p className="text-gray-600 max-w-2xl mx-auto mt-4 text-lg">
+            Explore our business divisions, products, and operational units
+          </p>
         </motion.div>
+        
+        {/* Custom Tabs */}
+        <div className="flex justify-center mb-14">
+          <div className="bg-white rounded-xl shadow-xl p-2.5 flex flex-wrap md:flex-nowrap gap-3">
+            {(['operations', 'products', 'units'] as const).map((tab) => (
+              <motion.button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-6 py-3.5 rounded-lg font-medium transition-all text-lg flex items-center justify-center min-w-[180px] ${
+                  activeTab === tab 
+                    ? `bg-gradient-to-r ${categoryThemes[tab].gradient} text-white shadow-lg` 
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                }`}
+                variants={tabVariants}
+                animate={activeTab === tab ? 'active' : 'inactive'}
+                whileHover={{ scale: activeTab === tab ? 1.05 : 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <span className="mr-2">{categoryThemes[tab].icon}</span>
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </motion.button>
+            ))}
+          </div>
+        </div>
 
-        <Tabs 
-          defaultValue="operations" 
-          value={activeTab}
-          onValueChange={handleTabChange}
-          className="w-full"
-        >
+        {/* Content */}
+        <AnimatePresence mode="wait">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            key={activeTab}
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="max-w-7xl mx-auto"
           >
-            <TabsList className="w-full flex justify-center mb-12 bg-gray-100/80 p-1 rounded-full backdrop-blur-sm border border-gray-200">
-              {Object.entries(categoryContent).map(([key, { title, icon }]) => (
-                <TabsTrigger 
-                  key={key}
-                  value={key}
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-md rounded-full py-3 px-6 flex items-center gap-2 transition-all duration-300"
-                >
-                  {icon}
-                  {title}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </motion.div>
-
-          {Object.entries(categoryContent).map(([key, { data, emptyMessage, color }]) => (
-            <TabsContent key={key} value={key}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={key}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Card className="border border-gray-200/50 shadow-lg rounded-xl overflow-hidden bg-white/80 backdrop-blur-sm">
-                    <div className="p-8">
-                      {data.length > 0 ? (
+            <Card className="border-none shadow-2xl rounded-2xl overflow-hidden bg-white/90 backdrop-blur-sm">
+              {/* Gradient header */}
+              <div className={`h-2 w-full bg-gradient-to-r ${categoryThemes[activeTab].gradient}`}></div>
+              
+              <CardContent className="p-8 md:p-10">
+                {activeTab === 'operations' && categoryData.operations.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {categoryData.operations.map((item, index) => {
+                      const isExpanded = expandedCards[item.id] || false;
+                      
+                      return (
                         <motion.div
-                          variants={containerVariants}
-                          initial="hidden"
-                          animate="visible"
-                          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                          key={item.id}
+                          variants={itemVariants}
+                          custom={index}
+                          whileHover="hover"
+                          className={`bg-gradient-to-br ${categoryThemes.operations.cardGradient} rounded-xl overflow-hidden border ${categoryThemes.operations.border} relative`}
+                          style={{ height: "450px" }} // Fixed height
                         >
-                          {data.map((item, index) => (
-                            <motion.div
-                              key={item.id}
-                              variants={itemVariants}
-                              whileHover={{ 
-                                y: -5, 
-                                transition: { duration: 0.2 } 
+                          {/* Top accent */}
+                          <div className={`h-1 w-full bg-gradient-to-r ${categoryThemes.operations.gradient}`}></div>
+                          
+                          <div className="p-6 flex flex-col h-full">
+                            {/* Decorative elements */}
+                            <motion.div 
+                              className={`absolute -right-12 -top-12 w-32 h-32 rounded-full ${categoryThemes.operations.accent} opacity-20`}
+                              animate={{ 
+                                scale: [1, 1.2, 1],
+                                rotate: [0, 45, 0],
                               }}
-                              className="group"
+                              transition={{ 
+                                duration: 8,
+                                repeat: Infinity,
+                                repeatType: "reverse"
+                              }}
+                            />
+                            
+                            <h4 className="text-xl font-bold text-gray-800 mb-4 relative">
+                              {item.title}
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: "40%" }}
+                                transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
+                                className={`h-0.5 bg-gradient-to-r ${categoryThemes.operations.gradient} mt-2 opacity-60`}
+                              />
+                            </h4>
+                            
+                            <div className="flex-grow overflow-hidden relative">
+                              <div 
+                                className={`text-gray-600 prose max-w-none ${!isExpanded ? 'line-clamp-4' : ''}`}
+                                dangerouslySetInnerHTML={{ __html: item.description }}
+                              />
+                              
+                              {!isExpanded && (
+                                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-blue-50 to-transparent"></div>
+                              )}
+                            </div>
+                            
+                            {/* Learn more button */}
+                            <motion.button
+                              onClick={() => toggleCard(item.id)}
+                              whileHover={{ 
+                                scale: 1.05, 
+                                boxShadow: "0 10px 15px -3px rgba(59, 130, 246, 0.3)"
+                              }}
+                              whileTap={{ scale: 0.97 }}
+                              className={`mt-4 px-5 py-2 rounded-full bg-gradient-to-r ${categoryThemes.operations.gradient} text-white font-medium shadow-md flex items-center justify-center`}
                             >
-                              <div className="h-full bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 relative">
-                                {/* Gradient top border */}
-                                <div className={`h-1 w-full bg-gradient-to-r ${color}`} />
-                                
-                                <div className="p-6">
-                                  <h4 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors duration-300">
-                                    {item.title}
-                                  </h4>
-                                  
-                                  <div 
-                                    className="text-gray-600 prose max-w-none"
-                                    dangerouslySetInnerHTML={{ __html: item.description }}
-                                  />
-                                  
-                                  <motion.div
-                                    initial={{ width: 0 }}
-                                    whileHover={{ width: "100%" }}
-                                    className={`h-px bg-gradient-to-r ${color} mt-4 opacity-70`}
-                                  />
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
+                              {isExpanded ? 'Show less' : 'Learn more'}
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                {isExpanded ? (
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                ) : (
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                )}
+                              </svg>
+                            </motion.button>
+                          </div>
                         </motion.div>
-                      ) : (
+                      );
+                    })}
+                  </div>
+                ) : activeTab === 'products' && categoryData.products.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {categoryData.products.map((item, index) => {
+                      const isExpanded = expandedCards[item.id] || false;
+                      
+                      return (
                         <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.5 }}
-                          className="py-16 text-center"
+                          key={item.id}
+                          variants={itemVariants}
+                          custom={index}
+                          whileHover="hover"
+                          className={`bg-gradient-to-br ${categoryThemes.products.cardGradient} rounded-xl overflow-hidden border ${categoryThemes.products.border} relative`}
+                          style={{ height: "450px" }} // Fixed height
                         >
-                          <p className="text-gray-500 text-lg">{emptyMessage}</p>
+                          {/* Top accent */}
+                          <div className={`h-1 w-full bg-gradient-to-r ${categoryThemes.products.gradient}`}></div>
+                          
+                          <div className="p-6 flex flex-col h-full">
+                            {/* Decorative elements */}
+                            <motion.div 
+                              className={`absolute -right-12 -top-12 w-32 h-32 rounded-full ${categoryThemes.products.accent} opacity-20`}
+                              animate={{ 
+                                scale: [1, 1.2, 1],
+                                rotate: [0, 45, 0],
+                              }}
+                              transition={{ 
+                                duration: 9,
+                                repeat: Infinity,
+                                repeatType: "reverse"
+                              }}
+                            />
+                            
+                            <h4 className="text-xl font-bold text-gray-800 mb-4 relative">
+                              {item.title}
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: "40%" }}
+                                transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
+                                className={`h-0.5 bg-gradient-to-r ${categoryThemes.products.gradient} mt-2 opacity-60`}
+                              />
+                            </h4>
+                            
+                            <div className="flex-grow overflow-hidden relative">
+                              <div 
+                                className={`text-gray-600 prose max-w-none ${!isExpanded ? 'line-clamp-4' : ''}`}
+                                dangerouslySetInnerHTML={{ __html: item.description }}
+                              />
+                              
+                              {!isExpanded && (
+                                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-emerald-50 to-transparent"></div>
+                              )}
+                            </div>
+                            
+                            {/* Learn more button */}
+                            <motion.button
+                              onClick={() => toggleCard(item.id)}
+                              whileHover={{ 
+                                scale: 1.05, 
+                                boxShadow: "0 10px 15px -3px rgba(16, 185, 129, 0.3)"
+                              }}
+                              whileTap={{ scale: 0.97 }}
+                              className={`mt-4 px-5 py-2 rounded-full bg-gradient-to-r ${categoryThemes.products.gradient} text-white font-medium shadow-md flex items-center justify-center`}
+                            >
+                              {isExpanded ? 'Show less' : 'Learn more'}
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                {isExpanded ? (
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                ) : (
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                )}
+                              </svg>
+                            </motion.button>
+                          </div>
                         </motion.div>
-                      )}
+                      );
+                    })}
+                  </div>
+                ) : activeTab === 'units' && categoryData.units.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {categoryData.units.map((item, index) => {
+                      const isExpanded = expandedCards[item.id] || false;
+                      
+                      return (
+                        <motion.div
+                          key={item.id}
+                          variants={itemVariants}
+                          custom={index}
+                          whileHover="hover"
+                          className={`bg-gradient-to-br ${categoryThemes.units.cardGradient} rounded-xl overflow-hidden border ${categoryThemes.units.border} relative`}
+                          style={{ height: "450px" }} // Fixed height
+                        >
+                          {/* Top accent */}
+                          <div className={`h-1 w-full bg-gradient-to-r ${categoryThemes.units.gradient}`}></div>
+                          
+                          <div className="p-6 flex flex-col h-full">
+                            {/* Decorative elements */}
+                            <motion.div 
+                              className={`absolute -right-12 -top-12 w-32 h-32 rounded-full ${categoryThemes.units.accent} opacity-20`}
+                              animate={{ 
+                                scale: [1, 1.2, 1],
+                                rotate: [0, 45, 0],
+                              }}
+                              transition={{ 
+                                duration: 8.5,
+                                repeat: Infinity,
+                                repeatType: "reverse"
+                              }}
+                            />
+                            
+                            <h4 className="text-xl font-bold text-gray-800 mb-4 relative">
+                              {item.title}
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: "40%" }}
+                                transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
+                                className={`h-0.5 bg-gradient-to-r ${categoryThemes.units.gradient} mt-2 opacity-60`}
+                              />
+                            </h4>
+                            
+                            <div className="flex-grow overflow-hidden relative">
+                              <div 
+                                className={`text-gray-600 prose max-w-none ${!isExpanded ? 'line-clamp-4' : ''}`}
+                                dangerouslySetInnerHTML={{ __html: item.description }}
+                              />
+                              
+                              {!isExpanded && (
+                                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-purple-50 to-transparent"></div>
+                              )}
+                            </div>
+                            
+                            {/* Learn more button */}
+                            <motion.button
+                              onClick={() => toggleCard(item.id)}
+                              whileHover={{ 
+                                scale: 1.05, 
+                                boxShadow: "0 10px 15px -3px rgba(168, 85, 247, 0.3)"
+                              }}
+                              whileTap={{ scale: 0.97 }}
+                              className={`mt-4 px-5 py-2 rounded-full bg-gradient-to-r ${categoryThemes.units.gradient} text-white font-medium shadow-md flex items-center justify-center`}
+                            >
+                              {isExpanded ? 'Show less' : 'Learn more'}
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                {isExpanded ? (
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                ) : (
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                )}
+                              </svg>
+                            </motion.button>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <motion.div
+                    variants={itemVariants}
+                    className="py-16 text-center"
+                  >
+                    <div className={`p-4 rounded-full bg-gradient-to-r ${categoryThemes[activeTab].gradient} text-white inline-block mb-6`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
                     </div>
-                  </Card>
-                </motion.div>
-              </AnimatePresence>
-            </TabsContent>
-          ))}
-        </Tabs>
+                    <p className="text-gray-500 text-xl">
+                      No items found for this category.
+                    </p>
+                  </motion.div>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
