@@ -410,7 +410,8 @@ async function BusinessContent({ slug }: { slug: string }) {
         data={{
           title: businessData.business.title,
           shortDes: businessData.business.shortDes,
-          longDes: businessData.business.longDes || ''
+          longDes: businessData.business.longDes || '',
+          img: businessData.business.image || '',
         }}
       />
       <BusinessInfo
