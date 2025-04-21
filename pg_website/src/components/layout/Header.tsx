@@ -1002,6 +1002,425 @@
 
 
 
+// 'use client';
+
+// import React, { useState, useEffect } from 'react';
+// import Image from 'next/image';
+// import Link from 'next/link';
+// import { cn } from "@/lib/utils";
+// import {
+//   NavigationMenu,
+//   NavigationMenuContent,
+//   NavigationMenuItem,
+//   NavigationMenuLink,
+//   NavigationMenuList,
+//   NavigationMenuTrigger,
+//   navigationMenuTriggerStyle,
+// } from "@/components/ui/navigation-menu";
+// import { Button } from '@/components/ui/button';
+// import { Menu, X, ChevronRight, Building, Briefcase, BarChart2, Award, Heart } from 'lucide-react';
+
+// // Business Activity Interface
+// interface BusinessActivity {
+//   id: number;
+//   title: string;
+//   shortDes: string;
+//   slug: string;
+// }
+
+// // Company Interface
+// interface Company {
+//   id: number;
+//   title: string;
+//   shortDes: string;
+//   slug: string;
+// }
+
+// // Enhanced ListItem with icons and better styling
+// const ListItem = React.forwardRef<
+//   React.ElementRef<"a">,
+//   React.ComponentPropsWithoutRef<"a"> & { icon?: React.ReactNode }
+// >(({ className, title, children, icon, ...props }, ref) => {
+//   return (
+//     <li>
+//       <NavigationMenuLink asChild>
+//         <a
+//           ref={ref}
+//           className={cn(
+//             "block select-none rounded-lg p-3 leading-none no-underline outline-none transition-all duration-200 hover:bg-primary/5 group",
+//             className
+//           )}
+//           {...props}
+//         >
+//           <div className="flex items-start gap-3">
+//             {icon && (
+//               <div className="flex-shrink-0 mt-0.5 text-primary/60 group-hover:text-primary transition-colors duration-200">
+//                 {icon}
+//               </div>
+//             )}
+//             <div className="space-y-1.5">
+//               <div className="text-sm font-semibold leading-none text-primary group-hover:text-primary transition-colors duration-200 flex items-center">
+//                 {title}
+//                 <ChevronRight className="ml-2 h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+//               </div>
+//               <p className="line-clamp-2 text-xs leading-snug text-muted-foreground group-hover:text-muted-foreground/80 transition-colors duration-200">
+//                 {children}
+//               </p>
+//             </div>
+//           </div>
+//         </a>
+//       </NavigationMenuLink>
+//     </li>
+//   );
+// });
+// ListItem.displayName = "ListItem";
+
+// const Header = () => {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [scrolled, setScrolled] = useState(false);
+//   const [businessActivities, setBusinessActivities] = useState<BusinessActivity[]>([]);
+//   const [companies, setCompanies] = useState<Company[]>([]);
+
+//   // Fetch business activities from API
+//   useEffect(() => {
+//     const fetchBusinessActivities = async () => {
+//       try {
+//         const response = await fetch('http://localhost:7000/api/v1/pg/business');
+//         if (!response.ok) {
+//           throw new Error('Failed to fetch business activities');
+//         }
+//         const data = await response.json();
+//         console.log('Business activities:', data.data.business);
+//         setBusinessActivities(data.data.business);
+//       } catch (error) {
+//         console.error('Error fetching business activities:', error);
+//         setBusinessActivities([]);
+//       }
+//     };
+
+//     fetchBusinessActivities();
+//   }, []);
+
+//   // Fetch companies from API
+//   useEffect(() => {
+//     const fetchCompanies = async () => {
+//       try {
+//         const response = await fetch('http://localhost:7000/api/v1/pg/companies');
+//         if (!response.ok) {
+//           throw new Error('Failed to fetch companies');
+//         }
+//         const data = await response.json();
+//         console.log('Companies:', data);
+        
+//         // Updated to use the correct property path
+//         if (data.data && data.data.business) {
+//           setCompanies(data.data.business);
+//         } else {
+//           setCompanies([]);
+//         }
+//       } catch (error) {
+//         console.error('Error fetching companies:', error);
+//         setCompanies([]);
+//       }
+//     };
+
+//     fetchCompanies();
+//   }, []);
+
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       setScrolled(window.scrollY > 20);
+//     };
+
+//     window.addEventListener('scroll', handleScroll);
+//     return () => window.removeEventListener('scroll', handleScroll);
+//   }, []);
+
+//   // Icon mapping for business activities/companies (generates consistent icons based on id)
+//   const getBusinessIcon = (id: number) => {
+//     const icons = [Briefcase, Building, BarChart2, Award];
+//     return icons[id % icons.length];
+//   };
+
+//   return (
+//     <header className={cn(
+//       "fixed w-full top-0 z-50 transition-all duration-300",
+//       scrolled ? "bg-white/95 backdrop-blur-sm shadow-md" : "bg-white"
+//     )}>
+//       <div className="container mx-auto px-4">
+//         <div className="flex items-center justify-between h-16">
+//           {/* Logo */}
+//           <Link href="/" className="flex items-center">
+//             <Image 
+//               src="/images/logo.png" 
+//               alt="Company Logo" 
+//               width={150}
+//               height={48}
+//               className="h-12 w-auto"
+//               priority
+//             />
+//           </Link>
+
+//           {/* Desktop Navigation */}
+//           <div className="hidden lg:flex">
+//             <NavigationMenu>
+//               <NavigationMenuList>
+//                 <NavigationMenuItem>
+//                   <Link href="/" legacyBehavior passHref>
+//                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+//                       Home
+//                     </NavigationMenuLink>
+//                   </Link>
+//                 </NavigationMenuItem>
+
+//                 <NavigationMenuItem>
+//                   <NavigationMenuTrigger>About</NavigationMenuTrigger>
+//                   <NavigationMenuContent>
+//                     <div className="w-[350px] p-4 rounded-xl overflow-hidden shadow-lg animate-in fade-in zoom-in-95 duration-200">
+                     
+                      
+//                       <ul className="grid gap-2">
+//                         <ListItem 
+//                           href="/about/about-us" 
+//                           title="Company Overview" 
+//                           icon={<Building className="h-4 w-4" />}
+//                         >
+//                           Learn about our history, vision, and mission.
+//                         </ListItem>
+//                         <ListItem 
+//                           href="/about/csr" 
+//                           title="Corporate Social Responsibility" 
+//                           icon={<Heart className="h-4 w-4" />}
+//                         >
+//                           Our commitment to social responsibility and community development.
+//                         </ListItem>
+//                       </ul>
+//                     </div>
+//                   </NavigationMenuContent>
+//                 </NavigationMenuItem>
+
+//                 <NavigationMenuItem>
+//                   <Link href="/milestones" legacyBehavior passHref>
+//                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+//                       Milestones
+//                     </NavigationMenuLink>
+//                   </Link>
+//                 </NavigationMenuItem>
+
+//                 <NavigationMenuItem>
+//                   <NavigationMenuTrigger>Business Activities</NavigationMenuTrigger>
+//                   <NavigationMenuContent>
+//                     <div className="w-[550px] p-4 rounded-xl overflow-hidden shadow-lg animate-in fade-in zoom-in-95 duration-200">
+                     
+                      
+//                       <div className="max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+//                         <ul className="grid md:grid-cols-2 gap-2">
+//                           {businessActivities.map((activity) => {
+//                             const IconComponent = getBusinessIcon(activity.id);
+//                             return (
+//                               <ListItem
+//                                 key={activity.id}
+//                                 title={activity.title}
+//                                 href={`/business-activities/${activity.slug}`}
+//                                 icon={<IconComponent className="h-4 w-4" />}
+//                               >
+//                                 {activity.shortDes}
+//                               </ListItem>
+//                             );
+//                           })}
+//                         </ul>
+//                       </div>
+//                     </div>
+//                   </NavigationMenuContent>
+//                 </NavigationMenuItem>
+
+//                 <NavigationMenuItem>
+//                   <NavigationMenuTrigger>Companies</NavigationMenuTrigger>
+//                   <NavigationMenuContent>
+//                     <div className="w-[550px] p-4 rounded-xl overflow-hidden shadow-lg animate-in fade-in zoom-in-95 duration-200">
+                     
+                      
+//                       <div className="max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+//                         <ul className="grid md:grid-cols-2 gap-2">
+//                           {companies.map((company) => {
+//                             const IconComponent = getBusinessIcon(company.id);
+//                             return (
+//                               <ListItem
+//                                 key={company.id}
+//                                 title={company.title}
+//                                 href={`/companies/${company.slug}`}
+//                                 icon={<IconComponent className="h-4 w-4" />}
+//                               >
+//                                 {company.shortDes}
+//                               </ListItem>
+//                             );
+//                           })}
+//                         </ul>
+//                       </div>
+//                     </div>
+//                   </NavigationMenuContent>
+//                 </NavigationMenuItem>
+
+//                 <NavigationMenuItem>
+//                   <Link href="/media" legacyBehavior passHref>
+//                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+//                       Media
+//                     </NavigationMenuLink>
+//                   </Link>
+//                 </NavigationMenuItem>
+
+//                 {/* <NavigationMenuItem>
+//                   <Link href="/career" legacyBehavior passHref>
+//                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+//                       Career
+//                     </NavigationMenuLink>
+//                   </Link>
+//                 </NavigationMenuItem> */}
+
+//                 <NavigationMenuItem>
+//                   <Link href="/contact" legacyBehavior passHref>
+//                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+//                       Contact
+//                     </NavigationMenuLink>
+//                   </Link>
+//                 </NavigationMenuItem>
+//               </NavigationMenuList>
+//             </NavigationMenu>
+//           </div>
+
+//           {/* Mobile Menu Button */}
+//           <Button
+//             variant="ghost"
+//             className="lg:hidden"
+//             onClick={() => setIsOpen(!isOpen)}
+//           >
+//             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+//           </Button>
+//         </div>
+
+//         {/* Mobile Navigation */}
+//         <div className={cn(
+//           "fixed inset-x-0 bg-white shadow-lg lg:hidden transition-all duration-300 ease-in-out max-h-[80vh] overflow-y-auto",
+//           isOpen ? "top-16 opacity-100" : "-top-full opacity-0"
+//         )}>
+//           <nav className="container mx-auto px-4 py-4">
+//             <div className="space-y-4">
+//               <Link
+//                 href="/"
+//                 className="block p-2 hover:bg-gray-50 rounded-lg"
+//                 onClick={() => setIsOpen(false)}
+//               >
+//                 Home
+//               </Link>
+              
+//               <div className="space-y-2">
+//                 <div className="font-medium px-2">About</div>
+//                 <Link
+//                   href="/about/about-us"
+//                   className="block p-2 pl-4 hover:bg-gray-50 rounded-lg"
+//                   onClick={() => setIsOpen(false)}
+//                 >
+//                   About Us
+//                 </Link>
+//                 <Link
+//                   href="/about/csr"
+//                   className="block p-2 pl-4 hover:bg-gray-50 rounded-lg"
+//                   onClick={() => setIsOpen(false)}
+//                 >
+//                   CSR
+//                 </Link>
+//               </div>
+
+//               <Link
+//                 href="/milestones"
+//                 className="block p-2 hover:bg-gray-50 rounded-lg"
+//                 onClick={() => setIsOpen(false)}
+//               >
+//                 Milestones
+//               </Link>
+
+//               <div className="space-y-2">
+//                 <div className="font-medium px-2">Business Activities</div>
+//                 {businessActivities.map((activity) => (
+//                   <Link
+//                     key={activity.id}
+//                     href={`/business-activities/${activity.slug}`}
+//                     className="block p-2 pl-4 hover:bg-gray-50 rounded-lg"
+//                     onClick={() => setIsOpen(false)}
+//                   >
+//                     {activity.title}
+//                   </Link>
+//                 ))}
+//               </div>
+
+//               <div className="space-y-2">
+//                 <div className="font-medium px-2">Companies</div>
+//                 {companies.map((company) => (
+//                   <Link
+//                     key={company.id}
+//                     href={`/companies/${company.slug}`}
+//                     className="block p-2 pl-4 hover:bg-gray-50 rounded-lg"
+//                     onClick={() => setIsOpen(false)}
+//                   >
+//                     {company.title}
+//                   </Link>
+//                 ))}
+//               </div>
+
+//               <Link
+//                 href="/media"
+//                 className="block p-2 hover:bg-gray-50 rounded-lg"
+//                 onClick={() => setIsOpen(false)}
+//               >
+//                 Media
+//               </Link>
+
+//               {/* <Link
+//                 href="/career"
+//                 className="block p-2 hover:bg-gray-50 rounded-lg"
+//                 onClick={() => setIsOpen(false)}
+//               >
+//                 Career
+//               </Link> */}
+
+//               <Link
+//                 href="/contact"
+//                 className="block p-2 hover:bg-gray-50 rounded-lg"
+//                 onClick={() => setIsOpen(false)}
+//               >
+//                 Contact
+//               </Link>
+//             </div>
+//           </nav>
+//         </div>
+//       </div>
+      
+//       {/* Add a style for custom scrollbars */}
+//       <style jsx global>{`
+//         .custom-scrollbar::-webkit-scrollbar {
+//           width: 8px;
+//         }
+//         .custom-scrollbar::-webkit-scrollbar-track {
+//           background: #f1f1f1;
+//           border-radius: 10px;
+//         }
+//         .custom-scrollbar::-webkit-scrollbar-thumb {
+//           background: #d1d5db;
+//           border-radius: 10px;
+//         }
+//         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+//           background: #9ca3af;
+//         }
+//       `}</style>
+//     </header>
+//   );
+// };
+
+// export default Header;
+
+
+
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -1047,23 +1466,24 @@ const ListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            "block select-none rounded-lg p-3 leading-none no-underline outline-none transition-all duration-200 hover:bg-primary/5 group",
+            "block select-none rounded-lg p-4 leading-none no-underline outline-none transition-all duration-300 group",
+            "border border-transparent hover:border-slate-200 hover:shadow-sm",
             className
           )}
           {...props}
         >
           <div className="flex items-start gap-3">
             {icon && (
-              <div className="flex-shrink-0 mt-0.5 text-primary/60 group-hover:text-primary transition-colors duration-200">
+              <div className="flex-shrink-0 mt-0.5 text-primary/60 group-hover:text-primary transition-colors duration-300 p-2 bg-slate-50 rounded-md group-hover:bg-blue-50 group-hover:scale-110">
                 {icon}
               </div>
             )}
-            <div className="space-y-1.5">
-              <div className="text-sm font-semibold leading-none text-primary group-hover:text-primary transition-colors duration-200 flex items-center">
+            <div className="space-y-2">
+              <div className="text-sm font-semibold leading-none text-primary group-hover:text-primary transition-colors duration-300 flex items-center">
                 {title}
                 <ChevronRight className="ml-2 h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
               </div>
-              <p className="line-clamp-2 text-xs leading-snug text-muted-foreground group-hover:text-muted-foreground/80 transition-colors duration-200">
+              <p className="line-clamp-2 text-xs leading-snug text-muted-foreground group-hover:text-muted-foreground/80 transition-colors duration-300">
                 {children}
               </p>
             </div>
@@ -1136,9 +1556,43 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Icon mapping for business activities/companies (generates consistent icons based on id)
-  const getBusinessIcon = (id: number) => {
+  // Map each type of business activity to a specific icon
+  const getBusinessActivityIcon = (title: string, id: number) => {
+    // First try to match by title keywords
+    const lowerTitle = title.toLowerCase();
+    
+    if (lowerTitle.includes('construction') || lowerTitle.includes('build')) {
+      return Building;
+    } else if (lowerTitle.includes('consult') || lowerTitle.includes('service')) {
+      return Briefcase;
+    } else if (lowerTitle.includes('tech') || lowerTitle.includes('software') || lowerTitle.includes('digital')) {
+      return BarChart2;
+    } else if (lowerTitle.includes('investment') || lowerTitle.includes('finance')) {
+      return Award;
+    }
+    
+    // Fallback to ID-based assignment for items without specific keywords
     const icons = [Briefcase, Building, BarChart2, Award];
+    return icons[id % icons.length];
+  };
+  
+  // Map each type of company to a specific icon
+  const getCompanyIcon = (title: string, id: number) => {
+    // First try to match by title keywords
+    const lowerTitle = title.toLowerCase();
+    
+    if (lowerTitle.includes('group') || lowerTitle.includes('holding')) {
+      return Building;
+    } else if (lowerTitle.includes('tech') || lowerTitle.includes('software') || lowerTitle.includes('digital')) {
+      return BarChart2;
+    } else if (lowerTitle.includes('investment') || lowerTitle.includes('finance') || lowerTitle.includes('capital')) {
+      return Award;
+    } else if (lowerTitle.includes('consult') || lowerTitle.includes('service')) {
+      return Briefcase;
+    }
+    
+    // Fallback to ID-based assignment for items without specific keywords
+    const icons = [Building, Briefcase, BarChart2, Award];
     return icons[id % icons.length];
   };
 
@@ -1176,14 +1630,13 @@ const Header = () => {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>About</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="w-[350px] p-4 rounded-xl overflow-hidden shadow-lg animate-in fade-in zoom-in-95 duration-200">
-                     
-                      
-                      <ul className="grid gap-2">
+                    <div className="dropdown-content w-[350px] p-6 rounded-xl overflow-hidden shadow-lg border border-slate-100 bg-white/95 backdrop-blur-sm">
+                      <ul className="grid gap-3">
                         <ListItem 
                           href="/about/about-us" 
                           title="Company Overview" 
                           icon={<Building className="h-4 w-4" />}
+                          className="hover:bg-blue-50/50"
                         >
                           Learn about our history, vision, and mission.
                         </ListItem>
@@ -1191,6 +1644,7 @@ const Header = () => {
                           href="/about/csr" 
                           title="Corporate Social Responsibility" 
                           icon={<Heart className="h-4 w-4" />}
+                          className="hover:bg-blue-50/50"
                         >
                           Our commitment to social responsibility and community development.
                         </ListItem>
@@ -1210,19 +1664,18 @@ const Header = () => {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Business Activities</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="w-[550px] p-4 rounded-xl overflow-hidden shadow-lg animate-in fade-in zoom-in-95 duration-200">
-                     
-                      
+                    <div className="dropdown-content w-[600px] p-6 rounded-xl overflow-hidden shadow-lg border border-slate-100 bg-white/95 backdrop-blur-sm">
                       <div className="max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
-                        <ul className="grid md:grid-cols-2 gap-2">
+                        <ul className="grid md:grid-cols-2 gap-3">
                           {businessActivities.map((activity) => {
-                            const IconComponent = getBusinessIcon(activity.id);
+                            const IconComponent = getBusinessActivityIcon(activity.title, activity.id);
                             return (
                               <ListItem
                                 key={activity.id}
                                 title={activity.title}
                                 href={`/business-activities/${activity.slug}`}
                                 icon={<IconComponent className="h-4 w-4" />}
+                                className="hover:bg-blue-50/50"
                               >
                                 {activity.shortDes}
                               </ListItem>
@@ -1237,19 +1690,18 @@ const Header = () => {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Companies</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="w-[550px] p-4 rounded-xl overflow-hidden shadow-lg animate-in fade-in zoom-in-95 duration-200">
-                     
-                      
+                    <div className="dropdown-content w-[600px] p-6 rounded-xl overflow-hidden shadow-lg border border-slate-100 bg-white/95 backdrop-blur-sm">
                       <div className="max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
-                        <ul className="grid md:grid-cols-2 gap-2">
+                        <ul className="grid md:grid-cols-2 gap-3">
                           {companies.map((company) => {
-                            const IconComponent = getBusinessIcon(company.id);
+                            const IconComponent = getCompanyIcon(company.title, company.id);
                             return (
                               <ListItem
                                 key={company.id}
                                 title={company.title}
                                 href={`/companies/${company.slug}`}
                                 icon={<IconComponent className="h-4 w-4" />}
+                                className="hover:bg-blue-50/50"
                               >
                                 {company.shortDes}
                               </ListItem>
@@ -1268,14 +1720,6 @@ const Header = () => {
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
-
-                {/* <NavigationMenuItem>
-                  <Link href="/career" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                      Career
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem> */}
 
                 <NavigationMenuItem>
                   <Link href="/contact" legacyBehavior passHref>
@@ -1375,14 +1819,6 @@ const Header = () => {
                 Media
               </Link>
 
-              {/* <Link
-                href="/career"
-                className="block p-2 hover:bg-gray-50 rounded-lg"
-                onClick={() => setIsOpen(false)}
-              >
-                Career
-              </Link> */}
-
               <Link
                 href="/contact"
                 className="block p-2 hover:bg-gray-50 rounded-lg"
@@ -1395,7 +1831,7 @@ const Header = () => {
         </div>
       </div>
       
-      {/* Add a style for custom scrollbars */}
+      {/* Add styles for custom scrollbars and dropdown animations */}
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 8px;
@@ -1410,6 +1846,57 @@ const Header = () => {
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #9ca3af;
+        }
+        
+        /* Dropdown animation styles */
+        .dropdown-content {
+          animation: dropdownAnimation 0.6s cubic-bezier(0.26, 0.54, 0.32, 1);
+          transform-origin: top center;
+          box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        @keyframes dropdownAnimation {
+          0% {
+            opacity: 0;
+            transform: translateY(-8px) scaleY(0.8);
+            max-height: 0;
+          }
+          20% {
+            opacity: 0.4;
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scaleY(1);
+            max-height: 1000px;
+          }
+        }
+        
+        /* Enhanced hover effects for list items */
+        .NavigationMenuLink:hover {
+          transition: all 0.3s ease;
+        }
+        
+        /* Subtle entrance animation for list items */
+        .dropdown-content li {
+          opacity: 0;
+          animation: fadeInItems 0.5s forwards;
+        }
+        
+        .dropdown-content li:nth-child(1) { animation-delay: 0.2s; }
+        .dropdown-content li:nth-child(2) { animation-delay: 0.3s; }
+        .dropdown-content li:nth-child(3) { animation-delay: 0.4s; }
+        .dropdown-content li:nth-child(4) { animation-delay: 0.5s; }
+        .dropdown-content li:nth-child(n+5) { animation-delay: 0.6s; }
+        
+        @keyframes fadeInItems {
+          from {
+            opacity: 0;
+            transform: translateY(5px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       `}</style>
     </header>

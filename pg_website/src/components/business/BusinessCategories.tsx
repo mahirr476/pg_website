@@ -686,7 +686,6 @@
 
 
 
-
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -710,14 +709,6 @@ interface BusinessCategoriesProps {
 
 const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
   const [activeTab, setActiveTab] = useState<'operations' | 'products' | 'units'>('operations');
-  const [expandedCards, setExpandedCards] = useState<Record<number, boolean>>({});
-
-  const toggleCard = (id: number) => {
-    setExpandedCards(prev => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
-  };
 
   const tabVariants = {
     inactive: { scale: 1, opacity: 0.8 },
@@ -754,7 +745,7 @@ const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
       }
     },
     hover: { 
-      y: -10, 
+      y: -5, 
       boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)",
       transition: {
         type: "spring",
@@ -801,77 +792,35 @@ const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
     }
   };
 
-  // Function to truncate description
-  const truncateDescription = (html: string, expanded: boolean) => {
-    if (expanded) return html;
-    
-    // Create a div to parse the HTML
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-    
-    // Get the text content
-    const textContent = tempDiv.textContent || tempDiv.innerText;
-    
-    // Truncate to around 100 characters
-    if (textContent.length <= 100) return html;
-    
-    // If it's longer, we need to truncate
-    // Simple approach - take first paragraph or first 100 chars
-    const firstParagraph = html.split('</p>')[0] + '</p>';
-    if (firstParagraph.length < 150) return firstParagraph;
-    
-    // Fallback - just return first 100 characters plus ellipsis
-    return textContent.substring(0, 100) + '...';
-  };
-
   return (
-    <section className="py-20 relative overflow-hidden bg-gradient-to-b from-white to-gray-50">
+    <section className="py-10 relative overflow-hidden bg-gradient-to-b from-white to-gray-50">
       {/* Background decorative elements */}
       <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-blue-500/10 to-purple-500/5 rounded-full filter blur-3xl opacity-70" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-emerald-500/10 to-teal-500/5 rounded-full filter blur-3xl opacity-70" />
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-3 inline-block relative">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-              Business Categories
-            </span>
-            <motion.div 
-              initial={{ width: 0 }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="h-1 bg-gradient-to-r from-blue-500 to-purple-600 absolute bottom-0 left-0"
-            />
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mt-4 text-lg">
-            Explore our business divisions, products, and operational units
-          </p>
-        </motion.div>
-        
-        {/* Custom Tabs */}
-        <div className="flex justify-center mb-14">
-          <div className="bg-white rounded-xl shadow-xl p-2.5 flex flex-wrap md:flex-nowrap gap-3">
+        {/* Custom Tabs - Centered with reduced top margin */}
+        <div className="flex justify-center mb-10 mt-4">
+          <div className="bg-white rounded-xl shadow-xl p-3 flex flex-wrap md:flex-nowrap gap-4">
             {(['operations', 'products', 'units'] as const).map((tab) => (
               <motion.button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-3.5 rounded-lg font-medium transition-all text-lg flex items-center justify-center min-w-[180px] ${
+                className={`px-7 py-4 rounded-lg font-semibold transition-all text-lg flex items-center justify-center min-w-[180px] ${
                   activeTab === tab 
                     ? `bg-gradient-to-r ${categoryThemes[tab].gradient} text-white shadow-lg` 
-                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-100'
                 }`}
                 variants={tabVariants}
                 animate={activeTab === tab ? 'active' : 'inactive'}
-                whileHover={{ scale: activeTab === tab ? 1.05 : 1.03 }}
+                whileHover={{ 
+                  scale: activeTab === tab ? 1.05 : 1.03,
+                  boxShadow: activeTab === tab ? "0 10px 15px -3px rgba(0, 0, 0, 0.2)" : "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+                }}
                 whileTap={{ scale: 0.97 }}
               >
-                <span className="mr-2">{categoryThemes[tab].icon}</span>
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                <span className={`mr-3 ${activeTab === tab ? 'text-white' : 'text-gray-500'}`}>{categoryThemes[tab].icon}</span>
+                <span className="text-base">{tab.charAt(0).toUpperCase() + tab.slice(1)}</span>
               </motion.button>
             ))}
           </div>
@@ -894,234 +843,153 @@ const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
               <CardContent className="p-8 md:p-10">
                 {activeTab === 'operations' && categoryData.operations.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {categoryData.operations.map((item, index) => {
-                      const isExpanded = expandedCards[item.id] || false;
-                      
-                      return (
-                        <motion.div
-                          key={item.id}
-                          variants={itemVariants}
-                          custom={index}
-                          whileHover="hover"
-                          className={`bg-gradient-to-br ${categoryThemes.operations.cardGradient} rounded-xl overflow-hidden border ${categoryThemes.operations.border} relative`}
-                          style={{ height: "450px" }} // Fixed height
-                        >
-                          {/* Top accent */}
-                          <div className={`h-1 w-full bg-gradient-to-r ${categoryThemes.operations.gradient}`}></div>
+                    {categoryData.operations.map((item, index) => (
+                      <motion.div
+                        key={item.id}
+                        variants={itemVariants}
+                        custom={index}
+                        whileHover="hover"
+                        className={`bg-gradient-to-br ${categoryThemes.operations.cardGradient} rounded-xl overflow-hidden border ${categoryThemes.operations.border} relative`}
+                        style={{ height: "450px" }} // Fixed height
+                      >
+                        {/* Top accent */}
+                        <div className={`h-1 w-full bg-gradient-to-r ${categoryThemes.operations.gradient}`}></div>
+                        
+                        <div className="p-6 flex flex-col h-full">
+                          {/* Decorative elements */}
+                          <motion.div 
+                            className={`absolute -right-12 -top-12 w-32 h-32 rounded-full ${categoryThemes.operations.accent} opacity-20`}
+                            animate={{ 
+                              scale: [1, 1.2, 1],
+                              rotate: [0, 45, 0],
+                            }}
+                            transition={{ 
+                              duration: 8,
+                              repeat: Infinity,
+                              repeatType: "reverse"
+                            }}
+                          />
                           
-                          <div className="p-6 flex flex-col h-full">
-                            {/* Decorative elements */}
+                          <h4 className="text-xl font-bold text-gray-800 mb-4 relative">
+                            {item.title}
                             <motion.div 
-                              className={`absolute -right-12 -top-12 w-32 h-32 rounded-full ${categoryThemes.operations.accent} opacity-20`}
-                              animate={{ 
-                                scale: [1, 1.2, 1],
-                                rotate: [0, 45, 0],
-                              }}
-                              transition={{ 
-                                duration: 8,
-                                repeat: Infinity,
-                                repeatType: "reverse"
-                              }}
+                              initial={{ width: 0 }}
+                              animate={{ width: "40%" }}
+                              transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
+                              className={`h-0.5 bg-gradient-to-r ${categoryThemes.operations.gradient} mt-2 opacity-60`}
                             />
-                            
-                            <h4 className="text-xl font-bold text-gray-800 mb-4 relative">
-                              {item.title}
-                              <motion.div 
-                                initial={{ width: 0 }}
-                                animate={{ width: "40%" }}
-                                transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
-                                className={`h-0.5 bg-gradient-to-r ${categoryThemes.operations.gradient} mt-2 opacity-60`}
-                              />
-                            </h4>
-                            
-                            <div className={`flex-grow relative ${isExpanded ? 'overflow-y-auto' : 'overflow-hidden'}`}>
-                              <div 
-                                className={`text-gray-600 prose max-w-none ${!isExpanded ? 'line-clamp-4' : ''}`}
-                                dangerouslySetInnerHTML={{ __html: item.description }}
-                              />
-                              
-                              {!isExpanded && (
-                                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-blue-50 to-transparent"></div>
-                              )}
-                            </div>
-                            
-                            {/* Learn more button */}
-                            <motion.button
-                              onClick={() => toggleCard(item.id)}
-                              whileHover={{ 
-                                scale: 1.05, 
-                                boxShadow: "0 10px 15px -3px rgba(59, 130, 246, 0.3)"
-                              }}
-                              whileTap={{ scale: 0.97 }}
-                              className={`mt-4 px-5 py-2 rounded-full bg-gradient-to-r ${categoryThemes.operations.gradient} text-white font-medium shadow-md flex items-center justify-center`}
-                            >
-                              {isExpanded ? 'Show less' : 'Learn more'}
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                {isExpanded ? (
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                                ) : (
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                )}
-                              </svg>
-                            </motion.button>
+                          </h4>
+                          
+                          {/* Scrollable content area */}
+                          <div className="flex-grow overflow-y-auto custom-scrollbar pr-2">
+                            <div
+                              className="text-gray-600 prose max-w-none"
+                              dangerouslySetInnerHTML={{ __html: item.description }}
+                            />
                           </div>
-                        </motion.div>
-                      );
-                    })}
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
                 ) : activeTab === 'products' && categoryData.products.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {categoryData.products.map((item, index) => {
-                      const isExpanded = expandedCards[item.id] || false;
-                      
-                      return (
-                        <motion.div
-                          key={item.id}
-                          variants={itemVariants}
-                          custom={index}
-                          whileHover="hover"
-                          className={`bg-gradient-to-br ${categoryThemes.products.cardGradient} rounded-xl overflow-hidden border ${categoryThemes.products.border} relative`}
-                          style={{ height: "450px" }} // Fixed height
-                        >
-                          {/* Top accent */}
-                          <div className={`h-1 w-full bg-gradient-to-r ${categoryThemes.products.gradient}`}></div>
+                    {categoryData.products.map((item, index) => (
+                      <motion.div
+                        key={item.id}
+                        variants={itemVariants}
+                        custom={index}
+                        whileHover="hover"
+                        className={`bg-gradient-to-br ${categoryThemes.products.cardGradient} rounded-xl overflow-hidden border ${categoryThemes.products.border} relative`}
+                        style={{ height: "450px" }} // Fixed height
+                      >
+                        {/* Top accent */}
+                        <div className={`h-1 w-full bg-gradient-to-r ${categoryThemes.products.gradient}`}></div>
+                        
+                        <div className="p-6 flex flex-col h-full">
+                          {/* Decorative elements */}
+                          <motion.div 
+                            className={`absolute -right-12 -top-12 w-32 h-32 rounded-full ${categoryThemes.products.accent} opacity-20`}
+                            animate={{ 
+                              scale: [1, 1.2, 1],
+                              rotate: [0, 45, 0],
+                            }}
+                            transition={{ 
+                              duration: 9,
+                              repeat: Infinity,
+                              repeatType: "reverse"
+                            }}
+                          />
                           
-                          <div className="p-6 flex flex-col h-full">
-                            {/* Decorative elements */}
+                          <h4 className="text-xl font-bold text-gray-800 mb-4 relative">
+                            {item.title}
                             <motion.div 
-                              className={`absolute -right-12 -top-12 w-32 h-32 rounded-full ${categoryThemes.products.accent} opacity-20`}
-                              animate={{ 
-                                scale: [1, 1.2, 1],
-                                rotate: [0, 45, 0],
-                              }}
-                              transition={{ 
-                                duration: 9,
-                                repeat: Infinity,
-                                repeatType: "reverse"
-                              }}
+                              initial={{ width: 0 }}
+                              animate={{ width: "40%" }}
+                              transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
+                              className={`h-0.5 bg-gradient-to-r ${categoryThemes.products.gradient} mt-2 opacity-60`}
                             />
-                            
-                            <h4 className="text-xl font-bold text-gray-800 mb-4 relative">
-                              {item.title}
-                              <motion.div 
-                                initial={{ width: 0 }}
-                                animate={{ width: "40%" }}
-                                transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
-                                className={`h-0.5 bg-gradient-to-r ${categoryThemes.products.gradient} mt-2 opacity-60`}
-                              />
-                            </h4>
-                            
-                            <div className={`flex-grow relative ${isExpanded ? 'overflow-y-auto' : 'overflow-hidden'}`}>
-                              <div 
-                                className={`text-gray-600 prose max-w-none ${!isExpanded ? 'line-clamp-4' : ''}`}
-                                dangerouslySetInnerHTML={{ __html: item.description }}
-                              />
-                              
-                              {!isExpanded && (
-                                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-emerald-50 to-transparent"></div>
-                              )}
-                            </div>
-                            
-                            {/* Learn more button */}
-                            <motion.button
-                              onClick={() => toggleCard(item.id)}
-                              whileHover={{ 
-                                scale: 1.05, 
-                                boxShadow: "0 10px 15px -3px rgba(16, 185, 129, 0.3)"
-                              }}
-                              whileTap={{ scale: 0.97 }}
-                              className={`mt-4 px-5 py-2 rounded-full bg-gradient-to-r ${categoryThemes.products.gradient} text-white font-medium shadow-md flex items-center justify-center`}
-                            >
-                              {isExpanded ? 'Show less' : 'Learn more'}
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                {isExpanded ? (
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                                ) : (
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                )}
-                              </svg>
-                            </motion.button>
+                          </h4>
+                          
+                          {/* Scrollable content area */}
+                          <div className="flex-grow overflow-y-auto custom-scrollbar pr-2">
+                            <div
+                              className="text-gray-600 prose max-w-none"
+                              dangerouslySetInnerHTML={{ __html: item.description }}
+                            />
                           </div>
-                        </motion.div>
-                      );
-                    })}
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
                 ) : activeTab === 'units' && categoryData.units.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {categoryData.units.map((item, index) => {
-                      const isExpanded = expandedCards[item.id] || false;
-                      
-                      return (
-                        <motion.div
-                          key={item.id}
-                          variants={itemVariants}
-                          custom={index}
-                          whileHover="hover"
-                          className={`bg-gradient-to-br ${categoryThemes.units.cardGradient} rounded-xl overflow-hidden border ${categoryThemes.units.border} relative`}
-                          style={{ height: "450px" }} // Fixed height
-                        >
-                          {/* Top accent */}
-                          <div className={`h-1 w-full bg-gradient-to-r ${categoryThemes.units.gradient}`}></div>
+                    {categoryData.units.map((item, index) => (
+                      <motion.div
+                        key={item.id}
+                        variants={itemVariants}
+                        custom={index}
+                        whileHover="hover"
+                        className={`bg-gradient-to-br ${categoryThemes.units.cardGradient} rounded-xl overflow-hidden border ${categoryThemes.units.border} relative`}
+                        style={{ height: "450px" }} // Fixed height
+                      >
+                        {/* Top accent */}
+                        <div className={`h-1 w-full bg-gradient-to-r ${categoryThemes.units.gradient}`}></div>
+                        
+                        <div className="p-6 flex flex-col h-full">
+                          {/* Decorative elements */}
+                          <motion.div 
+                            className={`absolute -right-12 -top-12 w-32 h-32 rounded-full ${categoryThemes.units.accent} opacity-20`}
+                            animate={{ 
+                              scale: [1, 1.2, 1],
+                              rotate: [0, 45, 0],
+                            }}
+                            transition={{ 
+                              duration: 8.5,
+                              repeat: Infinity,
+                              repeatType: "reverse"
+                            }}
+                          />
                           
-                          <div className="p-6 flex flex-col h-full">
-                            {/* Decorative elements */}
+                          <h4 className="text-xl font-bold text-gray-800 mb-4 relative">
+                            {item.title}
                             <motion.div 
-                              className={`absolute -right-12 -top-12 w-32 h-32 rounded-full ${categoryThemes.units.accent} opacity-20`}
-                              animate={{ 
-                                scale: [1, 1.2, 1],
-                                rotate: [0, 45, 0],
-                              }}
-                              transition={{ 
-                                duration: 8.5,
-                                repeat: Infinity,
-                                repeatType: "reverse"
-                              }}
+                              initial={{ width: 0 }}
+                              animate={{ width: "40%" }}
+                              transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
+                              className={`h-0.5 bg-gradient-to-r ${categoryThemes.units.gradient} mt-2 opacity-60`}
                             />
-                            
-                            <h4 className="text-xl font-bold text-gray-800 mb-4 relative">
-                              {item.title}
-                              <motion.div 
-                                initial={{ width: 0 }}
-                                animate={{ width: "40%" }}
-                                transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
-                                className={`h-0.5 bg-gradient-to-r ${categoryThemes.units.gradient} mt-2 opacity-60`}
-                              />
-                            </h4>
-                            
-                            <div className={`flex-grow relative ${isExpanded ? 'overflow-y-auto' : 'overflow-hidden'}`}>
-                              <div 
-                                className={`text-gray-600 prose max-w-none ${!isExpanded ? 'line-clamp-4' : ''}`}
-                                dangerouslySetInnerHTML={{ __html: item.description }}
-                              />
-                              
-                              {!isExpanded && (
-                                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-purple-50 to-transparent"></div>
-                              )}
-                            </div>
-                            
-                            {/* Learn more button */}
-                            <motion.button
-                              onClick={() => toggleCard(item.id)}
-                              whileHover={{ 
-                                scale: 1.05, 
-                                boxShadow: "0 10px 15px -3px rgba(168, 85, 247, 0.3)"
-                              }}
-                              whileTap={{ scale: 0.97 }}
-                              className={`mt-4 px-5 py-2 rounded-full bg-gradient-to-r ${categoryThemes.units.gradient} text-white font-medium shadow-md flex items-center justify-center`}
-                            >
-                              {isExpanded ? 'Show less' : 'Learn more'}
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                {isExpanded ? (
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                                ) : (
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                )}
-                              </svg>
-                            </motion.button>
+                          </h4>
+                          
+                          {/* Scrollable content area */}
+                          <div className="flex-grow overflow-y-auto custom-scrollbar pr-2">
+                            <div
+                              className="text-gray-600 prose max-w-none"
+                              dangerouslySetInnerHTML={{ __html: item.description }}
+                            />
                           </div>
-                        </motion.div>
-                      );
-                    })}
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
                 ) : (
                   <motion.div
@@ -1143,6 +1011,23 @@ const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* Add a style for custom scrollbars */}
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(100, 116, 139, 0.2);
+          border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(100, 116, 139, 0.4);
+        }
+      `}</style>
     </section>
   );
 };
