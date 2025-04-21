@@ -34,10 +34,10 @@ const Footer = () => {
       { label: "View All", href: "/companies" }
     ],
     social: [
-      { label: "Facebook", href: "#", icon: <Facebook className="w-5 h-5" /> },
-      { label: "Instagram", href: "#", icon: <Instagram className="w-5 h-5" /> },
-      { label: "Twitter", href: "#", icon: <Twitter className="w-5 h-5" /> },
-      { label: "LinkedIn", href: "#", icon: <Linkedin className="w-5 h-5" /> }
+      { label: "Facebook", href: "https://www.facebook.com/paragongroup.bd", icon: <Facebook className="w-5 h-5" /> },
+      { label: "Instagram", href: "https://www.instagram.com/", icon: <Instagram className="w-5 h-5" /> },
+      { label: "Twitter", href: "https://x.com/", icon: <Twitter className="w-5 h-5" /> },
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/paragon-group-bd/posts/?feedView=all", icon: <Linkedin className="w-5 h-5" /> }
     ]
   };
 
