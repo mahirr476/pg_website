@@ -1206,7 +1206,6 @@
 // export default MediaContact;
 
 
-
 // components/media/MediaContact.tsx
 'use client';
 import { useState, useEffect } from 'react';
@@ -1233,7 +1232,7 @@ import {
   Loader2,
   CheckCircle,
   XCircle,
-  AlertCircle,
+  X,
 } from 'lucide-react';
 
 interface MediaContactProps {
@@ -1256,13 +1255,47 @@ interface FormData {
   message: string;
 }
 
-// Custom Toast interface
-interface CustomToast {
-  id: string;
-  type: 'success' | 'error' | 'info';
-  title: string;
+interface ToastProps {
+  type: 'success' | 'error';
   message: string;
+  onClose: () => void;
 }
+
+// Custom Toast Component - Same design as ContactForm
+const Toast = ({ type, message, onClose }: ToastProps) => {
+  const variants = {
+    initial: { opacity: 0, y: -50, x: 50 },
+    animate: { opacity: 1, y: 0, x: 0 },
+    exit: { opacity: 0, y: -20, x: 50 }
+  };
+
+  return (
+    <motion.div
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className={`fixed top-4 right-4 z-50 flex items-center p-4 rounded-lg shadow-lg ${
+        type === 'success' ? 'bg-green-50 border-l-4 border-green-500' : 'bg-red-50 border-l-4 border-red-500'
+      }`}
+    >
+      {type === 'success' ? (
+        <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+      ) : (
+        <XCircle className="h-5 w-5 text-red-500 mr-2" />
+      )}
+      <span className={`text-sm ${type === 'success' ? 'text-green-700' : 'text-red-700'}`}>
+        {message}
+      </span>
+      <button
+        onClick={onClose}
+        className="ml-4 text-gray-400 hover:text-gray-600 focus:outline-none"
+      >
+        <X className="h-4 w-4" />
+      </button>
+    </motion.div>
+  );
+};
 
 const MediaContact = ({ data }: MediaContactProps) => {
   const contactInfo = data || {
@@ -1287,11 +1320,7 @@ const MediaContact = ({ data }: MediaContactProps) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  
-  // Custom toast state
-  const [toasts, setToasts] = useState<CustomToast[]>([]);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -1309,10 +1338,6 @@ const MediaContact = ({ data }: MediaContactProps) => {
         return newErrors;
       });
     }
-
-    // Clear any success or error messages when form is modified
-    if (successMessage) setSuccessMessage(null);
-    if (errorMessage) setErrorMessage(null);
   };
 
   // Handle select change
@@ -1329,10 +1354,6 @@ const MediaContact = ({ data }: MediaContactProps) => {
         return newErrors;
       });
     }
-
-    // Clear any success or error messages when form is modified
-    if (successMessage) setSuccessMessage(null);
-    if (errorMessage) setErrorMessage(null);
   };
 
   // Validate form
@@ -1353,14 +1374,12 @@ const MediaContact = ({ data }: MediaContactProps) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Function to show custom toast
-  const showToast = (type: 'success' | 'error' | 'info', title: string, message: string) => {
-    const id = Math.random().toString(36).substring(2, 9);
-    setToasts(prev => [...prev, { id, type, title, message }]);
-    
-    // Auto remove toast after 5 seconds
+  // Function to show toast
+  const showToast = (type: 'success' | 'error', message: string) => {
+    setToast({ type, message });
+    // Auto dismiss after 5 seconds
     setTimeout(() => {
-      setToasts(prev => prev.filter(toast => toast.id !== id));
+      setToast(null);
     }, 5000);
   };
   
@@ -1368,14 +1387,7 @@ const MediaContact = ({ data }: MediaContactProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Clear previous messages
-    setSuccessMessage(null);
-    setErrorMessage(null);
-
     if (!validateForm()) return;
-
-    // Show toast notification immediately when submitting
-    showToast('info', 'Submitting', 'Please wait while we process your request...');
 
     setIsSubmitting(true);
 
@@ -1404,11 +1416,8 @@ const MediaContact = ({ data }: MediaContactProps) => {
 
       // Check if the response indicates success
       if (response.ok && result.success) {
-        // Display success message
-        setSuccessMessage(result.message || "Thank you for your inquiry. We'll get back to you soon.");
-        
         // Show success toast
-        showToast('success', 'Success!', 'Your inquiry has been submitted successfully.');
+        showToast('success', result.message || "Thank you for your inquiry. We'll get back to you soon.");
 
         // Reset the form fields
         setFormData({
@@ -1427,10 +1436,9 @@ const MediaContact = ({ data }: MediaContactProps) => {
     } catch (error) {
       // Log the error and display an error message
       console.error('Error submitting form:', error);
-      setErrorMessage(error instanceof Error ? error.message : "Something went wrong. Please try again.");
       
       // Show error toast
-      showToast('error', 'Error', 'Failed to submit your inquiry. Please try again.');
+      showToast('error', error instanceof Error ? error.message : "Something went wrong. Please try again.");
     } finally {
       // Stop the loading state
       setIsSubmitting(false);
@@ -1443,7 +1451,8 @@ const MediaContact = ({ data }: MediaContactProps) => {
     const style = document.createElement('style');
     style.innerHTML = `
       .select-content-item {
-        background-color: #f3e8ff !important; /* Light purple background - matching the theme */
+        background-color: #f3e8ff !important;
+        color: #000 !important; /* Light purple background - matching the theme */
       }
       
       [data-radix-select-item][data-highlighted] {
@@ -1458,255 +1467,213 @@ const MediaContact = ({ data }: MediaContactProps) => {
     };
   }, []);
 
-  // Custom Toast Component
-  const CustomToastContainer = () => {
-    return (
-      <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-        <AnimatePresence>
-          {toasts.map((toast) => (
-            <motion.div
-              key={toast.id}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 50 }}
-              className={`p-4 rounded-md shadow-lg flex items-start gap-3 min-w-[300px] max-w-md ${
-                toast.type === 'success' ? 'bg-green-100 text-green-800 border-l-4 border-green-500' :
-                toast.type === 'error' ? 'bg-red-100 text-red-800 border-l-4 border-red-500' :
-                'bg-blue-100 text-blue-800 border-l-4 border-blue-500'
-              }`}
-            >
-              <div className="flex-shrink-0 mt-0.5">
-                {toast.type === 'success' && <CheckCircle className="w-5 h-5" />}
-                {toast.type === 'error' && <XCircle className="w-5 h-5" />}
-                {toast.type === 'info' && <AlertCircle className="w-5 h-5" />}
-              </div>
-              <div className="flex-1">
-                <h4 className="font-medium text-sm">{toast.title}</h4>
-                <p className="text-sm">{toast.message}</p>
-              </div>
-              <button 
-                onClick={() => setToasts(prev => prev.filter(t => t.id !== toast.id))}
-                className="flex-shrink-0 text-gray-500 hover:text-gray-700"
-              >
-                <span className="sr-only">Close</span>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-    );
-  };
-
   return (
-    <section className="py-20 bg-white">
-      <CustomToastContainer />
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12"
-        >
-          {/* Contact Information */}
-          <div>
-            <h2 className="text-4xl font-bold mb-6">{contactInfo.title}</h2>
-            <p className="text-xl text-gray-600 mb-8">{contactInfo.description}</p>
-            <Card className="mb-8">
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <Mail className="w-5 h-5 text-purple-600" />
-                    <div>
-                      <h3 className="font-semibold">Email</h3>
-                      <p className="text-gray-600">{contactInfo.email}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <Phone className="w-5 h-5 text-purple-600" />
-                    <div>
-                      <h3 className="font-semibold">Press Office</h3>
-                      <p className="text-gray-600">{contactInfo.phone}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <Globe className="w-5 h-5 text-purple-600" />
-                    <div>
-                      <h3 className="font-semibold">Website</h3>
-                      <p className="text-gray-600">{contactInfo.website}</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            {/* Social Media Links */}
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Follow Us</h3>
-              <div className="flex gap-4">
-                {[
-                  { icon: Twitter, label: 'Twitter' },
-                  { icon: Linkedin, label: 'LinkedIn' },
-                  { icon: Facebook, label: 'Facebook' },
-                  { icon: Instagram, label: 'Instagram' },
-                ].map((social) => (
-                  <motion.a
-                    key={social.label}
-                    href="#"
-                    whileHover={{ scale: 1.1 }}
-                    className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-purple-100 transition-colors duration-300"
-                  >
-                    <social.icon className="w-5 h-5 text-purple-600" />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
-          </div>
-          {/* Contact Form */}
+    <>
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <Toast
+            type={toast.type}
+            message={toast.message}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12"
           >
-            <Card>
-              <CardHeader>
-                <CardTitle>Media Contact Form</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {/* Success Message */}
-                {successMessage && (
-                  <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700">
-                    {successMessage}
+            {/* Contact Information */}
+            <div>
+              <h2 className="text-4xl font-bold mb-6">{contactInfo.title}</h2>
+              <p className="text-xl text-gray-600 mb-8">{contactInfo.description}</p>
+              <Card className="mb-8">
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <Mail className="w-5 h-5 text-purple-600" />
+                      <div>
+                        <h3 className="font-semibold">Email</h3>
+                        <p className="text-gray-600">{contactInfo.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <Phone className="w-5 h-5 text-purple-600" />
+                      <div>
+                        <h3 className="font-semibold">Press Office</h3>
+                        <p className="text-gray-600">{contactInfo.phone}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <Globe className="w-5 h-5 text-purple-600" />
+                      <div>
+                        <h3 className="font-semibold">Website</h3>
+                        <p className="text-gray-600">{contactInfo.website}</p>
+                      </div>
+                    </div>
                   </div>
-                )}
-                {/* Error Message */}
-                {errorMessage && (
-                  <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
-                    {errorMessage}
-                  </div>
-                )}
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                </CardContent>
+              </Card>
+              {/* Social Media Links */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Follow Us</h3>
+                <div className="flex gap-4">
+                  {[
+                    { icon: Twitter, label: 'Twitter' },
+                    { icon: Linkedin, label: 'LinkedIn' },
+                    { icon: Facebook, label: 'Facebook' },
+                    { icon: Instagram, label: 'Instagram' },
+                  ].map((social) => (
+                    <motion.a
+                      key={social.label}
+                      href="#"
+                      whileHover={{ scale: 1.1 }}
+                      className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-purple-100 transition-colors duration-300"
+                    >
+                      <social.icon className="w-5 h-5 text-purple-600" />
+                    </motion.a>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <Card>
+                <CardHeader>
+                  <CardTitle>Media Contact Form</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">First Name</label>
+                        <Input
+                          name="firstName"
+                          value={formData.firstName}
+                          onChange={handleInputChange}
+                          placeholder="Enter your first name"
+                          className={errors.firstName ? 'border-red-500' : ''}
+                        />
+                        {errors.firstName && (
+                          <p className="text-red-500 text-sm">{errors.firstName}</p>
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Last Name</label>
+                        <Input
+                          name="lastName"
+                          value={formData.lastName}
+                          onChange={handleInputChange}
+                          placeholder="Enter your last name"
+                          className={errors.lastName ? 'border-red-500' : ''}
+                        />
+                        {errors.lastName && (
+                          <p className="text-red-500 text-sm">{errors.lastName}</p>
+                        )}
+                      </div>
+                    </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">First Name</label>
+                      <label className="text-sm font-medium">Organization</label>
                       <Input
-                        name="firstName"
-                        value={formData.firstName}
+                        name="organization"
+                        value={formData.organization}
                         onChange={handleInputChange}
-                        placeholder="Enter your first name"
-                        className={errors.firstName ? 'border-red-500' : ''}
+                        placeholder="Enter your organization name"
+                        className={errors.organization ? 'border-red-500' : ''}
                       />
-                      {errors.firstName && (
-                        <p className="text-red-500 text-sm">{errors.firstName}</p>
+                      {errors.organization && (
+                        <p className="text-red-500 text-sm">{errors.organization}</p>
                       )}
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Last Name</label>
+                      <label className="text-sm font-medium">Email</label>
                       <Input
-                        name="lastName"
-                        value={formData.lastName}
+                        type="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleInputChange}
-                        placeholder="Enter your last name"
-                        className={errors.lastName ? 'border-red-500' : ''}
+                        placeholder="Enter your email"
+                        className={errors.email ? 'border-red-500' : ''}
                       />
-                      {errors.lastName && (
-                        <p className="text-red-500 text-sm">{errors.lastName}</p>
+                      {errors.email && (
+                        <p className="text-red-500 text-sm">{errors.email}</p>
                       )}
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Organization</label>
-                    <Input
-                      name="organization"
-                      value={formData.organization}
-                      onChange={handleInputChange}
-                      placeholder="Enter your organization name"
-                      className={errors.organization ? 'border-red-500' : ''}
-                    />
-                    {errors.organization && (
-                      <p className="text-red-500 text-sm">{errors.organization}</p>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Email</label>
-                    <Input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="Enter your email"
-                      className={errors.email ? 'border-red-500' : ''}
-                    />
-                    {errors.email && (
-                      <p className="text-red-500 text-sm">{errors.email}</p>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Phone</label>
-                    <Input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="Enter your phone number"
-                      className={errors.phone ? 'border-red-500' : ''}
-                    />
-                    {errors.phone && (
-                      <p className="text-red-500 text-sm">{errors.phone}</p>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Inquiry Type</label>
-                    <Select value={formData.inquiryType} onValueChange={handleSelectChange}>
-                      <SelectTrigger
-                        className={`w-full ${errors.inquiryType ? 'border-red-500' : ''}`}
-                      >
-                        <SelectValue placeholder="Select inquiry type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="press" className="select-content-item">Press Inquiry</SelectItem>
-                        <SelectItem value="interview" className="select-content-item">Interview Request</SelectItem>
-                        <SelectItem value="media" className="select-content-item">Media Assets</SelectItem>
-                        <SelectItem value="other" className="select-content-item">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.inquiryType && (
-                      <p className="text-red-500 text-sm">{errors.inquiryType}</p>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Message</label>
-                    <Textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      placeholder="Please describe your inquiry"
-                      className={`min-h-[120px] ${errors.message ? 'border-red-500' : ''}`}
-                    />
-                    {errors.message && (
-                      <p className="text-red-500 text-sm">{errors.message}</p>
-                    )}
-                  </div>
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Submitting...
-                      </>
-                    ) : (
-                      'Submit Inquiry'
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Phone</label>
+                      <Input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        placeholder="Enter your phone number"
+                        className={errors.phone ? 'border-red-500' : ''}
+                      />
+                      {errors.phone && (
+                        <p className="text-red-500 text-sm">{errors.phone}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Inquiry Type</label>
+                      <Select value={formData.inquiryType} onValueChange={handleSelectChange}>
+                        <SelectTrigger
+                          className={`w-full ${errors.inquiryType ? 'border-red-500' : ''}`}
+                        >
+                          <SelectValue placeholder="Select inquiry type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="press" className="select-content-item">Press Inquiry</SelectItem>
+                          <SelectItem value="interview" className="select-content-item">Interview Request</SelectItem>
+                          <SelectItem value="media" className="select-content-item">Media Assets</SelectItem>
+                          <SelectItem value="other" className="select-content-item">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      {errors.inquiryType && (
+                        <p className="text-red-500 text-sm">{errors.inquiryType}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Message</label>
+                      <Textarea
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="Please describe your inquiry"
+                        className={`min-h-[120px] ${errors.message ? 'border-red-500' : ''}`}
+                      />
+                      {errors.message && (
+                        <p className="text-red-500 text-sm">{errors.message}</p>
+                      )}
+                    </div>
+                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        'Submit Inquiry'
+                      )}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 };
 

@@ -384,12 +384,12 @@
 // export default AboutHero;
 
 
-
 'use client';
 
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
+import { ChevronUp } from 'lucide-react';
 
 interface AboutHeroProps {
   title: string;
@@ -455,6 +455,28 @@ const AboutHero: React.FC<AboutHeroProps> = ({
   yearsNumber,
   yearsTitle
 }) => {
+  // Scroll state for scroll-to-top button
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Effect to handle scroll and show/hide scroll-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show button when scrolled down more than 300px
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Function to scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   // Format the title to highlight "Innovation" in orange
   const renderTitle = () => {
     if (title?.includes('Innovation')) {
@@ -538,6 +560,24 @@ const AboutHero: React.FC<AboutHeroProps> = ({
           </motion.div>
         </div>
       </div>
+
+      {/* Scroll to top button - Blue by default, orange on hover */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            onClick={scrollToTop}
+            className="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg shadow-blue-500/30 z-50 hover:bg-company-orange hover:shadow-orange-500/30 transition-colors duration-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

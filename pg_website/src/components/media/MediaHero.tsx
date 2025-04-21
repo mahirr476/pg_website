@@ -93,11 +93,12 @@
 // export default MediaHero;
 
 
+
 'use client';
-import { useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useRef, useEffect, useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronUp } from 'lucide-react';
 
 interface MediaHeroProps {
   data: {
@@ -108,6 +109,8 @@ interface MediaHeroProps {
 
 const MediaHero = ({ data }: MediaHeroProps) => {
   const heroRef = useRef<HTMLDivElement>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
   
   // Create ripple effect when clicking anywhere
   useEffect(() => {
@@ -143,6 +146,56 @@ const MediaHero = ({ data }: MediaHeroProps) => {
       hero?.removeEventListener('click', handleClick);
     };
   }, []);
+
+  // Debounce function to prevent rapid triggers
+  const debounce = (func: Function, wait: number) => {
+    let timeout: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  };
+
+  // Handle scroll with debounce and proper checks
+  const handleScroll = useCallback(
+    debounce(() => {
+      const currentScrollY = window.scrollY;
+      
+      // Only update if scroll position actually changed significantly
+      if (Math.abs(currentScrollY - lastScrollY) > 50) {
+        setShowScrollTop(currentScrollY > 300);
+        setLastScrollY(currentScrollY);
+      }
+    }, 100),
+    [lastScrollY]
+  );
+
+  useEffect(() => {
+    // Add event listener with passive option for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Initial check
+    handleScroll();
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
+
+  // Safe scroll to top function
+  const scrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Check if we're in the browser environment
+    if (typeof window !== 'undefined') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   // Animation variants
   const titleVariants = {
@@ -194,6 +247,18 @@ const MediaHero = ({ data }: MediaHeroProps) => {
       transition: {
         duration: 0.1
       }
+    }
+  };
+
+  // Inline styles for the scroll button to ensure it works properly
+  const scrollButtonStyle = {
+    base: {
+      backgroundColor: '#2563eb',
+      boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.3)',
+    },
+    hover: {
+      backgroundColor: '#f97316',
+      boxShadow: '0 10px 15px -3px rgba(249, 115, 22, 0.3)',
     }
   };
 
@@ -301,13 +366,7 @@ const MediaHero = ({ data }: MediaHeroProps) => {
                 whileHover="hover"
                 whileTap="tap"
               >
-                {/* <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="text-white border-2 border-white/20 hover:bg-white/10 text-lg px-8 py-6 rounded-lg"
-                >
-                  Press Kit
-                </Button> */}
+
               </motion.div>
             </motion.div>
           </div>
@@ -348,6 +407,29 @@ const MediaHero = ({ data }: MediaHeroProps) => {
           />
         </div>
       </section>
+
+      {/* Scroll to top button - Using inline styles and Framer Motion for reliable hover effect */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            onClick={scrollToTop}
+            className="fixed bottom-8 right-8 text-white p-3 rounded-full z-50"
+            style={scrollButtonStyle.base}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{
+              scale: 1.1,
+              ...scrollButtonStyle.hover
+            }}
+            whileTap={{ scale: 0.95 }}
+            aria-label="Scroll to top"
+          >
+            <ChevronUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

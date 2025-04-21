@@ -214,14 +214,12 @@
 
 // export default CSRHero;
 
-
-
 'use client';
 
-import { motion } from 'framer-motion';
-import { Heart, Users, School, Leaf, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { Heart, Users, School, Leaf, ChevronDown, ChevronUp } from 'lucide-react';
 import Image from 'next/image';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 interface CSRDetail {
   id: number;
@@ -246,6 +244,32 @@ const CSRHero: React.FC<CSRHeroProps> = ({
   // Ref for scroll functionality
   const contentRef = useRef<HTMLDivElement>(null);
   
+  // Scroll state for scroll-to-top button
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  
+  // Use inView to trigger card animations when they come into view
+  const cardsRef = useRef(null);
+  const isCardsInView = useInView(cardsRef, { once: true, margin: "-100px" });
+
+  // Effect to handle scroll and show/hide scroll-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show button when scrolled down more than 300px
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Function to scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+  
   // Scroll handler for the indicator
   const scrollToContent = () => {
     if (contentRef.current) {
@@ -268,6 +292,59 @@ const CSRHero: React.FC<CSRHeroProps> = ({
 
   // Dynamic particle elements for visual enhancement
   const particles = Array.from({ length: 15 }, (_, i) => i);
+
+  // Card animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 50,
+      scale: 0.9,
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+        duration: 0.6,
+      },
+    },
+    hover: {
+      y: -8,
+      scale: 1.03,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10,
+      },
+    },
+  };
+
+  const iconVariants = {
+    initial: { scale: 0, rotate: -180 },
+    animate: { 
+      scale: 1, 
+      rotate: 0,
+      transition: {
+        type: "spring",
+        stiffness: 260,
+        damping: 20,
+        delay: 0.2,
+      },
+    },
+  };
 
   return (
     <section className="relative min-h-[100vh] flex items-center overflow-hidden">
@@ -340,62 +417,72 @@ const CSRHero: React.FC<CSRHeroProps> = ({
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          ref={cardsRef}
+          variants={containerVariants}
+          initial="hidden"
+          animate={isCardsInView ? "visible" : "hidden"}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          ref={contentRef}
         >
           {details.map((detail, index) => (
             <motion.div
               key={detail.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 + 0.6 }}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              className="bg-white/10 backdrop-blur-md rounded-lg p-6 hover:bg-white/20 transition-all duration-300 border border-white/5 shadow-xl"
+              variants={cardVariants}
+              whileHover="hover"
+              className="bg-white/10 backdrop-blur-md rounded-lg p-6 border border-white/5 shadow-xl group"
             >
-              <div className="bg-company-orange rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md shadow-company-orange/20">
+              <motion.div 
+                variants={iconVariants}
+                initial="initial"
+                animate="animate"
+                className="bg-company-orange rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md shadow-company-orange/20"
+              >
                 {getIconByTitle(detail.title)}
-              </div>
-              <h3 className="text-lg font-semibold mb-2">{detail.title}</h3>
-              <p className="text-gray-200">{detail.description}</p>
+              </motion.div>
+              <motion.h3 
+                className="text-lg font-semibold mb-2"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 + index * 0.1 }}
+              >
+                {detail.title}
+              </motion.h3>
+              <motion.p 
+                className="text-gray-200"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 + index * 0.1 }}
+              >
+                {detail.description}
+              </motion.p>
+              
+              {/* Additional hover effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-company-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"
+                initial={{ scale: 0.8 }}
+                whileHover={{ scale: 1 }}
+              />
             </motion.div>
           ))}
         </motion.div>
       </div>
 
-      {/* Enhanced Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white cursor-pointer"
-        onClick={scrollToContent}
-      >
-        <div className="flex flex-col items-center">
-          <div className="w-0.5 h-16 bg-white/20 relative overflow-hidden mb-2">
-            <motion.div 
-              className="absolute top-0 left-0 w-full h-1/2 bg-white/60"
-              animate={{ 
-                top: ["0%", "100%"],
-              }}
-              transition={{ 
-                duration: 1.5, 
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
-          </div>
-          <motion.div
-            animate={{ y: [0, 5, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+      {/* Scroll to top button - Blue by default, orange on hover */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            onClick={scrollToTop}
+            className="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg shadow-blue-500/30 z-50 hover:bg-company-orange hover:shadow-orange-500/30 transition-colors duration-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <ChevronDown className="w-6 h-6 text-white/80" />
-          </motion.div>
-          <span className="text-sm mt-1 text-white/80">Scroll to explore</span>
-        </div>
-      </motion.div>
+            <ChevronUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

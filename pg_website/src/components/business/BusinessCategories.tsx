@@ -687,7 +687,6 @@
 
 
 
-
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -935,7 +934,7 @@ const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
                               />
                             </h4>
                             
-                            <div className="flex-grow overflow-hidden relative">
+                            <div className={`flex-grow relative ${isExpanded ? 'overflow-y-auto' : 'overflow-hidden'}`}>
                               <div 
                                 className={`text-gray-600 prose max-w-none ${!isExpanded ? 'line-clamp-4' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: item.description }}
@@ -1012,7 +1011,7 @@ const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
                               />
                             </h4>
                             
-                            <div className="flex-grow overflow-hidden relative">
+                            <div className={`flex-grow relative ${isExpanded ? 'overflow-y-auto' : 'overflow-hidden'}`}>
                               <div 
                                 className={`text-gray-600 prose max-w-none ${!isExpanded ? 'line-clamp-4' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: item.description }}
@@ -1089,7 +1088,7 @@ const BusinessCategories = ({ categoryData }: BusinessCategoriesProps) => {
                               />
                             </h4>
                             
-                            <div className="flex-grow overflow-hidden relative">
+                            <div className={`flex-grow relative ${isExpanded ? 'overflow-y-auto' : 'overflow-hidden'}`}>
                               <div 
                                 className={`text-gray-600 prose max-w-none ${!isExpanded ? 'line-clamp-4' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: item.description }}

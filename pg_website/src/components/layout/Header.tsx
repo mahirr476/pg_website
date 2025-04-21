@@ -1177,12 +1177,7 @@ const Header = () => {
                   <NavigationMenuTrigger>About</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="w-[350px] p-4 rounded-xl overflow-hidden shadow-lg animate-in fade-in zoom-in-95 duration-200">
-                      <div className="flex items-center p-3 mb-3 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg">
-                        <div className="bg-white p-2 rounded-full shadow-sm mr-3">
-                          <Building className="h-5 w-5 text-primary" />
-                        </div>
-                        <h3 className="text-base font-medium text-primary">About Us</h3>
-                      </div>
+                     
                       
                       <ul className="grid gap-2">
                         <ListItem 
@@ -1216,12 +1211,7 @@ const Header = () => {
                   <NavigationMenuTrigger>Business Activities</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="w-[550px] p-4 rounded-xl overflow-hidden shadow-lg animate-in fade-in zoom-in-95 duration-200">
-                      <div className="flex items-center p-3 mb-3 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg">
-                        <div className="bg-white p-2 rounded-full shadow-sm mr-3">
-                          <Briefcase className="h-5 w-5 text-primary" />
-                        </div>
-                        <h3 className="text-base font-medium text-primary">Our Business Sectors</h3>
-                      </div>
+                     
                       
                       <div className="max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
                         <ul className="grid md:grid-cols-2 gap-2">
@@ -1248,12 +1238,7 @@ const Header = () => {
                   <NavigationMenuTrigger>Companies</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="w-[550px] p-4 rounded-xl overflow-hidden shadow-lg animate-in fade-in zoom-in-95 duration-200">
-                      <div className="flex items-center p-3 mb-3 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg">
-                        <div className="bg-white p-2 rounded-full shadow-sm mr-3">
-                          <Building className="h-5 w-5 text-primary" />
-                        </div>
-                        <h3 className="text-base font-medium text-primary">Our Companies</h3>
-                      </div>
+                     
                       
                       <div className="max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
                         <ul className="grid md:grid-cols-2 gap-2">

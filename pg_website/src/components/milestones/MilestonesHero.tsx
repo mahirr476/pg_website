@@ -222,13 +222,12 @@
 // export default MilestonesHero;
 
 
-
 'use client';
 
-import { motion } from 'framer-motion';
-import { ArrowDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowDown, ChevronUp } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 interface MilestonesHeroProps {
   title: string;
@@ -237,6 +236,8 @@ interface MilestonesHeroProps {
 
 const MilestonesHero: React.FC<MilestonesHeroProps> = ({ title, description }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
   
   useEffect(() => {
     // Delay to ensure smooth animation after page load
@@ -246,6 +247,56 @@ const MilestonesHero: React.FC<MilestonesHeroProps> = ({ title, description }) =
     
     return () => clearTimeout(timer);
   }, []);
+
+  // Debounce function to prevent rapid triggers
+  const debounce = (func: Function, wait: number) => {
+    let timeout: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  };
+
+  // Handle scroll with debounce and proper checks
+  const handleScroll = useCallback(
+    debounce(() => {
+      const currentScrollY = window.scrollY;
+      
+      // Only update if scroll position actually changed significantly
+      if (Math.abs(currentScrollY - lastScrollY) > 50) {
+        setShowScrollTop(currentScrollY > 300);
+        setLastScrollY(currentScrollY);
+      }
+    }, 100),
+    [lastScrollY]
+  );
+
+  useEffect(() => {
+    // Add event listener with passive option for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Initial check
+    handleScroll();
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
+
+  // Safe scroll to top function
+  const scrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Check if we're in the browser environment
+    if (typeof window !== 'undefined') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const scrollToTimeline = () => {
     const timeline = document.getElementById('timeline');
@@ -398,6 +449,25 @@ const MilestonesHero: React.FC<MilestonesHeroProps> = ({ title, description }) =
           {/* <ArrowDown size={20} /> */}
         </motion.div>
       </motion.div>
+
+      {/* Scroll to top button - Blue by default, orange on hover */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            onClick={scrollToTop}
+            className="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg shadow-blue-500/30 z-50 hover:bg-company-orange hover:shadow-orange-500/30 transition-colors duration-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            aria-label="Scroll to top"
+          >
+            <ChevronUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
