@@ -1069,9 +1069,10 @@ const AnimatedCounter = ({ value, duration = 2 }: { value: string, duration?: nu
 const HomeHero: React.FC<HomeHeroProps> = ({ heroes, impacts, onBusinessClick, onAboutClick }) => {
   // Static background images - replace with your actual image URLs
   const backgroundImages = [
-    "/images/landing-carosel/landing-page1.jpeg",
-    "/images/landing-carosel/landing-page2.jpeg",
     "/images/landing-carosel/landing-page3.jpg",
+   
+    "/images/landing-carosel/landing-page2.jpeg",
+    "/images/landing-carosel/landing-page1.jpeg",
    "/images/landing-carosel/landing-page4.jpg",
    "/images/landing-carosel/landing-page5.jpg",
    "/images/landing-carosel/landing-page6.png",
