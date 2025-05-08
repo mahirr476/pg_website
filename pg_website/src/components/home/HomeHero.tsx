@@ -1239,23 +1239,6 @@ const HomeHero: React.FC<HomeHeroProps> = ({ heroes, impacts, onBusinessClick, o
           </motion.div>
         </div>
       </div>
-
-      {/* Enhanced Image Indicators (dots) centered at the bottom */}
-      <div className="absolute mt-3 bottom-12 left-0  right-0 flex justify-center items-center space-x-4 z-20">
-        {backgroundImages.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentImageIndex(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentImageIndex 
-                ? "bg-company-orange scale-125" 
-                : "bg-white/50 hover:bg-white/70"
-            }`}
-            aria-label={`View slide ${index + 1}`}
-          />
-        ))}
-      </div>
-
       {/* Scroll to top button - Blue by default, orange on hover */}
       <AnimatePresence>
         {showScrollTop && (
