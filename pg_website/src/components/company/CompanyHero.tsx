@@ -837,7 +837,7 @@ const CompanyHero = ({ data }: CompanyHeroProps) => {
         <div className="relative h-full container mx-auto px-4">
           <div className="flex flex-col justify-center h-full max-w-4xl">
             <div className="mb-10">
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight">
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight ">
                 {data.name.split(' ').map((word, index) => (
                   <motion.span
                     key={index}
@@ -852,7 +852,7 @@ const CompanyHero = ({ data }: CompanyHeroProps) => {
                       delay: 1 + (index * 0.15),
                       ease: [0.25, 0.1, 0.25, 1]
                     }}
-                    className="inline-block mr-5 relative"
+                    className="inline-block mr-5 relative text-justify"
                   >
                     {word}
                   </motion.span>

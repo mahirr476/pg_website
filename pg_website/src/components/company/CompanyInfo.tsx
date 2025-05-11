@@ -217,12 +217,12 @@ const CompanyInfo = ({ data }: CompanyInfoProps) => {
                 About <span className="text-blue-600">{data.shortName}</span>
               </motion.h2>
               
-              <div className="relative overflow-hidden">
+              <div className="relative overflow-hidden ">
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: isInView ? 1 : 0 }}
                   transition={{ duration: 0.5 }}
-                  className="text-lg leading-relaxed text-gray-700 prose prose-blue max-w-none"
+                  className="text-lg leading-relaxed text-gray-700 prose prose-blue max-w-none "
                 >
                   {words.map((word, i) => (
                     <motion.span
@@ -234,7 +234,7 @@ const CompanyInfo = ({ data }: CompanyInfoProps) => {
                         delay: 0.5 + (i * 0.01), // Subtle staggered effect
                         ease: "easeOut" 
                       }}
-                      className="inline-block mr-1"
+                      className="inline-block mr-1 "
                     >
                       {word}
                     </motion.span>
