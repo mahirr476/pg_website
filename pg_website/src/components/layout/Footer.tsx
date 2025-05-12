@@ -44,15 +44,15 @@ const Footer = () => {
   const contactInfo = [
     {
       icon: <MapPin className="w-5 h-5" />,
-      info: "123 Business Avenue, City, Country"
+      info: "Corporate Office Paragon House 5 Mohakhali C/A Dhaka 1212 Bangladesh"
     },
     {
       icon: <Phone className="w-5 h-5" />,
-      info: "+1 (234) 567-8900"
+      info: "+88 02 9882107-8"
     },
     {
       icon: <Mail className="w-5 h-5" />,
-      info: "info@company.com"
+      info: "info@paragongroup-bd.com"
     }
   ];
 
