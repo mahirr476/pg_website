@@ -1,17 +1,3 @@
-// // src/app/milestones/page.tsx
-// import MilestonesHero from '@/components/milestones/MilestonesHero';
-// import Timeline from '@/components/milestones/Timeline';
-
-// export default function MilestonesPage() {
-//   return (
-//     <main className="pt-16">
-//       <MilestonesHero />
-//       <Timeline />
-//     </main>
-//   );
-// }
-
-
 
 'use client';
 
@@ -26,6 +12,7 @@ interface MilestoneContent {
   orderIndex: number;
   title: string;
   description: string;
+  image: string[]; // Array of image paths
 }
 
 interface Milestone {
@@ -65,18 +52,24 @@ export default function MilestonesPage() {
     fetchMilestoneData();
   }, []);
 
-  if (loading) return <Loading/>
+  if (loading) return <Loading/>;
   if (error) return <div className="pt-16 text-center">Error: {error}</div>;
   
   // Get hero content (orderIndex 1) and timeline content (orderIndex 2)
   const heroContent = milestoneData?.milestoneContent.find(content => content.orderIndex === 1);
   const timelineContent = milestoneData?.milestoneContent.find(content => content.orderIndex === 2);
   
+  // Get the hero image path (first image in the array if it exists)
+  const heroImagePath = heroContent?.image && heroContent.image.length > 0 
+    ? heroContent.image[0] 
+    : undefined;
+  
   return (
     <main className="pt-16">
       <MilestonesHero 
         title={heroContent?.title || ""} 
         description={heroContent?.description || ""} 
+        imagePath={heroImagePath} // Pass the image path to the component
       />
       <Timeline 
         title={timelineContent?.title || ""} 
