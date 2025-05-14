@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent } from "@/components/ui/card";
 import { Egg, BriefcaseMedical, Hospital, Droplet, Users, Drumstick, Zap, Wrench } from 'lucide-react';
 import Image from 'next/image';
+import React from 'react'; // Add React import for JSX.Element type
 
 // Define interface for the incoming data structure
 interface ActivityDetail {
@@ -22,7 +23,7 @@ interface CSRActivitiesProps {
 }
 
 // Icon mapping to match text labels with their corresponding Lucide icons
-const iconMapping: Record<string, JSX.Element> = {
+const iconMapping: Record<string, React.ReactElement> = {
   "School Nutrition Program": <Egg className="w-8 h-8 text-white" />,
   "Dental Health Initiatives": <BriefcaseMedical className="w-8 h-8 text-white" />,
   "Permanent Dental Clinic": <Hospital className="w-8 h-8 text-white" />,

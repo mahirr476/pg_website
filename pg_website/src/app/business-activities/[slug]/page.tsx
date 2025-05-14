@@ -15,7 +15,8 @@ interface BusinessItem {
   description: string;
 }
 
-interface Certificate {
+// Define our local Certificate interface that matches the API response
+interface ApiCertificate {
   id: number;
   title: string;
   description: string;
@@ -35,11 +36,17 @@ interface BusinessData {
   operation: BusinessItem[];
   product: BusinessItem[];
   units: BusinessItem[];
-  certifications: Certificate[];
+  certifications: ApiCertificate[];
 }
 
-// Page component using params
-export default function Page({ params }: { params: { slug: string } }) {
+// In Next.js 15, params is a Promise
+type Params = Promise<{ slug: string }>;
+
+// Page component using params - proper Promise type
+export default async function Page(props: { params: Params }) {
+  // Await the params promise to get the actual slug
+  const params = await props.params;
+  
   return (
     <Suspense fallback={<Loading />}>
       <BusinessContent slug={params.slug} />
@@ -72,6 +79,14 @@ async function BusinessContent({ slug }: { slug: string }) {
     units: businessData.units || []
   };
 
+  // Ensure image is always present in certificates by providing a default value
+  const certificationsWithImageField = businessData.certifications.map(cert => ({
+    id: cert.id,
+    title: cert.title,
+    description: cert.description,
+    image: cert.image || '' // Add a default empty string if image is undefined
+  }));
+
   return (
     <main className="pt-16">
       <BusinessHero
@@ -92,7 +107,7 @@ async function BusinessContent({ slug }: { slug: string }) {
       
       {/* Only render Certificates section if certifications exist */}
       {businessData.certifications && businessData.certifications.length > 0 && (
-        <Certificates certificates={businessData.certifications} />
+        <Certificates certificates={certificationsWithImageField} />
       )}
     </main>
   );

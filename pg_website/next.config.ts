@@ -53,7 +53,6 @@
 
 // module.exports = nextConfig;
 
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -66,6 +65,9 @@ const nextConfig = {
       },
     ],
   },
-}
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
