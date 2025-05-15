@@ -34,25 +34,25 @@ const Footer = () => {
       { label: "View All", href: "/companies" }
     ],
     social: [
-      { label: "Facebook", href: "#", icon: <Facebook className="w-5 h-5" /> },
-      { label: "Instagram", href: "#", icon: <Instagram className="w-5 h-5" /> },
-      { label: "Twitter", href: "#", icon: <Twitter className="w-5 h-5" /> },
-      { label: "LinkedIn", href: "#", icon: <Linkedin className="w-5 h-5" /> }
+      { label: "Facebook", href: "https://www.facebook.com/paragongroup.bd", icon: <Facebook className="w-5 h-5" /> },
+      { label: "Instagram", href: "https://www.instagram.com/", icon: <Instagram className="w-5 h-5" /> },
+      { label: "Twitter", href: "https://x.com/", icon: <Twitter className="w-5 h-5" /> },
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/paragon-group-bd/posts/?feedView=all", icon: <Linkedin className="w-5 h-5" /> }
     ]
   };
 
   const contactInfo = [
     {
       icon: <MapPin className="w-5 h-5" />,
-      info: "123 Business Avenue, City, Country"
+      info: "Corporate Office Paragon House 5 Mohakhali C/A Dhaka 1212 Bangladesh"
     },
     {
       icon: <Phone className="w-5 h-5" />,
-      info: "+1 (234) 567-8900"
+      info: "+88 02 9882107-8"
     },
     {
       icon: <Mail className="w-5 h-5" />,
-      info: "info@company.com"
+      info: "info@paragongroup-bd.com"
     }
   ];
 
@@ -145,7 +145,7 @@ const Footer = () => {
         <div className="border-t py-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-600 text-sm">
-              © {new Date().getFullYear()} Company Name. All rights reserved.
+              © {new Date().getFullYear()} Paragon Group. All rights reserved.
             </div>
 
             {/* Social Links */}

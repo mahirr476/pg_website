@@ -1,44 +1,49 @@
-'use client';
+
+
 // src/components/contact/ContactInfo.tsx
+'use client';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Clock, Globe } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 
-const ContactInfo = () => {
+interface ContactInfoProps {
+  title: string;
+  description: string;
+  location: string;
+  phone: string;
+  email: string;
+  workingHour: string;
+}
+
+const ContactInfo = ({
+  title,
+  description,
+  location,
+  phone,
+  email,
+  workingHour,
+}: ContactInfoProps) => {
   const contactDetails = [
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Visit Us",
-      details: [
-        "Corporate Office",
-        "Paragon House, 5 Mohakhali",
-        "C/A Dhaka 1212, Bangladesh"
-      ]
+      details: location.split(',').map((line) => line.trim()),
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Call Us",
-      details: [
-        "+88 02 9882107-8",
-        "+1 (234) 567-8901"
-      ]
+      details: phone.split(',').map((line) => line.trim()),
     },
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email Us",
-      details: [
-        "info@paragongroup-bd.com",
-        
-      ]
+      details: email.split(',').map((line) => line.trim()),
     },
     {
       icon: <Clock className="w-6 h-6" />,
       title: "Working Hours",
-      details: [
-        "Saturday - Thursday: 8:30 AM - 5:30 PM",
-        "Friday: Closed"
-      ]
-    }
+      details: workingHour.split(',').map((line) => line.trim()),
+    },
   ];
 
   return (
@@ -49,10 +54,8 @@ const ContactInfo = () => {
         transition={{ duration: 0.6 }}
         className="max-w-xl mx-auto lg:ml-0"
       >
-        <h2 className="text-3xl font-bold mb-2">Contact Information</h2>
-        <p className="text-gray-600 mb-8">
-          Find us at the following location or reach out through any of our contact channels.
-        </p>
+        <h2 className="text-3xl font-bold mb-2">{title}</h2>
+        <p className="text-gray-600 mb-8">{description}</p>
 
         <div className="grid gap-6">
           {contactDetails.map((contact, index) => (
@@ -82,19 +85,6 @@ const ContactInfo = () => {
             </motion.div>
           ))}
         </div>
-
-        {/* <div className="mt-12">
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="font-semibold mb-4">Global Reach</h3>
-              <p className="text-gray-600">
-                With a state-of-the-art manufacturing facility and dedicated team, 
-                we serve clients worldwide. Our location offers strategic advantages 
-                for efficient distribution and logistics management.
-              </p>
-            </CardContent>
-          </Card>
-        </div> */}
       </motion.div>
     </section>
   );

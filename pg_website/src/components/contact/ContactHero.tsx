@@ -1,18 +1,24 @@
-'use client';
+
+
 // src/components/contact/ContactHero.tsx
+'use client';
 import { motion } from 'framer-motion';
 
-const ContactHero = () => {
+interface ContactHeroProps {
+  title: string;
+  description: string;
+}
+
+const ContactHero = ({ title, description }: ContactHeroProps) => {
   return (
-    <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black py-20 overflow-hidden">
-      {/* Background Image */}
-      {/* <div className="absolute inset-0">
-        <img 
-          src="/images/contact-hero.jpg"  // Replace with your background image path
-          alt="Contact Us Background"
-          className="object-cover w-full h-full opacity-60"
-        />
-      </div> */}
+    <section className="relative min-h-[60vh] bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 flex items-center">
+      <div className="absolute inset-0 opacity-20">
+        {/* Media-themed background pattern */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)',
+          backgroundSize: '30px 30px'
+        }} />
+      </div>
       
       <div className="container mx-auto px-4 relative z-10 pt-12">
         <motion.div
@@ -22,10 +28,10 @@ const ContactHero = () => {
           className="text-center text-white mb-12"
         >
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
-            Contact Us
+            {title}
           </h1>
           <p className="text-xl text-white/90 mx-auto sm:max-w-2xl md:max-w-3xl">
-            We’re here to assist you! Whether you have questions, need support, or are looking to discuss potential partnerships, our team at Paragon Group is ready to help. Please reach out through the following channels, and we will get back to you as soon as possible.
+            {description}
           </p>
         </motion.div>
       </div>

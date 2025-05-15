@@ -77,7 +77,7 @@ export default function CSRPage() {
   const heroSection = csrData.getCSRWithDetails.find(section => section.orderIndex === 1);
   const frameworkSection = csrData.getCSRWithDetails.find(section => section.orderIndex === 2);
   const activitiesSection = csrData.getCSRWithDetails.find(section => section.orderIndex === 3);
-  const impactSection = csrData.getCSRWithDetails.find(section => section.orderIndex === 4);
+  // const impactSection = csrData.getCSRWithDetails.find(section => section.orderIndex === 4);
   const impactLasting = csrData.getCSRWithDetails.find(section => section.orderIndex === 5);
 
   return (
@@ -98,8 +98,8 @@ export default function CSRPage() {
         details={activitiesSection?.details || []}
       />
       <ImpactMetrics 
-        titleMain={impactSection?.title || ""}
-        descriptionMain={impactSection?.description || ""}
+        // titleMain={impactSection?.title || ""}
+        // descriptionMain={impactSection?.description || ""}
         titleLasting={impactLasting?.title || ""}
         descriptionLasting={impactLasting?.description || ""}
       />
