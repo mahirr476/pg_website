@@ -58,7 +58,7 @@ const Contact = () => {
   useEffect(() => {
     const fetchContactData = async () => {
       try {
-        const response = await fetch('http://localhost:7000/api/v1/pg/contact-us');
+        const response = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/contact-us');
         if (!response.ok) {
           throw new Error('Failed to fetch contact data');
         }

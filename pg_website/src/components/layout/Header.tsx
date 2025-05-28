@@ -81,7 +81,7 @@ const Header = () => {
   useEffect(() => {
     const fetchBusinessActivities = async () => {
       try {
-        const response = await fetch('http://localhost:7000/api/v1/pg/business');
+        const response = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business');
         if (!response.ok) {
           throw new Error('Failed to fetch business activities');
         }
@@ -101,7 +101,7 @@ const Header = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await fetch('http://localhost:7000/api/v1/pg/companies');
+        const response = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies');
         if (!response.ok) {
           throw new Error('Failed to fetch companies');
         }

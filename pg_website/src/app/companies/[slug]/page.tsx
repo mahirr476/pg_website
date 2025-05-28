@@ -175,7 +175,7 @@ export default function CompanyPage({
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:7000/api/v1/pg/companies/${slug}`
+          `http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${slug}`
         );
 
         if (!response.ok) {

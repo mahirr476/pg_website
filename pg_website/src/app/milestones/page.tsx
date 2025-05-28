@@ -36,7 +36,7 @@ export default function MilestonesPage() {
   useEffect(() => {
     const fetchMilestoneData = async () => {
       try {
-        const response = await fetch('http://localhost:7000/api/v1/pg/milestone');
+        const response = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/milestone');
         if (!response.ok) {
           throw new Error('Failed to fetch milestone data');
         }

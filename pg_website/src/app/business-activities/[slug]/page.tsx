@@ -174,7 +174,7 @@ export default async function Page(props: { params: Params }) {
 // Business content component that handles data fetching
 async function BusinessContent({ slug }: { slug: string }) {
   // Fetch business data
-  const res = await fetch(`http://localhost:7000/api/v1/pg/business/${slug}`, {
+  const res = await fetch(`http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business/${slug}`, {
     cache: 'no-store'
   });
   
