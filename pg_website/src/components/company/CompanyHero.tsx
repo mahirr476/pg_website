@@ -691,14 +691,6 @@ const CompanyHero = ({ data }: CompanyHeroProps) => {
             </motion.div>
           </div>
         </div>
-
-        {/* Debug URL display - remove this in production */}
-        {process.env.NODE_ENV === 'development' && (
-          <div className="absolute bottom-20 left-4 text-white text-xs bg-black/50 p-2 rounded max-w-md break-all z-20 space-y-1">
-            <div>Hero: {processedHeroImageUrl}</div>
-            <div>Logo: {processedLogoUrl}</div>
-          </div>
-        )}
       </div>
 
       {/* Scroll to top button - Blue by default, orange on hover */}

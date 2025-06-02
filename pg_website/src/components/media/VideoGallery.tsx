@@ -838,14 +838,7 @@ const VideoGallery = ({
         )}
       </AnimatePresence>
 
-      {/* Debug info in development */}
-      {process.env.NODE_ENV === 'development' && videos.length > 0 && (
-        <div className="fixed bottom-4 left-4 text-white text-xs bg-black/80 p-2 rounded max-w-xs break-all z-20">
-          <div className="font-bold text-yellow-300">🎥 VideoGallery Debug:</div>
-          <div>Total videos: {videos.length}</div>
-          <div>First video thumbnail: {videos[0]?.thumbnail}</div>
-        </div>
-      )}
+
 
       {/* Scroll to top button */}
       <AnimatePresence>

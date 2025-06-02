@@ -656,12 +656,7 @@ const BusinessHero = ({ data }: BusinessHeroProps) => {
           </div>
         </div>
 
-        {/* Debug URL display - remove this in production */}
-        {process.env.NODE_ENV === 'development' && processedImageUrl && (
-          <div className="absolute bottom-4 left-4 text-white text-xs bg-black/50 p-2 rounded max-w-md break-all z-20">
-            Debug URL: {processedImageUrl}
-          </div>
-        )}
+
       </div>
 
       {/* Scroll to top button - Blue by default, orange on hover */}
