@@ -618,21 +618,6 @@ const BoardOfDirectors: React.FC<BoardOfDirectorsProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Debug info for development */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="absolute top-4 right-4 bg-black/70 text-white p-2 text-xs rounded z-30 max-w-xs">
-          <div>Total Directors: {directors.length}</div>
-          <div>Processed Directors: {processedDirectors.length}</div>
-          <div>Loaded Images: {Object.keys(loadedImages).length}</div>
-          {processedDirectors.length > 0 && (
-            <div className="mt-2 break-all">
-              <div>Sample Image URL:</div>
-              <div className="text-xs">{processedDirectors[0]?.image}</div>
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Custom scrollbar styles */}
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
