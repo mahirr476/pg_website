@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -25,6 +24,10 @@ const Certificates = ({ certificates }: CertificatesProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(-1);
+  const [loadedImages, setLoadedImages] = useState<{[key: string]: boolean}>({});
+  
+  // Fixed API base URL - same as other components
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://api.pg-admin.57.155.183.218.nip.io';
   
   // Get all certificate images from the API
   const getAllCertificateImages = () => {
@@ -50,12 +53,44 @@ const Certificates = ({ certificates }: CertificatesProps) => {
   // Get all certificate images
   const allCertificateImages = getAllCertificateImages();
 
-  // Function to convert relative API path to full URL
-  const getImageUrl = (relativePath: string): string => {
-    // Remove 'public/' from the beginning if it exists
-    const cleanPath = relativePath.replace(/^public\//, '');
-    // Return the full URL
-    return `http://localhost:7000/${cleanPath}`;
+  // Function to process certificate image paths - same logic as HomeHero
+  const getImageUrl = (imagePath: string): string => {
+    if (!imagePath) return '';
+    
+    console.log('Certificates - Processing image path:', imagePath);
+    
+    let finalUrl: string;
+    
+    if (imagePath.startsWith('public/')) {
+      // Path already has 'public/' prefix
+      finalUrl = `${API_BASE_URL}/${imagePath}`;
+    } else if (imagePath.startsWith('uploads/')) {
+      // Path has 'uploads/' prefix, add 'public/'
+      finalUrl = `${API_BASE_URL}/public/${imagePath}`;
+    } else {
+      // Path has no prefix, add 'public/uploads/'
+      finalUrl = `${API_BASE_URL}/public/uploads/${imagePath}`;
+    }
+    
+    console.log('Certificates - Final image URL:', finalUrl);
+    return finalUrl;
+  };
+
+  // Handle image loading
+  const handleImageLoad = (imageIndex: number) => {
+    console.log('Certificates - Image loaded for index:', imageIndex);
+    setLoadedImages(prev => ({
+      ...prev,
+      [imageIndex]: true
+    }));
+  };
+
+  const handleImageError = (imageIndex: number, imageUrl: string) => {
+    console.error('Certificates - Image failed to load for index:', imageIndex, 'URL:', imageUrl);
+    setLoadedImages(prev => ({
+      ...prev,
+      [imageIndex]: false
+    }));
   };
 
   const goToPrevious = () => {
@@ -215,12 +250,27 @@ const Certificates = ({ certificates }: CertificatesProps) => {
                 transition={{ duration: 0.4 }}
                 className="relative w-full flex items-center justify-center"
               >
+                {/* Loading placeholder for modal image */}
+                {!loadedImages[`modal-${selectedImageIndex}`] && (
+                  <div className="absolute inset-0 bg-gray-200 flex items-center justify-center z-10">
+                    <div className="animate-pulse">
+                      <Eye className="w-16 h-16 text-gray-300" />
+                    </div>
+                  </div>
+                )}
+                
                 <Image
                   src={getImageUrl(allCertificateImages[selectedImageIndex])}
                   alt={`Certificate ${selectedImageIndex + 1}`}
                   width={900}
                   height={700}
                   className="object-contain max-h-[75vh] rounded-md shadow-md"
+                  style={{ 
+                    opacity: loadedImages[`modal-${selectedImageIndex}`] ? 1 : 0,
+                    transition: 'opacity 0.3s ease-in-out'
+                  }}
+                  onLoad={() => handleImageLoad(`modal-${selectedImageIndex}` as any)}
+                  onError={() => handleImageError(`modal-${selectedImageIndex}` as any, getImageUrl(allCertificateImages[selectedImageIndex]))}
                   priority
                 />
               </motion.div>
@@ -279,11 +329,27 @@ const Certificates = ({ certificates }: CertificatesProps) => {
                   
                   <div className="p-4 h-full flex flex-col">
                     <div className="flex-grow flex items-center justify-center p-2 relative">
+                      {/* Loading placeholder */}
+                      {!loadedImages[index] && (
+                        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center z-10">
+                          <div className="animate-pulse">
+                            <Eye className="w-8 h-8 text-gray-300" />
+                          </div>
+                        </div>
+                      )}
+                      
                       <Image
                         src={getImageUrl(image)}
                         alt={`Certificate ${index + 1}`}
                         fill
                         className="object-contain p-2"
+                        style={{ 
+                          opacity: loadedImages[index] ? 1 : 0,
+                          transition: 'opacity 0.3s ease-in-out'
+                        }}
+                        onLoad={() => handleImageLoad(index)}
+                        onError={() => handleImageError(index, getImageUrl(image))}
+                        priority={index < 4} // Prioritize first 4 images
                       />
                     </div>
                     
