@@ -412,7 +412,7 @@ type Params = Promise<{ slug: string }>;
 // REQUIRED for static export - This function must be exported
 export async function generateStaticParams() {
   try {
-    const res = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business', {
+    const res = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -489,7 +489,7 @@ export default async function Page(props: { params: Params }) {
 async function BusinessContent({ slug }: { slug: string }) {
   try {
     // Fetch business data - use force-cache for static generation
-    const res = await fetch(`http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business/${slug}`, {
+    const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business/${slug}`, {
       cache: 'force-cache', // ✅ FIXED: Use force-cache instead of no-store for static export
       headers: {
         'Content-Type': 'application/json',

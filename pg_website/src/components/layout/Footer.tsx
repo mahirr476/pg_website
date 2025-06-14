@@ -242,7 +242,8 @@ const Footer = () => {
             <div className="lg:col-span-2 text-center md:text-left">
               <Link href="/" className="inline-block mb-6">
                 <Image
-                  src="/images/logo.png"
+                  // src="/images/logo.png"
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/logo.png`}
                   alt="Company Logo"
                   width={150}
                   height={48}

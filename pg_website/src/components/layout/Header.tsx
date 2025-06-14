@@ -591,7 +591,7 @@ const Header = () => {
   useEffect(() => {
     const fetchBusinessActivities = async () => {
       try {
-        const response = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business');
+        const response = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business');
         if (!response.ok) {
           throw new Error('Failed to fetch business activities');
         }
@@ -611,7 +611,7 @@ const Header = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies');
+        const response = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies');
         if (!response.ok) {
           throw new Error('Failed to fetch companies');
         }
@@ -704,13 +704,13 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <Image 
-              src="/images/logo.png" 
-              alt="Company Logo" 
+            <Image
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/logo.png`}
+              alt="Company Logo"
               width={150}
               height={48}
               className="h-12 w-auto"
-              priority
+              // priority
             />
           </Link>
 
@@ -732,7 +732,7 @@ const Header = () => {
                     <div className="dropdown-content w-[350px] p-6 rounded-xl overflow-hidden shadow-lg border border-slate-100 bg-white/95 backdrop-blur-sm">
                       <ul className="grid gap-3">
                         <ListItem 
-                          href="/about/about-us" 
+                          href="/group/about/about-us" 
                           title="Company Overview" 
                           icon={<Building className="h-4 w-4" />}
                           className="hover:bg-blue-50/50 dropdown-item"
@@ -740,7 +740,7 @@ const Header = () => {
                           Learn about our history, vision, and mission.
                         </ListItem>
                         <ListItem 
-                          href="/about/csr" 
+                          href="/group/about/csr" 
                           title="Corporate Social Responsibility" 
                           icon={<Heart className="h-4 w-4" />}
                           className="hover:bg-blue-50/50 dropdown-item"
@@ -772,7 +772,7 @@ const Header = () => {
                               <ListItem
                                 key={activity.id}
                                 title={activity.title}
-                                href={`/business-activities/${activity.slug}`}
+                                href={`/group/business-activities/${activity.slug}`}
                                 icon={<IconComponent className="h-4 w-4" />}
                                 className="hover:bg-blue-50/50 dropdown-item"
                                 style={{animationDelay: `${0.1 + (index * 0.05)}s`}}
@@ -799,7 +799,7 @@ const Header = () => {
                               <ListItem
                                 key={company.id}
                                 title={company.title}
-                                href={`/companies/${company.slug}`}
+                                href={`/group/companies/${company.slug}`}
                                 icon={<IconComponent className="h-4 w-4" />}
                                 className="hover:bg-blue-50/50 dropdown-item"
                                 style={{animationDelay: `${0.1 + (index * 0.05)}s`}}

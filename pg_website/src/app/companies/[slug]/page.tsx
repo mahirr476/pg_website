@@ -851,7 +851,7 @@ export async function generateStaticParams() {
   try {
     console.log('Generating static params for companies...');
     
-    const res = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies', {
+    const res = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -940,7 +940,7 @@ export async function generateMetadata(props: { params: Params }) {
   const params = await props.params;
   
   try {
-    const res = await fetch(`http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${params.slug}`, {
+    const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${params.slug}`, {
       cache: 'force-cache',
       headers: {
         'Content-Type': 'application/json',
@@ -993,7 +993,7 @@ async function CompanyContent({ slug }: { slug: string }) {
     console.log(`Fetching company data for slug: ${slug}`);
     
     // Fetch company data - use force-cache for static generation (same as business)
-    const res = await fetch(`http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${slug}`, {
+    const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${slug}`, {
       cache: 'force-cache', // ✅ Same as business page - use force-cache for static export
       headers: {
         'Content-Type': 'application/json',
