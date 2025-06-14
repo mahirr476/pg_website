@@ -819,11 +819,272 @@
 
 
 
+// // app/companies/[slug]/page.tsx
+// import { Suspense } from 'react';
+// import Link from 'next/link';
+// import Loading from '@/components/layout/loading';
+// import CompanyClientWrapper from '@/components/company/CompanyClientWrapper';
+
+// // Define the interface for company data
+// interface CompanyData {
+//   companyDetail: {
+//     id: number;
+//     title: string;
+//     shortDes: string;
+//     longDes?: string;
+//     image?: string;
+//     founded?: string;
+//     teamSize?: string;
+//     location?: string;
+//     category?: string;
+//     globalPresence?: string;
+//     revenue?: string;
+//     clientSatisfaction?: string;
+//   };
+// }
+
+// // In Next.js 15, params is a Promise
+// type Params = Promise<{ slug: string }>;
+
+// // REQUIRED for static export - This function must be exported
+// export async function generateStaticParams() {
+//   try {
+//     console.log('Generating static params for companies...');
+    
+//     const res = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies', {
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       cache: 'force-cache'
+//     });
+    
+//     if (!res.ok) {
+//       console.warn('Failed to fetch companies for static generation:', res.status);
+//       // Fallback to known slugs
+//       return [
+//         { slug: 'bay-chicks-ltd' },
+//         { slug: 'aqua-breeders-ltd' },
+//         { slug: 'paragon-feed-ltd' },
+//       ];
+//     }
+    
+//     const data = await res.json();
+//     console.log('Companies API Response structure:', JSON.stringify(data, null, 2));
+    
+//     // Handle different possible API response structures
+//     let companies = [];
+    
+//     if (Array.isArray(data)) {
+//       companies = data;
+//     } else if (data?.data?.business && Array.isArray(data.data.business)) {
+//       // ✅ Same pattern as business - companies are under data.business
+//       companies = data.data.business;
+//     } else if (data.data && Array.isArray(data.data)) {
+//       companies = data.data;
+//     } else if (data.companies && Array.isArray(data.companies)) {
+//       companies = data.companies;
+//     } else {
+//       console.warn('Unexpected API response structure:', data);
+//       console.warn('Available keys:', Object.keys(data || {}));
+//       console.warn('data.data keys:', data?.data ? Object.keys(data.data) : 'no data.data');
+//       // Fallback to known slugs
+//       return [
+//         { slug: 'bay-chicks-ltd' },
+//         { slug: 'aqua-breeders-ltd' },
+//         { slug: 'paragon-feed-ltd' },
+//       ];
+//     }
+    
+//     if (!Array.isArray(companies) || companies.length === 0) {
+//       console.warn('Companies is not an array or empty:', companies);
+//       // Fallback to known slugs
+//       return [
+//         { slug: 'bay-chicks-ltd' },
+//         { slug: 'aqua-breeders-ltd' },
+//         { slug: 'paragon-feed-ltd' },
+//       ];
+//     }
+    
+//     const params = companies
+//       .filter(company => company && (company.slug || company.id)) // Filter out invalid entries
+//       .map((company: any) => ({
+//         slug: String(company.slug || company.id) // Ensure slug is a string, use id as fallback
+//       }));
+    
+//     console.log('Generated company params:', params);
+    
+//     // If no valid params, use fallback
+//     if (params.length === 0) {
+//       return [
+//         { slug: 'bay-chicks-ltd' },
+//         { slug: 'aqua-breeders-ltd' },
+//         { slug: 'paragon-feed-ltd' },
+//       ];
+//     }
+    
+//     return params;
+    
+//   } catch (error) {
+//     console.error('Error generating static params for companies:', error);
+//     // Return fallback slugs
+//     return [
+//       { slug: 'bay-chicks-ltd' },
+//       { slug: 'aqua-breeders-ltd' },
+//       { slug: 'paragon-feed-ltd' },
+//     ];
+//   }
+// }
+
+// // Optional: Generate metadata for each page
+// export async function generateMetadata(props: { params: Params }) {
+//   const params = await props.params;
+  
+//   try {
+//     const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${params.slug}`, {
+//       cache: 'force-cache',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       }
+//     });
+
+//     if (!res.ok) {
+//       return {
+//         title: 'Company Not Found',
+//         description: 'The requested company could not be found.',
+//       };
+//     }
+
+//     const data = await res.json();
+//     const company = data.data?.companyDetail;
+
+//     return {
+//       title: company?.title || 'Company',
+//       description: company?.shortDes || 'Company information',
+//       openGraph: {
+//         title: company?.title || 'Company',
+//         description: company?.shortDes || 'Company information',
+//         images: company?.image ? [company.image] : [],
+//       },
+//     };
+//   } catch (error) {
+//     console.error('Error generating metadata:', error);
+//     return {
+//       title: 'Company',
+//       description: 'Company information',
+//     };
+//   }
+// }
+
+// // Page component using params - proper Promise type
+// export default async function Page(props: { params: Params }) {
+//   // Await the params promise to get the actual slug
+//   const params = await props.params;
+  
+//   return (
+//     <Suspense fallback={<Loading />}>
+//       <CompanyContent slug={params.slug} />
+//     </Suspense>
+//   );
+// }
+
+// // Company content component that handles data fetching
+// async function CompanyContent({ slug }: { slug: string }) {
+//   try {
+//     console.log(`Fetching company data for slug: ${slug}`);
+    
+//     // Fetch company data - use force-cache for static generation (same as business)
+//     const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${slug}`, {
+//       cache: 'force-cache', // ✅ Same as business page - use force-cache for static export
+//       headers: {
+//         'Content-Type': 'application/json',
+//       }
+//     });
+    
+//     if (!res.ok) {
+//       throw new Error(`Failed to fetch company data: ${res.status}`);
+//     }
+    
+//     const data = await res.json();
+//     console.log("Company data from API:", data.data);
+    
+//     const companyData: CompanyData = data.data;
+    
+//     if (!companyData || !companyData.companyDetail) {
+//       throw new Error('Company not found');
+//     }
+    
+//     const company = companyData.companyDetail;
+    
+//     // Prepare data for components (same structure as CompanyPageClient)
+//     const heroData = {
+//       heroImage: company.image || "",
+//       logo: company.image || "",
+//       name: company.title,
+//       shortName: company.title,
+//       category: company.category || "Business",
+//     };
+
+//     const infoData = {
+//       shortName: company.title,
+//       description: company.longDes || company.shortDes,
+//       yearFounded: company.founded || "N/A",
+//       employeeCount: company.teamSize || "N/A",
+//       location: company.location || "N/A",
+//       category: company.category || "N/A",
+//     };
+
+//     const statsData = [
+//       {
+//         label: "Global Presence",
+//         value: company.globalPresence || "10+ Countries",
+//       },
+//       { label: "Annual Revenue", value: company.revenue || "N/A" },
+//       {
+//         label: "Client Satisfaction",
+//         value: company.clientSatisfaction || "N/A",
+//       },
+//     ];
+
+//     return (
+//       <main className="min-h-screen">
+//         <CompanyClientWrapper 
+//           heroData={heroData}
+//           infoData={infoData}
+//           statsData={statsData}
+//         />
+//       </main>
+//     );
+    
+//   } catch (error) {
+//     console.error('Error in CompanyContent:', error);
+    
+//     // Return error page
+//     return (
+//       <main className="pt-16 flex items-center justify-center min-h-screen">
+//         <div className="text-center max-w-md mx-auto p-6 bg-red-50 rounded-lg border border-red-200">
+//           <h2 className="text-2xl font-bold text-red-700 mb-2">Company Not Found</h2>
+//           <p className="text-gray-700 mb-4">
+//             The requested company could not be found or there was an error loading the data.
+//           </p>
+//           <Link
+//             href="/companies"
+//             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors inline-block"
+//           >
+//             Back to Companies
+//           </Link>
+//         </div>
+//       </main>
+//     );
+//   }
+// }
+
+
+
+
 // app/companies/[slug]/page.tsx
 import { Suspense } from 'react';
-import Link from 'next/link';
 import Loading from '@/components/layout/loading';
-import CompanyClientWrapper from '@/components/company/CompanyClientWrapper';
+import CompanyPageClient from './CompanyPageClient';
 
 // Define the interface for company data
 interface CompanyData {
@@ -846,7 +1107,7 @@ interface CompanyData {
 // In Next.js 15, params is a Promise
 type Params = Promise<{ slug: string }>;
 
-// REQUIRED for static export - This function must be exported
+// STATIC PARAMS for build (minimal set) - SERVER COMPONENT
 export async function generateStaticParams() {
   try {
     console.log('Generating static params for companies...');
@@ -855,7 +1116,7 @@ export async function generateStaticParams() {
       headers: {
         'Content-Type': 'application/json',
       },
-      cache: 'force-cache'
+      cache: 'no-store' // Don't cache during build
     });
     
     if (!res.ok) {
@@ -941,7 +1202,7 @@ export async function generateMetadata(props: { params: Params }) {
   
   try {
     const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${params.slug}`, {
-      cache: 'force-cache',
+      cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
       }
@@ -975,105 +1236,14 @@ export async function generateMetadata(props: { params: Params }) {
   }
 }
 
-// Page component using params - proper Promise type
+// SERVER COMPONENT PAGE
 export default async function Page(props: { params: Params }) {
   // Await the params promise to get the actual slug
   const params = await props.params;
   
   return (
     <Suspense fallback={<Loading />}>
-      <CompanyContent slug={params.slug} />
+      <CompanyPageClient slug={params.slug} />
     </Suspense>
   );
-}
-
-// Company content component that handles data fetching
-async function CompanyContent({ slug }: { slug: string }) {
-  try {
-    console.log(`Fetching company data for slug: ${slug}`);
-    
-    // Fetch company data - use force-cache for static generation (same as business)
-    const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${slug}`, {
-      cache: 'force-cache', // ✅ Same as business page - use force-cache for static export
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    
-    if (!res.ok) {
-      throw new Error(`Failed to fetch company data: ${res.status}`);
-    }
-    
-    const data = await res.json();
-    console.log("Company data from API:", data.data);
-    
-    const companyData: CompanyData = data.data;
-    
-    if (!companyData || !companyData.companyDetail) {
-      throw new Error('Company not found');
-    }
-    
-    const company = companyData.companyDetail;
-    
-    // Prepare data for components (same structure as CompanyPageClient)
-    const heroData = {
-      heroImage: company.image || "",
-      logo: company.image || "",
-      name: company.title,
-      shortName: company.title,
-      category: company.category || "Business",
-    };
-
-    const infoData = {
-      shortName: company.title,
-      description: company.longDes || company.shortDes,
-      yearFounded: company.founded || "N/A",
-      employeeCount: company.teamSize || "N/A",
-      location: company.location || "N/A",
-      category: company.category || "N/A",
-    };
-
-    const statsData = [
-      {
-        label: "Global Presence",
-        value: company.globalPresence || "10+ Countries",
-      },
-      { label: "Annual Revenue", value: company.revenue || "N/A" },
-      {
-        label: "Client Satisfaction",
-        value: company.clientSatisfaction || "N/A",
-      },
-    ];
-
-    return (
-      <main className="min-h-screen">
-        <CompanyClientWrapper 
-          heroData={heroData}
-          infoData={infoData}
-          statsData={statsData}
-        />
-      </main>
-    );
-    
-  } catch (error) {
-    console.error('Error in CompanyContent:', error);
-    
-    // Return error page
-    return (
-      <main className="pt-16 flex items-center justify-center min-h-screen">
-        <div className="text-center max-w-md mx-auto p-6 bg-red-50 rounded-lg border border-red-200">
-          <h2 className="text-2xl font-bold text-red-700 mb-2">Company Not Found</h2>
-          <p className="text-gray-700 mb-4">
-            The requested company could not be found or there was an error loading the data.
-          </p>
-          <Link
-            href="/companies"
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors inline-block"
-          >
-            Back to Companies
-          </Link>
-        </div>
-      </main>
-    );
-  }
 }
