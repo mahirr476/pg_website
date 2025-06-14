@@ -427,7 +427,7 @@ const Certificates = ({ certificates }: CertificatesProps) => {
   const [loadedImages, setLoadedImages] = useState<{[key: string]: boolean}>({});
   
   // ✅ FIXED: Use same image processing logic as other components
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://api.pg-admin.57.155.183.218.nip.io';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.pg-admin.57.155.183.218.nip.io';
 
   // Default fallback image
   const defaultImage = '/images/business/business-hero-bg.jpg';

@@ -207,7 +207,7 @@ const CSRActivities: React.FC<CSRActivitiesProps> = ({ title, description, detai
   const [loadedImages, setLoadedImages] = useState<{[key: string]: boolean}>({});
 
   // Fixed API base URL - same as BoardOfDirectors component
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://api.pg-admin.57.155.183.218.nip.io';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.pg-admin.57.155.183.218.nip.io';
 
   // Process activity image paths - same logic as BoardOfDirectors
   const processActivityImage = (imagePath: string): string => {

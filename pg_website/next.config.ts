@@ -390,3 +390,120 @@ const nextConfig: NextConfig = {
 }
 
 export default nextConfig
+
+
+
+
+
+// import type { NextConfig } from 'next'
+
+// const nextConfig: NextConfig = {
+//   // Disable ESLint during build process
+//   eslint: {
+//     ignoreDuringBuilds: true,
+//   },
+//   // Disable TypeScript type checking during build (optional)
+//   typescript: {
+//     ignoreBuildErrors: true,
+//   },
+  
+//   // ✅ ENABLE FOR PRODUCTION BUILD
+//   output: 'export',
+  
+//   // ✅ RESTORE: basePath and assetPrefix for subdirectory hosting
+//   basePath: '/pg_group',
+//   assetPrefix: '/pg_group',
+  
+//   trailingSlash: true,
+  
+//   // Configure images for static export
+//   images: {
+//     // Always disable optimization for static export
+//     unoptimized: true,
+//     remotePatterns: [
+//       {
+//         protocol: 'https', // ✅ CHANGED: Use HTTPS first
+//         hostname: 'api.pg-admin.57.155.183.218.nip.io',
+//         port: '',
+//         pathname: '/uploads/**',
+//       },
+//       {
+//         protocol: 'http',
+//         hostname: 'api.pg-admin.57.155.183.218.nip.io',
+//         port: '',
+//         pathname: '/uploads/**',
+//       },
+//       // Direct IP access
+//       {
+//         protocol: 'https', // ✅ CHANGED: Use HTTPS first
+//         hostname: '57.155.62.78',
+//         port: '7000',
+//         pathname: '/uploads/**',
+//       },
+//       {
+//         protocol: 'http',
+//         hostname: '57.155.62.78',
+//         port: '7000',
+//         pathname: '/uploads/**',
+//       },
+//       {
+//         protocol: 'https', // ✅ CHANGED: Use HTTPS first
+//         hostname: '57.155.62.78',
+//         port: '',
+//         pathname: '/uploads/**',
+//       },
+//       {
+//         protocol: 'http',
+//         hostname: '57.155.62.78',
+//         port: '',
+//         pathname: '/uploads/**',
+//       }
+//     ],
+//     // Broader domain matching
+//     domains: [
+//       'api.pg-admin.57.155.183.218.nip.io',
+//       '57.155.62.78'
+//     ],
+//     // More permissive settings for development
+//     dangerouslyAllowSVG: true,
+//     contentDispositionType: 'attachment',
+//     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+//     // Increase timeout for slow responses
+//     minimumCacheTTL: 60,
+//   },
+  
+//   // ✅ FIXED: Handle CORS and security headers for HTTPS
+//   async headers() {
+//     return [
+//       {
+//         source: '/(.*)',
+//         headers: [
+//           {
+//             key: 'Content-Security-Policy',
+//             value: "img-src 'self' data: https: http: *.nip.io 57.155.62.78 api.pg-admin.57.155.183.218.nip.io; upgrade-insecure-requests;",
+//           },
+//           // Add CORS headers
+//           {
+//             key: 'Access-Control-Allow-Origin',
+//             value: '*',
+//           },
+//           {
+//             key: 'Access-Control-Allow-Methods',
+//             value: 'GET, POST, PUT, DELETE, OPTIONS',
+//           },
+//           {
+//             key: 'Access-Control-Allow-Headers',
+//             value: 'Content-Type, Authorization',
+//           },
+//           // ✅ NEW: Referrer policy for better security
+//           {
+//             key: 'Referrer-Policy',
+//             value: 'strict-origin-when-cross-origin',
+//           },
+//         ],
+//       },
+//     ];
+//   },
+// }
+
+// export default nextConfig

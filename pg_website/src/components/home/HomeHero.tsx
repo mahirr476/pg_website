@@ -77,7 +77,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({ heroes, impacts, onBusinessClick, o
   const [imageStatus, setImageStatus] = useState<{[key: string]: 'loading' | 'success' | 'error'}>({});
 
   // Fixed API base URL
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://api.pg-admin.57.155.183.218.nip.io';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.pg-admin.57.155.183.218.nip.io';
 
   // Process API images with the correct URL format
   const processApiImages = (heroes: Hero[]): string[] => {

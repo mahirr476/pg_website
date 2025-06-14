@@ -239,7 +239,7 @@ export default function MediaPage() {
       try {
         setLoading(true);
         // Fetch media data from API
-        const response = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/media');
+        const response = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/media');
         
         if (!response.ok) {
           throw new Error(`Failed to fetch media data: ${response.status} ${response.statusText}`);

@@ -325,7 +325,7 @@ const BusinessHero = ({ data }: BusinessHeroProps) => {
   const heroRef = useRef<HTMLDivElement>(null);
 
   // Fixed API base URL - same as HomeHero
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://api.pg-admin.57.155.183.218.nip.io';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.pg-admin.57.155.183.218.nip.io';
 
   // Default fallback image
   const defaultImage = '/images/business/business-hero-bg.jpg';
