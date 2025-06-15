@@ -299,7 +299,7 @@ interface TimelineProps {
 const processApiImage = (imagePath: string): string => {
   if (!imagePath) return '';
   
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://api.pg-admin.57.155.183.218.nip.io';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.pg-admin.57.155.183.218.nip.io';
   
   let finalUrl: string;
   
