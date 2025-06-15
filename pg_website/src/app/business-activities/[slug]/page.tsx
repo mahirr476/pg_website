@@ -633,6 +633,46 @@ export async function generateStaticParams() {
   }
 }
 
+// Optional: Generate metadata for each page
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
+  
+  try {
+    const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business/${params.slug}`, {
+      cache: 'force-cache', // ✅ FIXED: Use force-cache for static export
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!res.ok) {
+      return {
+        title: 'Business Not Found',
+        description: 'The requested business could not be found.',
+      };
+    }
+
+    const data = await res.json();
+    const business = data.data?.business;
+
+    return {
+      title: business?.title || 'Business Activity',
+      description: business?.shortDes || 'Business activity information',
+      openGraph: {
+        title: business?.title || 'Business Activity',
+        description: business?.shortDes || 'Business activity information',
+        images: business?.image ? [business.image] : [],
+      },
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'Business Activity',
+      description: 'Business activity information',
+    };
+  }
+}
+
 // In Next.js 15, params is a Promise
 type Params = Promise<{ slug: string }>;
 

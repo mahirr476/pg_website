@@ -1202,7 +1202,7 @@ export async function generateMetadata(props: { params: Params }) {
   
   try {
     const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${params.slug}`, {
-      cache: 'no-store',
+      cache: 'force-cache', // ✅ FIXED: Use force-cache for static export
       headers: {
         'Content-Type': 'application/json',
       }
