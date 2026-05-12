@@ -105,6 +105,9 @@ export const metadata: Metadata = {
   icons: {
     icon: `${siteUrl}/images/plogo1.png`,
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '7oP9YST7dZkfXJw2DhHwv9A0ud8HGP4AiETRD6cfq3A',
+  },
   openGraph: {
     title: 'Paragon Group',
     description: 'Paragon Group is your trusted partner for excellence and innovation.',

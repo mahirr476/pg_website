@@ -224,7 +224,11 @@ const Footer = () => {
     },
     {
       icon: <Phone className="w-5 h-5" />,
-      info: "+88 02 9882107-8"
+      info: "+8801711630515"
+    },
+    {
+      icon: <Phone className="w-5 h-5" />,
+      info: "+8809678882102"
     },
     {
       icon: <Mail className="w-5 h-5" />,

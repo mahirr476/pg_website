@@ -32,7 +32,7 @@ const ContactInfo = ({
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Call Us",
-      details: phone.split(',').map((line) => line.trim()),
+      details: ["+8801711630515", "+8809678882102"],
     },
     {
       icon: <Mail className="w-6 h-6" />,
