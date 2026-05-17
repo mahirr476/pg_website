@@ -185,6 +185,8 @@ import MediaHero from '@/components/media/MediaHero';
 import VideoGallery from '@/components/media/VideoGallery';
 import NewsArticles from '@/components/media/NewsArticles';
 import MediaContact from '@/components/media/MediaContact';
+import FeaturedIn from '@/components/media/FeaturedIn';
+import LeadershipPodcast from '@/components/media/LeadershipPodcast';
 import Loading from '@/components/layout/loading';
 
 // Define interfaces for the media data based on the actual JSON structure
@@ -338,6 +340,8 @@ export default function MediaPage() {
     <main className="min-h-screen">
       <MediaHero data={heroData} />
       {/* <PressReleases /> */}
+      <FeaturedIn />
+      <LeadershipPodcast />
       <VideoGallery videos={videoData} />
       <NewsArticles articles={newsData} />
       <MediaContact data={contactData} />

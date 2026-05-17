@@ -10,6 +10,7 @@ import StatsSection from '@/components/home/StatsSection';
 import LatestNews from '@/components/home/LatestNews';
 import CTASection from '@/components/home/CTASection';
 import Loading from '@/components/layout/loading';
+import MediaPopup from '@/components/layout/MediaPopup';
 
 // Define types for our API response
 interface Hero {
@@ -124,6 +125,7 @@ export default function HomePage() {
 
   return (
     <main className="pt-16">
+      <MediaPopup />
       <HomeHero 
         heroes={safeHomeData.heroes} 
         impacts={safeHomeData.impacts} 
