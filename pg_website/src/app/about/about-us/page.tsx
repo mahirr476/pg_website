@@ -195,7 +195,7 @@ export default function AboutUsPage() {
         setAboutData(jsonData.data);
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : 'Failed to load about data');
         setLoading(false);
       }
     };
@@ -203,9 +203,16 @@ export default function AboutUsPage() {
     fetchAboutData();
   }, []);
 
-  if (loading) return <Loading/>
-  if (error) return <div className="pt-16 text-center">Error: {error}</div>;
-  
+  if (loading) return <Loading />;
+  if (error || !aboutData) return (
+    <div className="pt-16 flex items-center justify-center min-h-screen">
+      <div className="text-center max-w-md mx-auto p-6 bg-red-50 rounded-lg">
+        <h2 className="text-2xl font-bold text-red-700 mb-2">Error Loading Page</h2>
+        <p className="text-gray-700">{error || 'Failed to load data. Please try again later.'}</p>
+      </div>
+    </div>
+  );
+
   const { aboutUs, impacts, milestone, boardContent, boardDirector } = aboutData;
 
   // Find the Companies and Years impacts
