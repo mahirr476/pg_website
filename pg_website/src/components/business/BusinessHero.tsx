@@ -1,5 +1,6 @@
 
 
+
 // 'use client';
 // import { motion, AnimatePresence } from 'framer-motion';
 // import Image from 'next/image';
@@ -36,41 +37,47 @@
 //     return () => clearTimeout(timer);
 //   }, []);
 
-//   // Debounce function to prevent rapid triggers
-//   const debounce = (func: Function, wait: number) => {
+//   // Improved debounce function with proper typing
+//   const debounce = <T extends (...args: unknown[]) => void>(
+//     func: T, 
+//     wait: number
+//   ): ((...args: Parameters<T>) => void) => {
 //     let timeout: NodeJS.Timeout;
-//     return (...args: any[]) => {
+//     return (...args: Parameters<T>) => {
 //       clearTimeout(timeout);
 //       timeout = setTimeout(() => func(...args), wait);
 //     };
 //   };
 
 //   // Handle scroll with debounce and proper checks
-//   const handleScroll = useCallback(
-//     debounce(() => {
-//       const currentScrollY = window.scrollY;
-      
-//       // Only update if scroll position actually changed significantly
-//       if (Math.abs(currentScrollY - lastScrollY) > 50) {
-//         setShowScrollTop(currentScrollY > 300);
-//         setLastScrollY(currentScrollY);
-//       }
-//     }, 100),
-//     [lastScrollY]
+//   const handleScroll = useCallback(() => {
+//     const currentScrollY = window.scrollY;
+    
+//     // Only update if scroll position actually changed significantly
+//     if (Math.abs(currentScrollY - lastScrollY) > 50) {
+//       setShowScrollTop(currentScrollY > 300);
+//       setLastScrollY(currentScrollY);
+//     }
+//   }, [lastScrollY]);
+
+//   // Debounced scroll handler
+//   const debouncedHandleScroll = useCallback(
+//     debounce(handleScroll, 100),
+//     [handleScroll]
 //   );
 
 //   useEffect(() => {
 //     // Add event listener with passive option for better performance
-//     window.addEventListener('scroll', handleScroll, { passive: true });
+//     window.addEventListener('scroll', debouncedHandleScroll, { passive: true });
 
 //     // Initial check
-//     handleScroll();
+//     debouncedHandleScroll();
 
 //     // Cleanup on unmount
 //     return () => {
-//       window.removeEventListener('scroll', handleScroll);
+//       window.removeEventListener('scroll', debouncedHandleScroll);
 //     };
-//   }, [handleScroll]);
+//   }, [debouncedHandleScroll]);
 
 //   // Safe scroll to top function
 //   const scrollToTop = (e: React.MouseEvent) => {
@@ -293,6 +300,7 @@
 
 
 
+
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
@@ -312,12 +320,80 @@ const BusinessHero = ({ data }: BusinessHeroProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [processedImageUrl, setProcessedImageUrl] = useState<string>('');
+  const [imageStatus, setImageStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const heroRef = useRef<HTMLDivElement>(null);
 
-  // Process image path for proper handling
-  const imagePath = data.img
-    ? `http://localhost:7000/${data.img.replace(/^public\//, '')}`
-    : '/images/business/business-hero-bg.jpg';
+  // Fixed API base URL - same as HomeHero
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.pg-admin.57.155.183.218.nip.io';
+
+  // Default fallback image
+  const defaultImage = '/images/business/business-hero-bg.jpg';
+
+  // Process API image with the correct URL format - same logic as HomeHero
+  const processApiImage = (imagePath: string): string => {
+    if (!imagePath) return '';
+    
+    let finalUrl: string;
+    
+    if (imagePath.startsWith('public/')) {
+      // Path already has 'public/' prefix
+      finalUrl = `${API_BASE_URL}/${imagePath}`;
+    } else if (imagePath.startsWith('uploads/')) {
+      // Path has 'uploads/' prefix, add 'public/'
+      finalUrl = `${API_BASE_URL}/public/${imagePath}`;
+    } else {
+      // Path has no prefix, add 'public/uploads/'
+      finalUrl = `${API_BASE_URL}/public/uploads/${imagePath}`;
+    }
+    
+    return finalUrl;
+  };
+
+  // Test image URL and set status - same logic as HomeHero
+  useEffect(() => {
+    console.log('BusinessHero Debug - Original img prop:', data.img);
+    console.log('BusinessHero Debug - API_BASE_URL:', API_BASE_URL);
+    
+    if (!data.img) {
+      console.log('BusinessHero Debug - No img provided, using default');
+      setProcessedImageUrl(defaultImage);
+      setImageStatus('success');
+      return;
+    }
+
+    const processedUrl = processApiImage(data.img);
+    console.log('BusinessHero Debug - Processed URL:', processedUrl);
+    setProcessedImageUrl(processedUrl);
+
+    const testImage = async () => {
+      try {
+        console.log('BusinessHero Debug - Testing image URL:', processedUrl);
+        const response = await fetch(processedUrl, { 
+          method: 'HEAD',
+          mode: 'cors'
+        });
+        
+        console.log('BusinessHero Debug - Response status:', response.status, response.ok);
+        
+        if (response.ok) {
+          console.log('BusinessHero Debug - Image test SUCCESS');
+          setImageStatus('success');
+        } else {
+          console.log('BusinessHero Debug - Image test FAILED - Using default image');
+          setProcessedImageUrl(defaultImage);
+          setImageStatus('success');
+        }
+      } catch (error) {
+        console.error('BusinessHero Debug - Image test ERROR:', error);
+        console.warn(`Failed to load image: ${processedUrl}, using default image`, error);
+        setProcessedImageUrl(defaultImage);
+        setImageStatus('success');
+      }
+    };
+
+    testImage();
+  }, [data.img]);
 
   // Animation trigger after component mounts
   useEffect(() => {
@@ -398,16 +474,31 @@ const BusinessHero = ({ data }: BusinessHeroProps) => {
           transition={{ duration: 2.5, ease: "easeOut" }}
           className="absolute inset-0"
         >
-          <Image
-            src={imagePath}
-            alt={data.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-            quality={100}
-            onLoadingComplete={() => setIsLoaded(true)}
-          />
+          {imageStatus === 'success' && processedImageUrl ? (
+            <Image
+              src={processedImageUrl}
+              alt={data.title}
+              fill
+              className="object-cover object-center"
+              priority
+              sizes="100vw"
+              quality={85}
+              onLoadingComplete={() => {
+                console.log(`BusinessHero image loaded successfully: ${processedImageUrl}`);
+                setIsLoaded(true);
+              }}
+              onError={(e) => {
+                console.error(`BusinessHero image failed to load: ${processedImageUrl}`);
+                // Fallback to default image on error
+                if (processedImageUrl !== defaultImage) {
+                  setProcessedImageUrl(defaultImage);
+                }
+              }}
+            />
+          ) : (
+            // Fallback background when image is not available - same as HomeHero
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900" />
+          )}
           
           {/* Image overlay */}
           <div className="absolute inset-0 bg-black/40" />
@@ -564,6 +655,8 @@ const BusinessHero = ({ data }: BusinessHeroProps) => {
             </motion.div>
           </div>
         </div>
+
+
       </div>
 
       {/* Scroll to top button - Blue by default, orange on hover */}

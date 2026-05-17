@@ -56,11 +56,12 @@ const Loading: React.FC = () => {
       <div className="relative">
         <Image
           ref={imageRef}
-          src="/images/loader.gif"
+          // src="/images/loader.gif"
+          src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/loader.gif`}
           alt="Loading..."
           width={imageWidth}
           height={imageWidth}
-          priority
+          // priority
           onLoad={handleImageLoad}
           className="object-contain"
           unoptimized // Added to fix the animated GIF warning

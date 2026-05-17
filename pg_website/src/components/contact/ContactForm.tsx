@@ -101,7 +101,7 @@ const ContactForm = () => {
         message: formData.message,
       };
 
-      const response = await fetch('http://localhost:7000/api/v1/pg/contact-form', {
+      const response = await fetch('https://localhost:7000/api/v1/pg/contact-form', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
