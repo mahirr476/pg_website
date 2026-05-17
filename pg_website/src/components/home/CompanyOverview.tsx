@@ -351,7 +351,7 @@ const CompanyOverview: React.FC<CompanyOverviewProps> = ({ heroes }) => {
               <Button 
                 className="bg-company-orange hover:bg-company-orange/90 text-white group"
               >
-                Learn More About Us
+                Learn More About Paragon
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
