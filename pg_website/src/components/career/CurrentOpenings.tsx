@@ -26,7 +26,7 @@ function isExpired(applyLastDate: string | null | undefined): boolean {
   if (!applyLastDate) return false;
   const deadline = new Date(applyLastDate);
   if (isNaN(deadline.getTime())) return false;
-  // Compare at day boundary — set deadline to end of that day
+  // Compare at day boundary — set deadline to end of that day career page
   deadline.setHours(23, 59, 59, 999);
   return Date.now() > deadline.getTime();
 }
