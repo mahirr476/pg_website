@@ -12,8 +12,24 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Briefcase, Building2, MapPin, Loader2, AlertTriangle } from 'lucide-react';
+import { Briefcase, Building2, MapPin, Loader2, AlertTriangle, Calendar, Clock } from 'lucide-react';
 import { fetchPublicJobsWithError, type PublicJob } from '@/lib/jobs';
+
+function formatDate(dateStr: string | null | undefined): string | null {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return null;
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function isExpired(applyLastDate: string | null | undefined): boolean {
+  if (!applyLastDate) return false;
+  const deadline = new Date(applyLastDate);
+  if (isNaN(deadline.getTime())) return false;
+  // Compare at day boundary — set deadline to end of that day
+  deadline.setHours(23, 59, 59, 999);
+  return Date.now() > deadline.getTime();
+}
 
 const CurrentOpenings = () => {
   const [jobs, setJobs] = useState<PublicJob[]>([]);
@@ -75,53 +91,89 @@ const CurrentOpenings = () => {
               <p className="text-sm">Please check back soon.</p>
             </div>
           ) : (
-            jobs.map((job, index) => (
-              <motion.div
-                key={job.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card className="hover:shadow-lg transition-shadow duration-300">
-                  <CardHeader>
-                    <div className="flex justify-between items-start gap-4">
-                      <div className="min-w-0">
-                        <CardTitle className="text-xl mb-2 truncate">
-                          {job.name}
-                        </CardTitle>
-                        <CardDescription className="flex items-center gap-1.5">
-                          <Building2 className="w-3.5 h-3.5 shrink-0" />
-                          {job.company?.name || '—'}
-                        </CardDescription>
+            jobs.map((job, index) => {
+              const expired = isExpired(job.applyLastDate);
+              const publishedOn = formatDate(job.publishDate);
+              const deadline = formatDate(job.applyLastDate);
+
+              return (
+                <motion.div
+                  key={job.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Card className={`transition-shadow duration-300 ${expired ? 'opacity-60 bg-gray-50' : 'hover:shadow-lg'}`}>
+                    <CardHeader>
+                      <div className="flex justify-between items-start gap-4">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <CardTitle className={`text-xl truncate ${expired ? 'text-gray-500' : ''}`}>
+                              {job.name}
+                            </CardTitle>
+                            {expired && (
+                              <Badge variant="destructive" className="shrink-0 text-xs">
+                                Expired
+                              </Badge>
+                            )}
+                          </div>
+                          <CardDescription className="flex items-center gap-1.5">
+                            <Building2 className="w-3.5 h-3.5 shrink-0" />
+                            {job.company?.name || '—'}
+                          </CardDescription>
+                        </div>
+                        {expired ? (
+                          <Button disabled variant="outline" className="shrink-0 text-gray-400">
+                            Expired
+                          </Button>
+                        ) : (
+                          <Button asChild className="shrink-0">
+                            <Link href={`/career/${encodeURIComponent(job.slug)}`}>
+                              View Details
+                            </Link>
+                          </Button>
+                        )}
                       </div>
-                      <Button asChild>
-                        <Link href={`/career/${encodeURIComponent(job.slug)}`}>
-                          View Details
-                        </Link>
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {job.department?.name && (
-                        <Badge variant="secondary">{job.department.name}</Badge>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="flex flex-wrap gap-2">
+                        {job.department?.name && (
+                          <Badge variant="secondary">{job.department.name}</Badge>
+                        )}
+                        {job.location && (
+                          <Badge variant="secondary" className="inline-flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            {job.location}
+                          </Badge>
+                        )}
+                        {job.jobType && <Badge variant="secondary">{job.jobType}</Badge>}
+                        {job.requiredExperience && (
+                          <Badge variant="secondary">{job.requiredExperience}</Badge>
+                        )}
+                      </div>
+
+                      {(publishedOn || deadline) && (
+                        <div className="flex flex-wrap gap-4 text-xs text-gray-500 pt-1 border-t border-gray-100">
+                          {publishedOn && (
+                            <span className="inline-flex items-center gap-1">
+                              <Calendar className="w-3.5 h-3.5" />
+                              Published: {publishedOn}
+                            </span>
+                          )}
+                          {deadline && (
+                            <span className={`inline-flex items-center gap-1 ${expired ? 'text-red-500 font-medium' : ''}`}>
+                              <Clock className="w-3.5 h-3.5" />
+                              Last date: {deadline}
+                            </span>
+                          )}
+                        </div>
                       )}
-                      {job.location && (
-                        <Badge variant="secondary" className="inline-flex items-center gap-1">
-                          <MapPin className="w-3 h-3" />
-                          {job.location}
-                        </Badge>
-                      )}
-                      {job.jobType && <Badge variant="secondary">{job.jobType}</Badge>}
-                      {job.requiredExperience && (
-                        <Badge variant="secondary">{job.requiredExperience}</Badge>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              );
+            })
           )}
         </div>
       </div>

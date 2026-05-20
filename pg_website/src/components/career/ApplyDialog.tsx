@@ -184,25 +184,27 @@ export default function ApplyDialog({ open, onClose, jobSlug, jobTitle }: ApplyD
           {/* Backdrop */}
           <motion.div
             key="apply-backdrop"
-            className="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
 
-          {/* Full-screen panel sliding from the top */}
+          {/* Full-screen panel sliding from the top — z-index above the
+              site navbar so the dialog header is never clipped. */}
           <motion.div
             key="apply-panel"
-            className="fixed inset-0 z-50 flex flex-col bg-white"
+            className="fixed inset-0 z-[101] flex flex-col bg-white"
             variants={panelVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
           >
-            {/* Header */}
+            {/* Header — extra top padding so the title + close button never
+                sit underneath any sticky site nav, even on shorter screens. */}
             <div
-              className="relative text-white px-6 sm:px-10 py-6 flex items-start justify-between shrink-0 overflow-hidden"
+              className="relative text-white px-6 sm:px-10 pt-12 sm:pt-14 pb-6 flex items-start justify-between shrink-0 overflow-hidden"
               style={{ background: BRAND_GRADIENT }}
             >
               {/* Decorative shapes */}
