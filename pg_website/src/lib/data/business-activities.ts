@@ -158,7 +158,7 @@ export type BusinessActivity = {
 
       {
         "id": "plastics",
-        "slug": "plastic-woven-bags",
+        "slug": "plastic-bags",
         "title": "Plastic Woven Bags & FIBC",
         "heroImage": "/images/business/plastics-hero.jpg",
         "heroStatement": "Modern packaging solutions with global reach since 2007",
@@ -246,7 +246,7 @@ export type BusinessActivity = {
 
     {
         "id": "tea",
-        "slug": "tea-estates-horticulture",
+        "slug": "tea-estates",
         "title": "Tea Estates & Horticulture",
         "heroImage": "/images/business/tea-hero.jpg",
         "heroStatement": "Premium tea cultivation and modern horticulture since 2001",
@@ -433,7 +433,7 @@ export type BusinessActivity = {
 
     {
         "id": "feed",
-        "slug": "feed-mills",
+        "slug": "feedmills",
         "title": "Feed Mills",
         "heroImage": "/images/business/feed-hero.jpg",
         "heroStatement": "Leading feed production ensuring food security since 1996",
@@ -765,6 +765,88 @@ export type BusinessActivity = {
     },
 
     {
+        "id": "flourmill",
+        "slug": "flour-mill",
+        "title": "Flour Mill Limited",
+        "heroImage": "/images/business/footwear-hero.jpg",
+        "heroStatement": "Quality footwear manufacturing with global standards since 2018",
+        "description": "Established in 2018, ParaSole Footwear limited is fully compliance factory regarding workforce as per Bangladesh government labor law. We develop footwear- from provided sketch or picture or concept. ParaSole assures product will meet customers standards as production team initiates production process by communicating with quality control, quality assurance and production planning. Our strong team confirms every order is handled with care and to be delivered on time.",
+        "businessOperations": {
+            "description": "Operating with 617 machines across multiple departments, our 105,826 sq ft facility maintains rigorous quality standards throughout the production process.",
+            "points": [
+                "Production capacity: 10,000 pairs/day (4-line production, single shift)",
+                "Workforce: 1,324 skilled employees",
+                "Production area: 47,900 sq ft",
+                "Warehouse area: 17,800 sq ft",
+                "Export Development Fund: USD 5.8 Million"
+            ]
+        },
+        "productCategory": {
+            "description": "ParaSole Footwear Ltd. is a Manufacturer and 100% Exporter of all kinds of Shoes, developing footwear from provided sketches, pictures, or concepts.",
+            "categories": [
+                {
+                    "title": "Men's Collection",
+                    "items": [
+                        "Boots",
+                        "Sandals",
+                        "Running Shoes",
+                        "Sports Shoes",
+                        "Casual Shoes"
+                    ]
+                },
+                {
+                    "title": "Women's Collection",
+                    "items": [
+                        "Boots",
+                        "Sandals",
+                        "Running Shoes",
+                        "Fashion Shoes",
+                        "Casual Shoes"
+                    ]
+                },
+                {
+                    "title": "Kids' Collection",
+                    "items": [
+                        "Sandals",
+                        "Running Shoes",
+                        "Sports Shoes",
+                        "Casual Shoes",
+                        "Fashion Shoes"
+                    ]
+                }
+            ]
+        },
+        "businessUnits": [
+            "Cutting & Preparation Department",
+            "Printing & Lamination Department",
+            "Stitching & Upper Making Department",
+            "Lasting Department",
+            "Gluing & Assembly Department",
+            "Finishing Department",
+            "Insole Section",
+            "Store Department",
+            "Laboratory Department"
+        ],
+        "certificates": [
+            {
+                "name": "ISO 9001",
+                "image": "/images/certificates/iso9001.png",
+                "description": "Quality Management System"
+            },
+            {
+                "name": "BSCI",
+                "image": "/images/certificates/bsci.png",
+                "description": "Business Social Compliance Initiative"
+            },
+            {
+                "name": "SEDEX",
+                "image": "/images/certificates/sedex.png",
+                "description": "Supplier Ethical Data Exchange"
+            }
+        ]
+    },
+
+    {
         "id": "footwear",
         "slug": "footwear",
         "title": "ParaSole Footwear Limited",
@@ -848,7 +930,7 @@ export type BusinessActivity = {
 
     {
         "id": "dairy",
-        "slug": "dairy-project",
+        "slug": "dairy",
         "title": "Dairy Project",
         "heroImage": "/images/business/dairy-hero.jpg",
         "heroStatement": "Modern dairy solutions from farm to table since 2019",
@@ -925,7 +1007,10 @@ export type BusinessActivity = {
 
 ]
 
-    
+
+
+
+  
 
 export function getBusinessActivityBySlug(slug: string): BusinessActivity | undefined {
     return businessActivities.find(activity => activity.slug === slug);

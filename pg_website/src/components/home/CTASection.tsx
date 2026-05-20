@@ -1,3 +1,4 @@
+
 'use client';
 // src/components/home/CTASection.tsx
 import { motion } from 'framer-motion';
@@ -7,13 +8,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   ArrowRight, 
   Mail, 
-  Phone, 
   Building2, 
   Users,
   ChevronRight
 } from 'lucide-react';
 
-const CTASection = () => {
+interface Hero {
+  id: number;
+  index: number;
+  title: string;
+  description: string;
+}
+
+interface CTASectionProps {
+  heroes: Hero[];
+}
+
+const CTASection: React.FC<CTASectionProps> = ({ heroes }) => {
+  // Get the sixth hero (index 6) for the section title and description
+  const ctaHero = heroes.find(hero => hero.index === 6) || heroes[5] || heroes[0];
+
   const contactOptions = [
     {
       icon: <Mail className="w-8 h-8" />,
@@ -63,9 +77,9 @@ const CTASection = () => {
             viewport={{ once: true }}
             className="text-center text-white mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4">Ready to Partner With Us?</h2>
+            <h2 className="text-4xl font-bold mb-4">{ctaHero?.title || ""}</h2>
             <p className="text-xl text-company-light/90">
-              Join our journey of innovation and sustainable growth across multiple industries
+              {ctaHero?.description || ""}
             </p>
           </motion.div>
 

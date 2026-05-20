@@ -44,3 +44,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* //loading */
+
+@keyframes barLoader {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-barLoader {
+  animation: barLoader 2s linear infinite;
+}

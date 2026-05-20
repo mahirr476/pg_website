@@ -1,10 +1,23 @@
+
 'use client';
-// src/components/about/OurMission.tsx
+
 import { motion } from 'framer-motion';
 import { Target, Heart, Globe, Award, Lightbulb, Users } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 
-const OurMission = () => {
+interface OurMissionProps {
+  mission: string;
+  vision: string;
+  commitedTitle: string;
+  commitedDescrip: string;
+}
+
+const OurMission: React.FC<OurMissionProps> = ({ 
+  mission, 
+  vision,
+  commitedTitle,
+  commitedDescrip
+}) => {
   const coreValues = [
     {
       icon: <Heart className="w-6 h-6 text-company-orange" />,
@@ -39,9 +52,7 @@ const OurMission = () => {
             <Target className="w-12 h-12 text-company-orange mb-6" />
             <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
             <p className="text-gray-100 leading-relaxed relative z-10">
-              To be a catalyst for positive change through sustainable business practices, 
-              innovative solutions, and commitment to excellence across diverse sectors, 
-              while creating lasting value for our stakeholders and communities.
+              {mission}
             </p>
           </motion.div>
 
@@ -56,14 +67,12 @@ const OurMission = () => {
             <Globe className="w-12 h-12 text-white mb-6" />
             <h2 className="text-2xl font-bold mb-4">Our Vision</h2>
             <p className="text-gray-100 leading-relaxed relative z-10">
-              To be a leading force in sustainable business development, setting industry 
-              standards for innovation, quality, and corporate responsibility while fostering 
-              growth and prosperity in the communities we serve.
+              {vision}
             </p>
           </motion.div>
         </div>
 
-        {/* Core Values */}
+        {/* Core Values with styled title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -71,7 +80,12 @@ const OurMission = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold mb-4 text-company-royal">Our Core Values</h2>
+          <div className="inline-block relative mb-4">
+            <span className="absolute -inset-1 bg-gradient-to-r from-company-royal/20 to-company-orange/20 blur-sm"></span>
+            <h2 className="relative text-3xl font-bold text-company-royal">
+              Our Core Values
+            </h2>
+          </div>
           <p className="text-gray-600 max-w-2xl mx-auto">
             The principles that guide our actions and shape our culture
           </p>
@@ -113,12 +127,10 @@ const OurMission = () => {
         >
           <Award className="w-12 h-12 mx-auto mb-4 text-company-orange" />
           <h3 className="text-2xl font-bold mb-4">
-            Committed to Excellence
+            {commitedTitle}
           </h3>
           <p className="max-w-2xl mx-auto text-gray-100">
-            Our dedication to these principles has established us as a trusted leader 
-            across multiple industries, driving sustainable growth and innovation while 
-            maintaining the highest standards of corporate responsibility.
+            {commitedDescrip}
           </p>
         </motion.div>
       </div>
