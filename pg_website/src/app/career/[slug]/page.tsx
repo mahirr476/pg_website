@@ -1,6 +1,16 @@
 // app/career/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { fetchPublicJobs } from '@/lib/jobs';
+
+export async function generateStaticParams() {
+  try {
+    const jobs = await fetchPublicJobs();
+    return jobs.map((job) => ({ slug: job.slug }));
+  } catch {
+    return [];
+  }
+}
 import {
   ArrowLeft,
   Briefcase,
