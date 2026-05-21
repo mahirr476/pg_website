@@ -816,6 +816,14 @@ const Header = () => {
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
+                    <Link href="/career" className={navigationMenuTriggerStyle()}>
+                      Career
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
                     <Link href="/media" className={navigationMenuTriggerStyle()}>
                       Media
                     </Link>
@@ -990,8 +998,19 @@ const Header = () => {
                 </div>
               </div>
 
-              {/* Media */}
+              {/* Career */}
               <div className="mobile-menu-item" style={{animationDelay: '0.6s'}}>
+                <Link
+                  href="/career"
+                  className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  onClick={handleMobileItemClick}
+                >
+                  <span className="font-medium">Career</span>
+                </Link>
+              </div>
+
+              {/* Media */}
+              <div className="mobile-menu-item" style={{animationDelay: '0.65s'}}>
                 <Link
                   href="/media"
                   className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200"
