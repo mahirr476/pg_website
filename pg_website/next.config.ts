@@ -1,32 +1,18 @@
 import type { NextConfig } from 'next'
 
-// Only use basePath in production
-const isProd = process.env.NODE_ENV === 'production'
-
 const nextConfig: NextConfig = {
-  // Disable ESLint during build process
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Disable TypeScript type checking during build (optional)
   typescript: {
     ignoreBuildErrors: true,
   },
- 
-  // ✅ ENABLE FOR PRODUCTION BUILD
-  output: 'export',
- 
-  trailingSlash: true,
-  
-  // ✅ Only apply basePath in production
-  ...(isProd && {
-    basePath: '/group',
-    assetPrefix: '/group',
-  }),
 
-  // ✅ Environment variable for image paths
+  output: 'export',
+  trailingSlash: true,
+
   env: {
-    NEXT_PUBLIC_BASE_PATH: isProd ? '/group' : '',
+    NEXT_PUBLIC_BASE_PATH: '',
   },
 
   // Configure images for static export
