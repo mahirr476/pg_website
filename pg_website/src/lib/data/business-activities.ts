@@ -34,7 +34,7 @@ export type BusinessActivity = {
         "heroStatement": "Leading poultry farming operations across Bangladesh since 1993",
         "description": "Established in 1993, Paragon Poultry is one of the top three poultry farmers in Bangladesh. Our farms are strategically located across the country in remote areas, away from biological hazards, and pollution to facilitate the best environment for high-quality day-old poultry. We serve our farmers across the nation with day-old layers, broilers, and colour birds to be raised and sold to the national market. Furthermore, we also produce commercial layers and broilers for direct consumers to ensure safe, sustainable poultry meat and eggs. Paragon envisions and strives for sustainable production of protein to ensure food security for our nation.",
         "businessOperations": {
-            "description": "Paragon has its Hatchery unit all over the country to make sure easy excess to every corner of Bangladesh. From hatchery to broiler and layer farm, Paragon has it all.",
+            "description": "Paragon has its Hatchery unit all over the country to make sure easy access to every corner of Bangladesh. From hatchery to broiler and layer farm, Paragon has it all.",
             "points": [
                 "Hatchery operations in 10 different locations with production capacity of over 30 lakh chicks per week",
                 "Commercial Broiler unit capacity: 4,50,000 units of chicken",
@@ -78,7 +78,7 @@ export type BusinessActivity = {
     {
         id: 'processing',
         slug: 'processing-plant',
-        title: 'Processing & Further Processing Plant",',
+        title: 'Processing & Further Processing Plant',
           heroImage: "/images/business/processing-hero.jpg",
           heroStatement: "Advanced Processing facilities ensuring highest quality of standards",
           description: "Paragon launched a poultry processing and further processing plant in 2015, producing ready-to-cook and ready-to-eat frozen foods. Our factory has ISO 22000, GMP, HACCP, and HALAL certifications. We proudly serve all multinational hotels, fast food brands like KFC and Pizza Hut, and local airlines. Furthermore, we also launched a collection of traditional and Western-inspired ready-to-eat/cook frozen products.",
@@ -201,7 +201,7 @@ export type BusinessActivity = {
                     "items": [
                         "U shape cross corner bag",
                         "Standard big bag",
-                        "Buffle bag",
+                        "Baffle bag",
                         "U shape bag",
                         "Cross corner bag",
                         "Single loop bag"
@@ -284,10 +284,10 @@ export type BusinessActivity = {
             ]
         },
         "businessUnits": [
-            "Hazinagar Tea Estate, Mouluvibazar",
-            "Rahmania Tea Estate, Mouluvibazar",
-            "Fatehabad Tea Estate, Mouluvibazar",
-            "Voban Tea Estate, Hobigong",
+            "Hazinagar Tea Estate, Moulvibazar",
+            "Rahmania Tea Estate, Moulvibazar",
+            "Fatehabad Tea Estate, Moulvibazar",
+            "Voban Tea Estate, Habiganj",
             "Horticulture Greenhouse Facility"
         ],
         "certificates": [] // No certificates were mentioned in the provided information
@@ -374,7 +374,7 @@ export type BusinessActivity = {
         "heroStatement": "Powering a sustainable future through solar innovation",
         "description": "Sympa Solar Power Limited is a renewable energy company committed to providing clean and sustainable energy solutions. Our focus is on harnessing the power of the sun to create cost-effective and eco-friendly energy options for our customers. We specialize in designing, building, and operating solar power plants across the country. Our team of experts works closely with clients to provide customized solutions that meet their energy needs while reducing their carbon footprint. We are dedicated to creating a greener tomorrow by promoting the use of renewable energy sources. At Sympa Solar Power Limited, we believe in creating a brighter future for all.",
         "businessOperations": {
-            "description": "Sympa Solar Power Limited, a joint venture company of Symbior Solar and Paragon Group, operates the Tetulia 8MW (AC) solar PV Power Plant in Tetulia, Panchaghar. The project operates under a 20-year PPA with the Power Development Board of Bangladesh.",
+            "description": "Sympa Solar Power Limited, a joint venture company of Symbior Solar and Paragon Group, operates the Tetulia 8MW (AC) solar PV Power Plant in Tetulia, Panchagarh. The project operates under a 20-year PPA with the Power Development Board of Bangladesh.",
             "points": [
                 "37.62 acres of solar plant area with 37,512 solar panels",
                 "Total capacity of over 8MW with 96 inverters",
@@ -442,7 +442,7 @@ export type BusinessActivity = {
             "description": "Paragon Group runs 16 production lines across 6 strategic locations throughout Bangladesh, with plans for future expansion.",
             "points": [
                 "Paragon Poultry Limited (Feed division) - Gazipur",
-                "Denm Poultry Limited (Feed division) - Kapasia",
+                "Denim Poultry Limited (Feed division) - Kapasia",
                 "Paragon Feed Limited (Unit-2) - Savar",
                 "Jessore Feed Limited - Jessore",
                 "Chittagong Feed Limited - Chattogram",
@@ -455,7 +455,7 @@ export type BusinessActivity = {
                 {
                     "title": "Poultry Feed",
                     "items": [
-                        "Boiler feed",
+                        "Broiler feed",
                         "Layer feed",
                         "Sonali feed",
                         "Duck Feed",
@@ -465,7 +465,7 @@ export type BusinessActivity = {
                 {
                     "title": "Aquaculture Feed",
                     "items": [
-                        "Flouting fish feed",
+                        "Floating fish feed",
                         "Sinking fish feed",
                         "Shrimp Feed"
                     ]
@@ -481,7 +481,7 @@ export type BusinessActivity = {
         },
         "businessUnits": [
             "Paragon Poultry Limited (Feed division), Gazipur",
-            "Denm Poultry Limited (Feed division), Kapasia",
+            "Denim Poultry Limited (Feed division), Kapasia",
             "Paragon Feed Limited (Unit-2), Savar",
             "Jessore Feed Limited, Jessore",
             "Chittagong Feed Limited, Chattogram",
@@ -934,7 +934,7 @@ export type BusinessActivity = {
         "title": "Dairy Project",
         "heroImage": "/images/business/dairy-hero.jpg",
         "heroStatement": "Modern dairy solutions from farm to table since 2019",
-        "description": "In 2019 Paragon launches its first dairy operation with an aim to produce pasteurizated milk, UHT milk, ghee, butter, cheese, yogurt and laban for the local market. To address the modern day dairy requirements Paragon engages from the grassroots by producing high quality feed, improving feeding management, maintaining overall rearing management, provide breeding technology, and produce dairy products.",
+        "description": "In 2019 Paragon launches its first dairy operation with an aim to produce pasteurized milk, UHT milk, ghee, butter, cheese, yogurt and laban for the local market. To address the modern day dairy requirements Paragon engages from the grassroots by producing high quality feed, improving feeding management, maintaining overall rearing management, provide breeding technology, and produce dairy products.",
         "businessOperations": {
             "description": "Our dairy operation implements advanced milking technology and stringent quality control measures to ensure the highest quality dairy products.",
             "points": [

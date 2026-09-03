@@ -123,34 +123,33 @@ const ArticleModal = ({
   // Format date for display in modal
   const formattedDate = formatDate(article.date);
   
-  // Sample content if not provided in the article
+  // Fallback content shown only when the API doesn't provide article.content
   const articleContent = article.content || `
-    <p>This is a detailed article about ${article.title}. The full content would be displayed here.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim.</p>
-    <p>Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam.</p>
-    <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet.</p>
-    <p>Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim. Curabitur sit amet mauris. Morbi in dui quis est pulvinar ullamcorper.</p>
+    <p>${article.description || `This is a detailed article about ${article.title}.`}</p>
+    <p>Paragon Group is one of Bangladesh's leading diversified business conglomerates, with a strong presence across poultry, animal health, feed, food processing, real estate, and consumer goods. For more than three decades, the Group has been committed to delivering quality products and services while investing in the communities where it operates.</p>
+    <p>Through initiatives like this, Paragon Group continues to focus on sustainable growth, job creation, and social responsibility — supporting local farmers, promoting food security, and contributing to the wider economic development of Bangladesh.</p>
+    <p>Stay connected with Paragon Group's official news and media channels for the latest updates on our projects, partnerships, and community programs.</p>
   `;
 
-  // Sample related topics based on article tag or title
+  // Fallback related topics shown only when the API doesn't provide article.content
   const relatedTopics = [
     {
       id: 1,
-      title: `More on ${article.tag || "Industry News"}`,
-      content: `Recent developments in ${article.tag || "the industry"} show increasing trends in the market. Our analysis suggests continued growth in this sector.`,
-      icon: "📈"
+      title: "About Paragon Group",
+      content: "Paragon Group is a leading Bangladeshi conglomerate with businesses spanning poultry, animal health, feed, food, real estate, and consumer products, serving millions of customers nationwide.",
+      icon: "🏢"
     },
     {
       id: 2,
-      title: "Industry Insights",
-      content: "Expert opinions suggest that the topics covered in this article will continue to be relevant through 2025. Market analysts predict significant changes ahead.",
-      icon: "💡"
+      title: "Community & CSR Initiatives",
+      content: "Paragon Group invests in local communities through employment generation, farmer support programs, education, and health initiatives across Bangladesh.",
+      icon: "🤝"
     },
     {
       id: 3,
-      title: "Related Research",
-      content: "Our team has compiled additional information about this topic. The research shows promising results that align with the article's conclusions.",
-      icon: "🔍"
+      title: "Sustainability Commitment",
+      content: "Paragon Group is committed to sustainable and responsible business practices, ensuring long-term value for customers, employees, and the communities it serves.",
+      icon: "🌱"
     }
   ];
 
@@ -216,8 +215,8 @@ const ArticleModal = ({
           
           <h2 className="text-3xl font-bold mb-4 text-company-royal">{article.title}</h2>
           
-          <div 
-            className="prose max-w-none"
+          <div
+            className="prose max-w-none text-justify"
             dangerouslySetInnerHTML={{ __html: articleContent }}
           />
           
