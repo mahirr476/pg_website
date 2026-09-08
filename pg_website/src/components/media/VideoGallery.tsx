@@ -410,7 +410,7 @@ const useProcessedImage = (imagePath: string) => {
   const [imageStatus, setImageStatus] = useState<'loading' | 'success' | 'error'>('loading');
 
   // Fixed API base URL - same as HomeHero
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.pg-admin.57.155.183.218.nip.io';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.paragongroup-bd.com';
 
   // Process API image with the correct URL format - same logic as HomeHero
   const processApiImage = (imagePath: string): string => {

@@ -4,7 +4,7 @@
  */
 
 // Get API base URL from environment variables
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://api.pg-admin.57.155.183.218.nip.io';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.paragongroup-bd.com';
 
 /**
  * Process API image paths and return properly formatted URLs
