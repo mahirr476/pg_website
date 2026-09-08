@@ -140,7 +140,7 @@ const CompanyContact = ({ data }: CompanyContactProps) => {
   const [error, setError] = useState<string | null>(null);
 
   // Fixed API base URL - same as other components
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.pg-admin.57.155.183.218.nip.io';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.paragongroup-bd.com';
 
   useEffect(() => {
     const fetchContactData = async () => {

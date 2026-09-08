@@ -71,7 +71,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const response = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/home');
+        const response = await fetch('https://api.paragongroup-bd.com/api/v1/pg/home');
         
         if (!response.ok) {
           throw new Error('Failed to fetch home data');

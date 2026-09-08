@@ -31,7 +31,7 @@
 //     console.log('Generating static params for companies...');
     
 //     // Since you're doing static export, we'll be more conservative with API calls
-//     const res = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies', {
+//     const res = await fetch('https://api.paragongroup-bd.com/api/v1/pg/companies', {
 //       headers: {
 //         'Content-Type': 'application/json',
 //       },
@@ -138,7 +138,7 @@
 //   };
   
 //   try {
-//     const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${params.slug}`, {
+//     const res = await fetch(`https://api.paragongroup-bd.com/api/v1/pg/companies/${params.slug}`, {
 //       cache: 'force-cache', // ✅ FIXED: Use force-cache for static export
 //       headers: {
 //         'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ export async function generateStaticParams() {
     console.log('Generating static params for companies...');
 
     const res = await fetch(
-      'https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies',
+      'https://api.paragongroup-bd.com/api/v1/pg/companies',
       {
         headers: { 'Content-Type': 'application/json' },
         cache: 'no-store', // always fetch fresh data at build time
@@ -319,7 +319,7 @@ export async function generateMetadata(props: { params: Params }) {
 
   try {
     const res = await fetch(
-      `https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${params.slug}`,
+      `https://api.paragongroup-bd.com/api/v1/pg/companies/${params.slug}`,
       {
         cache: 'force-cache',
         headers: { 'Content-Type': 'application/json' },

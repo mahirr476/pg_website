@@ -56,7 +56,7 @@ export default function BusinessPageClient({ slug }: BusinessPageClientProps) {
         
         // ALWAYS fetch fresh data from API
         const res = await fetch(
-          `https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business/${slug}?t=${Date.now()}`,
+          `https://api.paragongroup-bd.com/api/v1/pg/business/${slug}?t=${Date.now()}`,
           {
             cache: 'no-store', // Always get fresh data
             headers: {
@@ -95,7 +95,7 @@ export default function BusinessPageClient({ slug }: BusinessPageClientProps) {
         setError(null);
         
         const res = await fetch(
-          `https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business/${slug}?t=${Date.now()}`,
+          `https://api.paragongroup-bd.com/api/v1/pg/business/${slug}?t=${Date.now()}`,
           {
             cache: 'no-store',
             headers: { 'Content-Type': 'application/json' }

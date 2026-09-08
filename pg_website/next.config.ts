@@ -22,13 +22,13 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'api.pg-admin.57.155.183.218.nip.io',
+        hostname: 'api.paragongroup-bd.com',
         port: '',
         pathname: '/uploads/**',
       },
       {
         protocol: 'https',
-        hostname: 'api.pg-admin.57.155.183.218.nip.io',
+        hostname: 'api.paragongroup-bd.com',
         port: '',
         pathname: '/uploads/**',
       },
@@ -61,7 +61,7 @@ const nextConfig: NextConfig = {
     ],
     // Broader domain matching
     domains: [
-      'api.pg-admin.57.155.183.218.nip.io',
+      'api.paragongroup-bd.com',
       '57.155.62.78'
     ],
     // More permissive settings for development
@@ -80,7 +80,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "img-src 'self' data: https: http: *.nip.io 57.155.62.78 api.pg-admin.57.155.183.218.nip.io;",
+            value: "img-src 'self' data: https: http: *.nip.io 57.155.62.78 api.paragongroup-bd.com;",
           },
           // Add CORS headers for development
           {

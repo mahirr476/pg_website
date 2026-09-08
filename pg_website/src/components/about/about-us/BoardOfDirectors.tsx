@@ -321,7 +321,7 @@ const BoardOfDirectors: React.FC<BoardOfDirectorsProps> = ({
   const [processedDirectors, setProcessedDirectors] = useState<Director[]>([]);
 
   // Fixed API base URL - same as other components
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.pg-admin.57.155.183.218.nip.io';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.paragongroup-bd.com';
 
   // Process director image paths
   const processDirectorImage = (imagePath: string): string => {

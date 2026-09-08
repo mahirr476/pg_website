@@ -81,7 +81,7 @@
 //   useEffect(() => {
 //     const fetchBusinessActivities = async () => {
 //       try {
-//         const response = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business');
+//         const response = await fetch('https://api.paragongroup-bd.com/api/v1/pg/business');
 //         if (!response.ok) {
 //           throw new Error('Failed to fetch business activities');
 //         }
@@ -101,7 +101,7 @@
 //   useEffect(() => {
 //     const fetchCompanies = async () => {
 //       try {
-//         const response = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies');
+//         const response = await fetch('https://api.paragongroup-bd.com/api/v1/pg/companies');
 //         if (!response.ok) {
 //           throw new Error('Failed to fetch companies');
 //         }
@@ -591,7 +591,7 @@ const Header = () => {
   useEffect(() => {
     const fetchBusinessActivities = async () => {
       try {
-        const response = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business');
+        const response = await fetch('https://api.paragongroup-bd.com/api/v1/pg/business');
         if (!response.ok) {
           throw new Error('Failed to fetch business activities');
         }
@@ -611,7 +611,7 @@ const Header = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies');
+        const response = await fetch('https://api.paragongroup-bd.com/api/v1/pg/companies');
         if (!response.ok) {
           throw new Error('Failed to fetch companies');
         }
@@ -1245,9 +1245,9 @@ export default Header;
 //   const getApiUrl = () => {
 //     // In production (HTTPS), try HTTPS first, then fallback to HTTP
 //     if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
-//       return 'https://api.pg-admin.57.155.183.218.nip.io';
+//       return 'https://api.paragongroup-bd.com';
 //     }
-//     return 'http://api.pg-admin.57.155.183.218.nip.io';
+//     return 'https://api.paragongroup-bd.com';
 //   };
   
 //   // ✅ FIXED: Fetch business activities from API

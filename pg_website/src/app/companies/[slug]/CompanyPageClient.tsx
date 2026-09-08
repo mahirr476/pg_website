@@ -49,7 +49,7 @@ export default function CompanyPageClient({ slug }: CompanyPageClientProps) {
         
         // Client-side fetch for fresh data (works with static export)
         const res = await fetch(
-          `https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${slug}`,
+          `https://api.paragongroup-bd.com/api/v1/pg/companies/${slug}`,
           {
             headers: {
               'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ export default function CompanyPageClient({ slug }: CompanyPageClientProps) {
         setError(null);
         
         const res = await fetch(
-          `https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/companies/${slug}`,
+          `https://api.paragongroup-bd.com/api/v1/pg/companies/${slug}`,
           {
             headers: { 'Content-Type': 'application/json' }
           }

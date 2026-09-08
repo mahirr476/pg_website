@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     }
 
     // Construct full URL
-    const fullImageUrl = `http://api.pg-admin.57.155.183.218.nip.io/${imagePath}`;
+    const fullImageUrl = `https://api.paragongroup-bd.com/${imagePath}`;
     
     console.log('🔄 [PROXY] Fetching:', fullImageUrl);
 

@@ -54,7 +54,7 @@ export default function CSRPage() {
   useEffect(() => {
     const fetchCSRData = async () => {
       try {
-        const response = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/about-csr');
+        const response = await fetch('https://api.paragongroup-bd.com/api/v1/pg/about-csr');
         if (!response.ok) {
           throw new Error('Failed to fetch CSR data');
         }

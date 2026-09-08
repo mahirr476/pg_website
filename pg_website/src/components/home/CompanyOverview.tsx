@@ -30,7 +30,7 @@
 // //   if (overviewHero?.images && overviewHero.images.length > 0) {
 // //     // Remove 'public/' prefix and format URL properly
 // //     const imagePath = overviewHero.images[0].replace(/^public\//, '');
-// //     imageUrl = `http://api.pg-admin.57.155.183.218.nip.io/${imagePath}`;
+// //     imageUrl = `https://api.paragongroup-bd.com/${imagePath}`;
 // //   }
 
 // //   const values = [
@@ -205,7 +205,7 @@ const CompanyOverview: React.FC<CompanyOverviewProps> = ({ heroes }) => {
   const [imageStatus, setImageStatus] = useState<{[key: string]: 'loading' | 'success' | 'error'}>({});
 
   // Fixed API base URL - same as HomeHero
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.pg-admin.57.155.183.218.nip.io';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.paragongroup-bd.com';
 
   // Get the fourth hero (index 4) for the section title and description
   const overviewHero = heroes.find(hero => hero.index === 4) || heroes[3] || heroes[0];

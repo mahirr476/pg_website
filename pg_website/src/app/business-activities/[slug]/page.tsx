@@ -174,7 +174,7 @@
 // // Business content component that handles data fetching
 // async function BusinessContent({ slug }: { slug: string }) {
 //   // Fetch business data
-//   const res = await fetch(`http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business/${slug}`, {
+//   const res = await fetch(`https://api.paragongroup-bd.com/api/v1/pg/business/${slug}`, {
 //     cache: 'no-store'
 //   });
   
@@ -281,7 +281,7 @@
 // // ADD THIS FUNCTION - Required for static export
 // export async function generateStaticParams() {
 //   try {
-//     const res = await fetch('http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business');
+//     const res = await fetch('https://api.paragongroup-bd.com/api/v1/pg/business');
 //     if (!res.ok) return [];
 //     const data = await res.json();
 //     const businesses = data.data || [];
@@ -306,7 +306,7 @@
 // // Business content component that handles data fetching
 // async function BusinessContent({ slug }: { slug: string }) {
 //   // Fetch business data
-//   const res = await fetch(`http://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business/${slug}`, {
+//   const res = await fetch(`https://api.paragongroup-bd.com/api/v1/pg/business/${slug}`, {
 //     cache: 'no-store'
 //   });
   
@@ -412,7 +412,7 @@
 // // REQUIRED for static export - This function must be exported
 // export async function generateStaticParams() {
 //   try {
-//     const res = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business', {
+//     const res = await fetch('https://api.paragongroup-bd.com/api/v1/pg/business', {
 //       headers: {
 //         'Content-Type': 'application/json',
 //       },
@@ -489,7 +489,7 @@
 // async function BusinessContent({ slug }: { slug: string }) {
 //   try {
 //     // Fetch business data - use force-cache for static generation
-//     const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business/${slug}`, {
+//     const res = await fetch(`https://api.paragongroup-bd.com/api/v1/pg/business/${slug}`, {
 //       cache: 'force-cache', // ✅ FIXED: Use force-cache instead of no-store for static export
 //       headers: {
 //         'Content-Type': 'application/json',
@@ -597,7 +597,7 @@ interface BusinessData {
 // STATIC PARAMS for build (minimal set) - SERVER COMPONENT
 export async function generateStaticParams() {
   try {
-    const res = await fetch('https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business', {
+    const res = await fetch('https://api.paragongroup-bd.com/api/v1/pg/business', {
       headers: { 'Content-Type': 'application/json' },
       cache: 'no-store' // Don't cache during build
     });
@@ -638,7 +638,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const params = await props.params;
   
   try {
-    const res = await fetch(`https://api.pg-admin.57.155.183.218.nip.io/api/v1/pg/business/${params.slug}`, {
+    const res = await fetch(`https://api.paragongroup-bd.com/api/v1/pg/business/${params.slug}`, {
       cache: 'force-cache', // ✅ FIXED: Use force-cache for static export
       headers: {
         'Content-Type': 'application/json',
